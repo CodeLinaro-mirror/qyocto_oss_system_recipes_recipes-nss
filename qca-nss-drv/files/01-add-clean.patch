@@ -1,0 +1,9 @@
+--- a/Makefile
++++ b/Makefile
+@@ -92,3 +92,6 @@
+
+ qca-nss-drv-objs += nss_hal/ipq806x/nss_hal_pvt.o
+ ccflags-y += -I$(obj)/nss_hal/ipq806x
++
++clean:
++	@echo "======================================="
