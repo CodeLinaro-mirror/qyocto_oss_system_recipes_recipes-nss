@@ -44,3 +44,5 @@ do_install() {
 	install -m 0644 ipq806x/qca-nss-gmac${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install ipq806x/exports/* ${D}/${includedir}/qca-nss-gmac/
 }
+
+KERNEL_MODULE_AUTOLOAD += "qca-nss-gmac"
