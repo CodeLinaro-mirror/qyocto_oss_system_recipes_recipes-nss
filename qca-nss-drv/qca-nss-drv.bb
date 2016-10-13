@@ -37,3 +37,5 @@ do_install() {
 	install -m 0644 qca-nss-drv${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 exports/* ${D}/${includedir}/qca-nss-drv/
 }
+
+KERNEL_MODULE_AUTOLOAD += "qca-nss-drv"
