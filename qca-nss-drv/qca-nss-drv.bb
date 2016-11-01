@@ -1,6 +1,6 @@
 DESCRIPTION = "NSS Driver"
 LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://nss_core.h;md5=132daa0d4680187eae5aaf7382e0086b"
+LIC_FILES_CHKSUM = "file://nss_core.h;md5=ad433864ae869b77238696c3c5d9430e"
 
 inherit module
 
