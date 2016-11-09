@@ -1,6 +1,6 @@
 DESCRIPTION = "QCA Receive Flow Steering Kernel Module"
 SECTION = "kernel/module"
-LICENSE = "GPLv2"
+LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://Makefile;md5=9b105acd8d4380fb8f780118eb7c1e4e"
 
 inherit module

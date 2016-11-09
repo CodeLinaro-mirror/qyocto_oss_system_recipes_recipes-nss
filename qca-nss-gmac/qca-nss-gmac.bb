@@ -1,5 +1,5 @@
 DESCRIPTION = "NSS GMAC Driver"
-LICENSE = "GPLv2"
+LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://ipq806x/LICENSE.txt;md5=b9923979c444c7e3a5a254e01ed5c70a"
 
 inherit module
