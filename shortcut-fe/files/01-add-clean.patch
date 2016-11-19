@@ -1,0 +1,10 @@
+diff --git a/Makefile b/Makefile
+index 3b1ceaa..8e564a8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -21,3 +21,5 @@ endif
+ shortcut-fe-cm-objs := \
+	sfe_cm.o
+
++clean:
++	@echo "======================================="
