@@ -25,10 +25,11 @@ do_clean() {
 
 do_compile() {
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
-		CROSS_COMPILE="arm-poky-linux-gnueabi-" \
+		CROSS_COMPILE='${TARGET_PREFIX}' \
 		ARCH="arm" \
 		SUBDIRS="${S}" \
 		EXTRA_CFLAGS="-I${STAGING_INCDIR}/qca-nss-gmac" \
+		SoC="ipq806x" \
 		modules
 }
 do_install() {

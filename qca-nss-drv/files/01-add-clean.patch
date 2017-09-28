@@ -1,9 +1,10 @@
 --- a/Makefile
 +++ b/Makefile
-@@ -92,3 +92,6 @@
+@@ -113,3 +113,7 @@ ccflags-y += $(NSS_CCFLAGS)
+ export NSS_CCFLAGS
 
- qca-nss-drv-objs += nss_hal/ipq806x/nss_hal_pvt.o
- ccflags-y += -I$(obj)/nss_hal/ipq806x
+ obj ?= .
++
 +
 +clean:
 +	@echo "======================================="
