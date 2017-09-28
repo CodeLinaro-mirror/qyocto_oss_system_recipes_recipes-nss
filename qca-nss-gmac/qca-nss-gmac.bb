@@ -22,7 +22,7 @@ INSANE_SKIP_${PN} = "dev"
 EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		 SUBDIRS='${S}' \
 		SYS_PATH='${STAGING_KERNEL_BUILDDIR}' \
-		CROSS_COMPILE='arm-poky-linux-gnueabi-' \
+		CROSS_COMPILE='${TARGET_PREFIX}' \
 		KVER='${KERNEL_VERSION}' \
 		ARCH='arm' \
 		"
@@ -32,7 +32,7 @@ do_clean() {
 
 do_compile() {
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
-		CROSS_COMPILE="arm-poky-linux-gnueabi-" \
+		CROSS_COMPILE='${TARGET_PREFIX}' \
 		ARCH="arm" \
 		SUBDIRS="${S}" \
 		modules
