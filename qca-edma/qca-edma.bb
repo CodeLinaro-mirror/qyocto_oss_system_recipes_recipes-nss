@@ -1,30 +1,55 @@
-SUMMARY = "Essedma init script"
-DESCRIPTION = "This package adds the script, which load-balances edma interrupts across multiple cores "
+SUMMARY = "Essedma driver"
+DESCRIPTION = "EDMA"
 SECTION = "base"
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://${WORKDIR}/copyright;md5=0a674a878fe6f6c9e1261ae3767efebd"
-PR = "r7"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/files/copyright;md5=0a674a878fe6f6c9e1261ae3767efebd"
 
-inherit update-alternatives
-inherit update-rc.d
+inherit module
+inherit systemd
+
+FILESPATH =+ "${TOPDIR}/../opensource/:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-edma \
-	   file://copyright"
+	   file://files \
+	   "
+DEPENDS = "virtual/kernel"
+S = "${WORKDIR}/qca-edma"
 
-S = "${WORKDIR}"
+PACKAGES += "kernel-module-essedma"
+INSANE_SKIP_${PN} = "dev"
 
-do_compile()  {
-	:
+EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
+		SYS_PATH='${STAGING_KERNEL_BUILDDIR}' \
+		CROSS_COMPILE='${TARGET_PREFIX}' \
+		KVER='${KERNEL_VERSION}' \
+		ARCH='arm' \
+		OS='linux' \
+		"
+
+do_compile() {
+	make -C  "${STAGING_KERNEL_BUILDDIR}" \
+		CROSS_COMPILE="${TARGET_PREFIX}" \
+		ARCH="arm" \
+		SUBDIRS="${S}" \
+		modules
 }
 
-do_install () {
-	install -d ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/qca-edma ${D}${sysconfdir}/init.d/qca-edma
+do_install() {
+	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	install -m 0644 essedma${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-edma ${D}${bindir}/qca-edma
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-edma.service ${D}${systemd_unitdir}/system/qca-edma.service
 }
 
-PACKAGE_ARCH_qemuall = "${MACHINE_ARCH}"
+SYSTEMD_SERVICE_${PN} += "qca-edma.service"
 
-CONFFILES_${PN} = "${sysconfdir}/network/interfaces"
-INITSCRIPT_PACKAGES = "qca-edma"
-INITSCRIPT_NAME = "qca-edma"
-INITSCRIPT_PARAMS = "start 99 S . stop 99 0 6 1 ."
+FILES_${PN} = " \
+	${systemd_unitdir}/system/qca-edma.service \
+	${bindir}/qca-edma \
+"
+
+KERNEL_MODULE_AUTOLOAD += "essedma"
+module_autoload_essedma = "qca-ssdk essedma"

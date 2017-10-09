@@ -1,0 +1,10 @@
+[Unit]
+Description=Set EDMA interrupt affinity
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "/usr/bin/qca-edma"
+
+[Install]
+WantedBy=multi-user.target
