@@ -1,0 +1,13 @@
+[Unit]
+Description=ECM init systemd service
+After=gwprovapp.service
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c "/usr/bin/qca-nss-ecm start"
+ExecStop=/bin/sh -c "/usr/bin/qca-nss-ecm stop"
+ExecReload=/bin/sh -c "/usr/bin/qca-nss-ecm restart"
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
