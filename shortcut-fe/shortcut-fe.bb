@@ -7,21 +7,20 @@ inherit module
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-FILES_${PN}="/usr/bin"
+FILES_${PN} += "/usr/bin"
 
-SRC_URI = "file://shortcut-fe/shortcut-fe \
+SRC_URI = "file://shortcut-fe/ \
 	   file://sfe_dump \
-	   file://01-add-clean.patch \
 	   "
-DEPENDS = "virtual/kernel"
+DEPENDS = "virtual/kernel simulated-driver"
 
 S = "${WORKDIR}/shortcut-fe/shortcut-fe"
 
-PACKAGES += "kernel-module-shortcut-fe"
+PACKAGES += "kernel-module-shortcut-fe kernel-module-shortcut-fe-ipv6"
 
 EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		SYS_PATH='${STAGING_KERNEL_BUILDDIR}' \
-		TOOLPREFIX='arm-poky-linux-gnueabi-' \
+		TOOLPREFIX='${TARGET_PREFIX}' \
 		KVER='${KERNEL_VERSION}' \
 		ARCH='arm' -j1 \
 		"
@@ -29,7 +28,7 @@ EXTRA_CFLAGS += "-DSFE_SUPPORT_IPV6"
 
 do_compile() {
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
-		CROSS_COMPILE="arm-poky-linux-gnueabi-" \
+		CROSS_COMPILE="${TARGET_PREFIX}" \
 		ARCH="arm" \
 		SUBDIRS="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
@@ -46,4 +45,5 @@ do_install() {
 	install -m 0755 ${WORKDIR}/sfe_dump ${D}/usr/bin
 }
 
-KERNEL_MODULE_AUTOLOAD += "shortcut-fe shortcut-fe-ipv6 shortcut-fe-cm"
+KERNEL_MODULE_AUTOLOAD += "shortcut-fe"
+module_autoload_shortcut-fe = "shortcut-fe shortcut-fe-ipv6"
