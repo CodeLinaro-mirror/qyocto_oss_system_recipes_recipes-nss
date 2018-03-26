@@ -89,6 +89,9 @@ unload_ecm() {
 }
 
 start() {
+	# Disable bridge netfilters by default
+	sysctl -w net.bridge.bridge-nf-call-ip6tables=0
+	sysctl -w net.bridge.bridge-nf-call-iptables=0
 	load_ecm
 
 	# If the acceleration engine is NSS, enable wifi redirect.
@@ -98,6 +101,8 @@ start() {
 		echo 'net.bridge.bridge-nf-call-ip6tables=1' >> /etc/sysctl.d/qca-nss-ecm.conf
 		echo 'net.bridge.bridge-nf-call-iptables=1' >> /etc/sysctl.d/qca-nss-ecm.conf
 	}
+
+	return 0
 }
 
 stop() {
