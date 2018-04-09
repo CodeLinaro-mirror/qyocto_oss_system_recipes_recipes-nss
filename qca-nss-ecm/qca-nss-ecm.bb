@@ -27,6 +27,7 @@ do_compile() {
 		ARCH="arm" \
 		SUBDIRS="${S}" \
 		EXTRA_CFLAGS="-I${STAGING_INCDIR}/shortcut-fe" \
+		SoC="ipq40xx" \
 		modules
 }
 do_install() {
