@@ -27,6 +27,10 @@ EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		OS='linux' \
 		"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \

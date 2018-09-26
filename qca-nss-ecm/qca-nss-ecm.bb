@@ -21,6 +21,10 @@ INSANE_SKIP_${PN} = "dev"
 
 export ECM_FRONT_END_NSS_ENABLE="n"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \

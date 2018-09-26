@@ -26,6 +26,10 @@ EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		"
 EXTRA_CFLAGS += "-DSFE_SUPPORT_IPV6"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
