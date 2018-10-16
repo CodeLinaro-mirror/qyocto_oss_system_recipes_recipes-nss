@@ -1,0 +1,10 @@
+[Unit]
+Description=DRV init systemd service
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "/usr/bin/qca-nss-drv start"
+
+[Install]
+WantedBy=multi-user.target

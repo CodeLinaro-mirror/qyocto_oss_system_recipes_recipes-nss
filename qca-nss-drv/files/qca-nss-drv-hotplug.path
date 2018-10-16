@@ -1,0 +1,9 @@
+[Unit]
+Description=Drv hotplug for firmware.
+
+[Path]
+PathExistsGlob=/lib/firmware/*.bin
+PathModified=/lib/firmware/
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=DRV hotplug for NSS FW service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "/usr/bin/qca-nss-drv-hotplug"
+
+[Install]
+WantedBy=multi-user.target
