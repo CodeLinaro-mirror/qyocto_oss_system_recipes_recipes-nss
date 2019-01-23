@@ -19,7 +19,7 @@ EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		SYS_PATH='${STAGING_KERNEL_BUILDDIR}' \
 		TOOLPREFIX='${TARGET_PREFIX}' \
 		KVER='${KERNEL_VERSION}' \
-		ARCH='arm' -j1 \
+		ARCH='${KARCH}' -j1 \
 		"
 EXTRA_CFLAGS += "-DSFE_SUPPORT_IPV6"
 
@@ -28,9 +28,10 @@ do_configure() {
 }
 
 do_compile() {
+	unset LDFLAGS
 	make -C  "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
-		ARCH="arm" \
+		ARCH="${KARCH}" \
 		SUBDIRS="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
 		modules

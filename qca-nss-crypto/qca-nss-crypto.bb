@@ -32,6 +32,7 @@ EXTRA_CFLAGS += "\
 		 "
 
 do_compile() {
+	unset LDFLAGS
 	make -C "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
 		ARCH="${KARCH}" \
