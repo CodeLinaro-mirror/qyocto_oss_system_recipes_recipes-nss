@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5
 inherit module
 include ${THISDIR}/files/qca-nss-clients.inc
 
-SOC_TYPE="${@bb.data.getVar('MACHINE', d, 1).split('-')[0]}"
+SOC_TYPE="${@bb.data.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 
