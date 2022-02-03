@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5
 inherit module
 inherit systemd
 
-SOC_TYPE="${@bb.data.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
+SOC_TYPE="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/:"
