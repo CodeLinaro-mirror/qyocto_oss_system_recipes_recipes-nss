@@ -16,36 +16,69 @@ SRC_URI = "file://qca-nss-ecm \
 
 DEPENDS_append += "virtual/kernel "
 DEPENDS_append_ipq40xx = "simulated-driver"
-DEPENDS_append_ipq807x = "qca-nss-drv"
 DEPENDS_append_ipq807x-64 = "qca-nss-drv"
-DEPENDS_ipq95xx += "qca-nss-sfe"
-DEPENDS_ipq95xx_64 += "qca-nss-sfe"
+DEPENDS_append_ipq807x = "qca-nss-drv"
+DEPENDS_ipq95xx_64 += "qca-nss-sfe nat46 qca-mcs-lkm"
+DEPENDS_ipq95xx += "qca-nss-sfe nat46 qca-mcs-lkm"
 
 RDEPENDS-${PN}_append += "iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
 		pppoe nat46 "
 RDEPENDS-${PN}_append_ipq40xx = "simulated-driver"
-RDEPENDS-${PN}_append_ipq807x = "qca-nss-drv"
 RDEPENDS-${PN}_append_ipq807x-64 = "qca-nss-drv"
+RDEPENDS-${PN}_append_ipq807x = "qca-nss-drv"
 
 S = "${WORKDIR}/qca-nss-ecm"
 SFE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-sfe"
+NAT46_STG_INCDIR = "${STAGING_INCDIR}/nat46"
+MCS_STG_INCDIR = "${STAGING_INCDIR}/qca-mcs"
 
 PACKAGES += "kernel-module-ecm"
 INSANE_SKIP_${PN} = "dev"
 
 FRONT_END_NSS_ENABLE = "n"
 FRONT_END_NSS_ENABLE_append_ipq40xx = "n"
-FRONT_END_NSS_ENABLE_append_ipq807x = "y"
 FRONT_END_NSS_ENABLE_append_ipq807x-64 = "y"
+FRONT_END_NSS_ENABLE_append_ipq807x = "y"
 
 export ECM_FRONT_END_NSS_ENABLE="${FRONT_END_NSS_ENABLE}"
 
 ECM_MAKE_OPTS_append += "ECM_IPV6_ENABLE=y "
-ECM_MAKE_OPTS_ipq95xx += " ECM_FRONT_END_SFE_ENABLE=y"
-ECM_MAKE_OPTS_ipq95xx_64 += "ECM_FRONT_END_SFE_ENABLE=y"
+ECM_MAKE_OPTS_ipq95xx_64 += "ECM_FRONT_END_SFE_ENABLE=y \
+			ECM_NON_PORTED_SUPPORT_ENABLE=y \
+			ECM_INTERFACE_TUNIPIP6_ENABLE=y \
+			ECM_INTERFACE_GRE_TUN_ENABLE=y \
+			ECM_INTERFACE_GRE_TAP_ENABLE=y \
+			ECM_INTERFACE_MAP_T_ENABLE=y \
+			ECM_MULTICAST_ENABLE=y \
+			"
+ECM_MAKE_OPTS_ipq95xx += " ECM_FRONT_END_SFE_ENABLE=y \
+			ECM_NON_PORTED_SUPPORT_ENABLE=y \
+			ECM_INTERFACE_TUNIPIP6_ENABLE=y \
+			ECM_INTERFACE_GRE_TUN_ENABLE=y \
+			ECM_INTERFACE_GRE_TAP_ENABLE=y \
+			ECM_INTERFACE_MAP_T_ENABLE=y \
+			ECM_MULTICAST_ENABLE=y \
+			"
 
-EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-nss-sfe"
+EXTRA_CFLAGS_ipq95xx_64 += "\
+		-I${STAGING_INCDIR}/qca-nss-sfe \
+		-I${STAGING_INCDIR}/nat46 \
+		-I${STAGING_INCDIR}/qca-mcs \
+		"
+
+EXTRA_CFLAGS_ipq95xx += "\
+		-I${STAGING_INCDIR}/qca-nss-sfe \
+		-I${STAGING_INCDIR}/nat46 \
+		-I${STAGING_INCDIR}/qca-mcs \
+		"
+
+#Using single qoutes to enacapsulate the path of Module.symvers
+MODULE_EXTRA_SYMBOLS_ipq95xx_64 ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
+MODULE_EXTRA_SYMBOLS_ipq95xx_64 += " ${MCS_STG_INCDIR}/Module.symvers' "
+
+MODULE_EXTRA_SYMBOLS_ipq95xx ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
+MODULE_EXTRA_SYMBOLS_ipq95xx += " ${MCS_STG_INCDIR}/Module.symvers' "
 
 do_configure() {
 	true
@@ -58,7 +91,7 @@ do_compile() {
 		ARCH='${KARCH}' \
 		M="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-		KBUILD_EXTRA_SYMBOLS="${SFE_STG_INCDIR}/Module.symvers" \
+		KBUILD_EXTRA_SYMBOLS=${MODULE_EXTRA_SYMBOLS} \
 		SoC='${SOC_TYPE}' \
 		${ECM_MAKE_OPTS} \
 		modules
