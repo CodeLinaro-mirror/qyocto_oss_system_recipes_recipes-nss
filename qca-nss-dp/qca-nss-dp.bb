@@ -13,10 +13,14 @@ FILESPATH =+ "${TOPDIR}/../opensource/:"
 SRC_URI = "file://qca-nss-dp \
 	   "
 
-DEPENDS = "virtual/kernel bc-native qca-ssdk-nohnat"
+DEPENDS = "virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
 
 S = "${WORKDIR}/qca-nss-dp"
+EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
+		 -I${STAGING_INCDIR}/qca-nss-ppe \
+		"
 SSDK_STG_INCDIR = "${STAGING_INCDIR}/qca-ssdk"
+PPE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -27,8 +31,8 @@ do_compile() {
 		CROSS_COMPILE='${TARGET_PREFIX}' \
 		ARCH='${KARCH}' \
 		M="${S}" \
-		EXTRA_CFLAGS="-I${SSDK_STG_INCDIR}" \
-		KBUILD_EXTRA_SYMBOLS="${SSDK_STG_INCDIR}/Module.symvers" \
+		EXTRA_CFLAGS='${EXTRA_CFLAGS}' \
+		KBUILD_EXTRA_SYMBOLS="${SSDK_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers" \
 		SoC='${SOC_TYPE}' \
 		modules
 }
