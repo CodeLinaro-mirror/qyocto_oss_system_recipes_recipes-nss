@@ -24,6 +24,10 @@ PPE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	unset LDFLAGS
 	install -m 0644 ${S}/hal/soc_ops/${SOC_TYPE}/nss_${SOC_TYPE}.h ${S}/exports/nss_dp_arch.h

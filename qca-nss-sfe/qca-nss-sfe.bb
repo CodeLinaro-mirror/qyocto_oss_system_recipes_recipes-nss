@@ -21,6 +21,10 @@ PACKAGES += "kernel-module-qca-nss-sfe"
 EXTRA_CFLAGS += "-I${S}/exports"
 SFE_MAKE_OPTS = "SFE_SUPPORT_IPV6=y"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	unset LDFLAGS
 	make -C "${STAGING_KERNEL_BUILDDIR}" \

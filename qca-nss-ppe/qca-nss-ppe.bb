@@ -30,6 +30,10 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
 		"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	unset LDFLAGS
 	make -C  "${STAGING_KERNEL_BUILDDIR}" ${NSS_PPE_MODULES} \

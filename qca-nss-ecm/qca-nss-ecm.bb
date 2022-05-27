@@ -47,6 +47,10 @@ ECM_MAKE_OPTS_ipq95xx_64 += "ECM_FRONT_END_SFE_ENABLE=y"
 
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-nss-sfe"
 
+do_configure() {
+	true
+}
+
 do_compile() {
 	unset LDFLAGS
 	make -C "${STAGING_KERNEL_BUILDDIR}" \
