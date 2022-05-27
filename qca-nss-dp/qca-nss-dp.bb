@@ -9,18 +9,28 @@ SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-dp \
+	   file://files \
 	   "
 
-DEPENDS = "virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
+DEPENDS_append += "virtual/kernel"
+DEPENDS_ipq95xx_64 += " qca-ssdk-nohnat qca-nss-ppe"
+DEPENDS_ipq95xx += " qca-ssdk-nohnat qca-nss-ppe"
 
 S = "${WORKDIR}/qca-nss-dp"
-EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
+EXTRA_CFLAGS_ipq95xx_64 += "-I${STAGING_INCDIR}/qca-ssdk \
 		 -I${STAGING_INCDIR}/qca-nss-ppe \
 		"
-SSDK_STG_INCDIR = "${STAGING_INCDIR}/qca-ssdk"
-PPE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe"
+EXTRA_CFLAGS_ipq95xx += "-I${STAGING_INCDIR}/qca-ssdk \
+		 -I${STAGING_INCDIR}/qca-nss-ppe \
+		"
+
+SSDK_STG_INCDIR_ipq95xx_64 = "${STAGING_INCDIR}/qca-ssdk"
+SSDK_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-ssdk"
+PPE_STG_INCDIR_ipq95xx_64 = "${STAGING_INCDIR}/qca-nss-ppe"
+PPE_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-nss-ppe"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -41,7 +51,7 @@ do_compile() {
 		modules
 }
 
-do_install() {
+do_install_append() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 qca-nss-dp${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-dp
@@ -49,6 +59,28 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-dp/Module.symvers
 }
 
+do_install_ipq95xx_64() {
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}/etc/config
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.conf ${D}/etc/config/qca-nss-dp.conf
+}
+
+do_install_ipq95xx() {
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}/etc/config
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.conf ${D}/etc/config/qca-nss-dp.conf
+}
+
+FILES_${PN}_ipq95xx_64 =" \
+	${bindir}/qca-nss-dp \
+	/etc/config/qca-nss-dp.conf \
+	"
+FILES_${PN}_ipq95xx =" \
+	${bindir}/qca-nss-dp \
+	/etc/config/qca-nss-dp.conf \
+	"
 FILES_${PN}-dev = "${includedir}/qca-nss-dp"
 INSANE_SKIP_${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-dp"
