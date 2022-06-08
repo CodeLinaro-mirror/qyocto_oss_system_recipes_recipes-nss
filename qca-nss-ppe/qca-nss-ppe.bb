@@ -3,7 +3,7 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
 
 inherit module
-OVERRIDES_append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:"
+OVERRIDES_append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-ppe-pppoe-mgr:qca-nss-ppe-lag-mgr:"
 
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
@@ -20,6 +20,8 @@ DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46"
 RDEPEND-{PN} = "qca-ssdk-nohnat"
 RDEPENDS-qca-nss-ppe-vlan-mgr = "qca-nss-ppe bonding"
 RDEPENDS-qca-nss-ppe-bridge-mgr = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding"
+RDEPENDS-qca-nss-ppe-pppoe-mgr  = "qca-nss-ppe pppoe bonding"
+RDEPENDS-qca-nss-ppe-lag-mgr   = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding"
 
 S = "${WORKDIR}/qca-nss-ppe/"
 SSDK_STG_INCDIR = "${STAGING_INCDIR}/qca-ssdk"
@@ -28,6 +30,8 @@ NAT46_STG_INCDIR = "${STAGING_INCDIR}/nat46"
 NSS_PPE_MODULES += ""
 NSS_PPE_MODULES_append_qca-nss-ppe-bridge-mgr += "bridge-mgr=y "
 NSS_PPE_MODULES_append_qca-nss-ppe-vlan-mgr  += "vlan-mgr=y "
+NSS_PPE_MODULES_append_qca-nss-ppe-pppoe-mgr += "pppoe-mgr=y"
+NSS_PPE_MODULES_append_qca-nss-ppe-lag-mgr += "lag-mgr=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
@@ -71,6 +75,17 @@ do_install_append_qca-nss-ppe-bridge-mgr() {
 	install -m 0644 ${S}/clients/bridge/qca-nss-ppe-bridge-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 }
 
+do_install_append_qca-nss-ppe-pppoe-mgr() {
+	install -m 0644 ${S}/clients/pppoe/qca-nss-ppe-pppoe-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+}
+
+do_install_append_qca-nss-ppe-lag-mgr() {
+	install -m 0644 ${S}/clients/lag/qca-nss-ppe-lag${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+}
+
+
 KERNEL_MODULE_AUTOLOAD_${PN} += "qca-nss-ppe"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-vlan-mgr += "qca-nss-ppe-vlan"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-bridge-mgr += "qca-nss-ppe-bridge-mgr"
+KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-pppoe-mgr += "qca-nss-ppe-pppoe-mgr"
+KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-lag-mgr += "qca-nss-ppe-lag"
