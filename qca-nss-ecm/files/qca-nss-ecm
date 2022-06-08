@@ -33,8 +33,14 @@ get_front_end_mode() {
 	sfe)
 		echo '2'
 		;;
-	hybrid)
+	ppe)
 		echo '3'
+		;;
+	nss-sfe)
+		echo '4'
+		;;
+	ppe-sfe)
+		echo '5'
 		;;
 	*)
 		echo 'syscfg front_end option is invalid'
@@ -46,6 +52,8 @@ support_bridge() {
 	[ -d /sys/kernel/debug/ecm/ecm_nss_ipv4 ] && return 0
 	#SFE support bridge acceleration
 	[ -d /sys/kernel/debug/ecm/ecm_sfe_ipv4 ] && return 0
+	#PPE support bridge acceleration
+	[ -d /sys/kernel/debug/ecm/ecm_ppe_ipv4 ] && return 0
 }
 
 load_sfe() {
@@ -65,8 +73,8 @@ load_ecm() {
 	[ -d /sys/module/ecm ] || {
 		modprobe ecm front_end_selection=$(get_front_end_mode)
 
-		if [ $(get_front_end_mode) == 3 ]; then
-			insmod ecm_ae_select
+		if [ $(get_front_end_mode) == 4 ]; then
+			modprobe ecm_ae_select
 		fi
 	}
 
