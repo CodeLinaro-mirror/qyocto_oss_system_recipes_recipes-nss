@@ -40,7 +40,7 @@ enable_rps() {
 }
 
 start() {
-	local rps_enabled="$(awk '{print $3}'  /etc/config/qca-nss-dp.conf  | cut -c 2 )"
+	local rps_enabled=$(syscfg get enable_rps)
 	if [ "$rps_enabled" -eq 1 ]; then
 		enable_rps
 		echo "rps enabled"

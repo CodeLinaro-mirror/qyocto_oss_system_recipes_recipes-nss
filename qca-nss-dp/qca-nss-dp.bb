@@ -62,24 +62,18 @@ do_install_append() {
 do_install_ipq95xx_64() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}/etc/config
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.conf ${D}/etc/config/qca-nss-dp.conf
 }
 
 do_install_ipq95xx() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}/etc/config
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.conf ${D}/etc/config/qca-nss-dp.conf
 }
 
 FILES_${PN}_ipq95xx_64 =" \
 	${bindir}/qca-nss-dp \
-	/etc/config/qca-nss-dp.conf \
 	"
 FILES_${PN}_ipq95xx =" \
 	${bindir}/qca-nss-dp \
-	/etc/config/qca-nss-dp.conf \
 	"
 FILES_${PN}-dev = "${includedir}/qca-nss-dp"
 INSANE_SKIP_${PN} = "dev"
