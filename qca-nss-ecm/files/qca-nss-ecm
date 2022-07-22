@@ -21,8 +21,7 @@
 # at boot.
 
 get_front_end_mode() {
-	config_load "ecm"
-	config_get front_end global acceleration_engine "auto"
+	front_end=$(syscfg get front_end)
 
 	case $front_end in
 	auto)
@@ -38,7 +37,7 @@ get_front_end_mode() {
 		echo '3'
 		;;
 	*)
-		echo 'uci_option_acceleration_engine is invalid'
+		echo 'syscfg front_end option is invalid'
 	esac
 }
 
@@ -64,7 +63,7 @@ unload_sfe() {
 load_ecm() {
 
 	[ -d /sys/module/ecm ] || {
-		modprobe ecm
+		modprobe ecm front_end_selection=$(get_front_end_mode)
 
 		if [ $(get_front_end_mode) == 3 ]; then
 			insmod ecm_ae_select
