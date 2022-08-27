@@ -1,6 +1,6 @@
 [Unit]
 Description=ECM init systemd service
-After=utopia.service
+After=gwprovethwan.service
 
 [Service]
 Type=simple
