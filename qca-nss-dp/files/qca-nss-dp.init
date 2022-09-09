@@ -15,7 +15,32 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
+# This file sets board specific default parameters.
+. /lib/ipq.sh
+
+
 enable_rps() {
+		board_name=$(ipq_board_name)
+		echo $board_name
+		num_core=3
+
+		#Enable 4-core RPS for all IPQ9574 boards that do not support WiFi7 radio
+		if [ "$board_name" = "qcom,ipq9574-ap-al01-c1" ]; then
+			num_core=4
+		fi
+
+		if [ "$board_name" = "qcom,ipq9574-ap-al02-c1" ]; then
+			num_core=4
+		fi
+
+		if [ "$board_name" = "qcom,ipq9574-ap-al02-c2" ]; then
+			num_core=4
+		fi
+
+		if [ "$board_name" = "qcom,ipq9574-ap-al02-c3" ]; then
+			num_core=4
+		fi
+
 		i=1
 		irq_rps=`grep edma_rxdesc /proc/interrupts | cut -d ':' -f 1 | tr -d ' '`
 		for entry in $irq_rps
@@ -37,6 +62,9 @@ enable_rps() {
 				i=1
 			fi
 		done
+
+		#Enable RPS to use only 3 cores by default
+		echo $num_core > /proc/sys/net/edma/rps_num_cores
 }
 
 start() {

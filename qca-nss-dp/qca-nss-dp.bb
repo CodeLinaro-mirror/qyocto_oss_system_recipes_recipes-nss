@@ -3,6 +3,7 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
 
 inherit module
+inherit systemd
 
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
@@ -62,19 +63,27 @@ do_install_append() {
 do_install_ipq95xx_64() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
 }
 
 do_install_ipq95xx() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
 }
 
 FILES_${PN}_ipq95xx_64 =" \
 	${bindir}/qca-nss-dp \
+	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
 FILES_${PN}_ipq95xx =" \
 	${bindir}/qca-nss-dp \
+	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
+
+SYSTEMD_SERVICE_${PN} += "qca-nss-dp.service"
 FILES_${PN}-dev = "${includedir}/qca-nss-dp"
 INSANE_SKIP_${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-dp"
