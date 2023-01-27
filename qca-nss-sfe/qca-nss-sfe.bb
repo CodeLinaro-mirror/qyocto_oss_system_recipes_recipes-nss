@@ -18,7 +18,8 @@ S = "${WORKDIR}/qca-nss-sfe"
 
 PACKAGES += "kernel-module-qca-nss-sfe"
 
-EXTRA_CFLAGS += "-I${S}/exports"
+EXTRA_CFLAGS += "-I${S}/exports \
+	 -DSFE_TSO_MAX_SEG_LIMIT_ENABLE"
 SFE_MAKE_OPTS = "SFE_SUPPORT_IPV6=y"
 
 do_configure() {
