@@ -5,7 +5,8 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5
 inherit module
 inherit systemd
 
-SOC_TYPE="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
+SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
+SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS_prepend := "${THISDIR}/:"
@@ -45,6 +46,7 @@ FRONT_END_NSS_ENABLE_append_ipq807x = "y"
 export ECM_FRONT_END_NSS_ENABLE="${FRONT_END_NSS_ENABLE}"
 
 ECM_MAKE_OPTS_append += "ECM_IPV6_ENABLE=y "
+
 ECM_MAKE_OPTS_ipq95xx_64 += "ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_FRONT_END_PPE_ENABLE=y \
 			ECM_NON_PORTED_SUPPORT_ENABLE=y \
@@ -55,6 +57,8 @@ ECM_MAKE_OPTS_ipq95xx_64 += "ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_MULTICAST_ENABLE=y \
 			ECM_INTERFACE_BOND_ENABLE=y \
 			ECM_INTERFACE_VXLAN_ENABLE=y \
+			ECM_INTERFACE_IPSEC_ENABLE=y \
+			ECM_XFRM_ENABLE=y \
 			"
 ECM_MAKE_OPTS_ipq95xx += " ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_FRONT_END_PPE_ENABLE=y \
@@ -66,6 +70,8 @@ ECM_MAKE_OPTS_ipq95xx += " ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_MULTICAST_ENABLE=y \
 			ECM_INTERFACE_BOND_ENABLE=y \
 			ECM_INTERFACE_VXLAN_ENABLE=y \
+			ECM_INTERFACE_IPSEC_ENABLE=y \
+			ECM_XFRM_ENABLE=y \
 			"
 
 EXTRA_CFLAGS_ipq95xx_64 += "\
@@ -116,6 +122,7 @@ do_install() {
 	install -d ${D}${sysconfdir}/sysctl.d
 	install -m 0644 ${WORKDIR}/files/qca-nss-ecm.sysctl ${D}${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf
 	install -d ${D}${includedir}/qca-nss-ecm
+	install -m 0644 exports/* ${D}${includedir}/qca-nss-ecm/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ecm/Module.symvers
 }
 
