@@ -29,17 +29,17 @@ do_compile() {
 }
 
 do_install() {
-	install -d ${D}${base_libdir}/firmware/qca
-	install -m 0644 ${S}/ifpp.bin ${D}${base_libdir}/firmware/qca/ifpp.bin
-	install -m 0644 ${S}/ipue.bin ${D}${base_libdir}/firmware/qca/ipue.bin
-	install -m 0644 ${S}/ofpp.bin ${D}${base_libdir}/firmware/qca/ofpp.bin
-	install -m 0644 ${S}/opue.bin ${D}${base_libdir}/firmware/qca/opue.bin
+	install -d ${D}${base_libdir}/firmware/
+	install -m 0644 ${S}/ifpp.bin ${D}${base_libdir}/firmware/ifpp.bin
+	install -m 0644 ${S}/ipue.bin ${D}${base_libdir}/firmware/ipue.bin
+	install -m 0644 ${S}/ofpp.bin ${D}${base_libdir}/firmware/ofpp.bin
+	install -m 0644 ${S}/opue.bin ${D}${base_libdir}/firmware/opue.bin
 }
 
 FILES_${PN} = " \
-	${base_libdir}/firmware/qca \
-	${base_libdir}/firmware/qca/ifpp.bin \
-	${base_libdir}/firmware/qca/ipue.bin \
-	${base_libdir}/firmware/qca/ofpp.bin \
-	${base_libdir}/firmware/qca/opue.bin \
+	${base_libdir}/firmware \
+	${base_libdir}/firmware/ifpp.bin \
+	${base_libdir}/firmware/ipue.bin \
+	${base_libdir}/firmware/ofpp.bin \
+	${base_libdir}/firmware/opue.bin \
 "
