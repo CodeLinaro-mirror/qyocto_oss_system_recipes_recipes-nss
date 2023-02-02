@@ -20,7 +20,7 @@ PACKAGES += "kernel-module-qca-nss-eip kernel-module-qca-nss-eip-crypto kernel-m
 DEPENDS_append += " virtual/kernel qca-nss-ppe"
 DEPENDS_qca-nss-eip-ipsec += " qca-nss-ecm qca-nss-ppe-vp"
 RDEPENDS-${PN} = " qca-nss-fw-eip-al"
-RDEPENDS-qca-nss-eip-crypto  = " qca-nss-eip"
+RDEPENDS-qca-nss-eip-crypto  = " qca-nss-eip authenc"
 RDEPENDS-qca-nss-eip-ipsec   = " qca-nss-eip"
 
 S = "${WORKDIR}/qca-nss-eip"

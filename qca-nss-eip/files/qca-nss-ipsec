@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2022, Qualcomm Innovation Center, Inc. All rights reserved.
+# Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -15,7 +15,6 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
-#TODO Update the script to work with RDK system
 
 NSS_IPSEC_LOG_FILE=/tmp/.nss_ipsec_log
 NSS_IPSEC_LOG_STR_ECM="ECM_Loaded"
@@ -23,7 +22,7 @@ NSS_IPSEC_OL_FILE=/tmp/qca_nss_ipsec_ol
 
 ecm_load () {
 	if [ ! -d /sys/module/ecm ]; then
-		/etc/init.d/qca-nss-ecm start
+		/usr/bin/qca-nss-ecm start
 		if [ -d /sys/module/ecm ]; then
 			echo ${NSS_IPSEC_LOG_STR_ECM} >> ${NSS_IPSEC_LOG_FILE}
 		fi
@@ -83,11 +82,11 @@ start_xfrm() {
 		xfrm6_mode_transport xfrm4_mode_transport xfrm4_mode_tunnel \
 		xfrm4_tunnel xfrm4_mode_beet esp4 esp6 ah4 ah6 af_key
 		do
-			insmod $mod 2> /dev/null
+			modprobe $mod 2> /dev/null
 		done
 
 	# Now load the xfrm plugin
-	insmod /lib/modules/${kernel_version}/qca-nss-eip-ipsec.ko
+	insmod /lib/modules/${kernel_version}/kernel/drivers/qca-nss-eip/qca-nss-eip-ipsec.ko
 	if [ "$?" -gt 0 ]; then
 		echo "Failed to load plugin. Please start ecm if not done already"
 		ecm_enable
@@ -95,7 +94,7 @@ start_xfrm() {
 		return
 	fi
 
-	/etc/init.d/ipsec start
+	/usr/sbin/ipsec start
 	sleep 2
 
 	ecm_enable
@@ -142,7 +141,7 @@ stop_xfrm() {
 		retries=`expr ${retries} - 1`
 	done
 
-	/etc/init.d/ipsec stop
+	/usr/sbin/ipsec stop
 	ecm_unload
 }
 
@@ -161,3 +160,14 @@ restart() {
 	start
 	return $?
 }
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    *)
+        echo "Unsupported operation: available operations (start stop)"
+esac
