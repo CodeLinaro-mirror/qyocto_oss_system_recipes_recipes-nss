@@ -21,6 +21,8 @@ DEPENDS_append_ipq807x-64 = "qca-nss-drv"
 DEPENDS_append_ipq807x = "qca-nss-drv"
 DEPENDS_ipq95xx_64 += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
 DEPENDS_ipq95xx += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
+DEPENDS_ipq53xx_64 += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
+DEPENDS_ipq53xx += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
 
 RDEPENDS-${PN}_append += "iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
@@ -45,23 +47,8 @@ FRONT_END_NSS_ENABLE_append_ipq807x = "y"
 
 export ECM_FRONT_END_NSS_ENABLE="${FRONT_END_NSS_ENABLE}"
 
-ECM_MAKE_OPTS_append += "ECM_IPV6_ENABLE=y "
-
-ECM_MAKE_OPTS_ipq95xx_64 += "ECM_FRONT_END_SFE_ENABLE=y \
-			ECM_FRONT_END_PPE_ENABLE=y \
-			ECM_NON_PORTED_SUPPORT_ENABLE=y \
-			ECM_INTERFACE_TUNIPIP6_ENABLE=y \
-			ECM_INTERFACE_GRE_TUN_ENABLE=y \
-			ECM_INTERFACE_GRE_TAP_ENABLE=y \
-			ECM_INTERFACE_MAP_T_ENABLE=y \
-			ECM_MULTICAST_ENABLE=y \
-			ECM_INTERFACE_BOND_ENABLE=y \
-			ECM_INTERFACE_VXLAN_ENABLE=y \
-			ECM_INTERFACE_IPSEC_ENABLE=y \
-			ECM_XFRM_ENABLE=y \
-			ECM_INTERFACE_RAWIP_ENABLE=y \
-			"
-ECM_MAKE_OPTS_ipq95xx += " ECM_FRONT_END_SFE_ENABLE=y \
+ECM_MAKE_OPTS_append += "ECM_IPV6_ENABLE=y \
+			ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_FRONT_END_PPE_ENABLE=y \
 			ECM_NON_PORTED_SUPPORT_ENABLE=y \
 			ECM_INTERFACE_TUNIPIP6_ENABLE=y \
@@ -77,13 +64,27 @@ ECM_MAKE_OPTS_ipq95xx += " ECM_FRONT_END_SFE_ENABLE=y \
 			"
 
 EXTRA_CFLAGS_ipq95xx_64 += "\
+                -I${STAGING_INCDIR}/qca-nss-sfe \
+                -I${STAGING_INCDIR}/nat46 \
+                -I${STAGING_INCDIR}/qca-mcs \
+                -I${STAGING_INCDIR}/qca-nss-ppe \
+                "
+
+EXTRA_CFLAGS_ipq95xx += "\
+                -I${STAGING_INCDIR}/qca-nss-sfe \
+                -I${STAGING_INCDIR}/nat46 \
+                -I${STAGING_INCDIR}/qca-mcs \
+                -I${STAGING_INCDIR}/qca-nss-ppe \
+                "
+
+EXTRA_CFLAGS_ipq53xx_64 += "\
 		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-mcs \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		"
 
-EXTRA_CFLAGS_ipq95xx += "\
+EXTRA_CFLAGS_ipq53xx += "\
 		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-mcs \
@@ -96,6 +97,12 @@ MODULE_EXTRA_SYMBOLS_ipq95xx_64 += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_
 
 MODULE_EXTRA_SYMBOLS_ipq95xx ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
 MODULE_EXTRA_SYMBOLS_ipq95xx += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
+
+MODULE_EXTRA_SYMBOLS_ipq53xx_64 ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
+MODULE_EXTRA_SYMBOLS_ipq53xx_64 += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
+
+MODULE_EXTRA_SYMBOLS_ipq53xx ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
+MODULE_EXTRA_SYMBOLS_ipq53xx += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
 
 do_configure() {
 	true
