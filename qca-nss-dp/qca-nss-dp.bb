@@ -33,6 +33,9 @@ SSDK_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-ssdk"
 PPE_STG_INCDIR_ipq95xx_64 = "${STAGING_INCDIR}/qca-nss-ppe"
 PPE_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-nss-ppe"
 
+NSS_PPE_MODULES_ipq95xx_64 += "dp-ppe-ds=y"
+NSS_PPE_MODULES_ipq95xx += "dp-ppe-ds=y"
+
 PACKAGES += "kernel-module-qca-nss-dp"
 
 do_configure() {
@@ -42,7 +45,7 @@ do_configure() {
 do_compile() {
 	unset LDFLAGS
 	install -m 0644 ${S}/hal/soc_ops/${SOC_TYPE}/nss_${SOC_TYPE}.h ${S}/exports/nss_dp_arch.h
-	make -C "${STAGING_KERNEL_BUILDDIR}" \
+	make -C "${STAGING_KERNEL_BUILDDIR}" ${NSS_PPE_MODULES} \
 		CROSS_COMPILE='${TARGET_PREFIX}' \
 		ARCH='${KARCH}' \
 		M="${S}" \
