@@ -3,6 +3,7 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
 
 inherit module
+inherit systemd
 
 SOC= "${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
@@ -51,6 +52,8 @@ do_compile() {
 do_install() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/${THISDIR}/files/qca-nss-ppe-ds.init ${D}${bindir}/qca-nss-ppe-ds
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/${THISDIR}/files/qca-nss-ppe-ds.service ${D}${systemd_unitdir}/system/
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ${S}/qca-nss-ppe-ds${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-ppe-ds
@@ -58,6 +61,8 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-ds/Module.symvers
 }
 
-FILES_${PN} = "${bindir}/qca-nss-ppe-ds"
+FILES_${PN} = " ${bindir}/qca-nss-ppe-ds \
+		${systemd_unitdir}/system/qca-nss-ppe-ds.service"
 
+SYSTEMD_SERVICE_${PN} += "qca-nss-ppe-ds.service"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-ds"
