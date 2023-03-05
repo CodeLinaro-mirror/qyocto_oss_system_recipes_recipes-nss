@@ -19,6 +19,8 @@ SRC_URI = "file://qca-nss-dp \
 DEPENDS_append += "virtual/kernel"
 DEPENDS_ipq95xx_64 += " qca-ssdk-nohnat qca-nss-ppe"
 DEPENDS_ipq95xx += " qca-ssdk-nohnat qca-nss-ppe"
+DEPENDS_ipq53xx_64 += " qca-ssdk-nohnat qca-nss-ppe"
+DEPENDS_ipq53xx += " qca-ssdk-nohnat qca-nss-ppe"
 
 S = "${WORKDIR}/qca-nss-dp"
 EXTRA_CFLAGS_ipq95xx_64 += "-I${STAGING_INCDIR}/qca-ssdk \
@@ -26,6 +28,12 @@ EXTRA_CFLAGS_ipq95xx_64 += "-I${STAGING_INCDIR}/qca-ssdk \
 		"
 EXTRA_CFLAGS_ipq95xx += "-I${STAGING_INCDIR}/qca-ssdk \
 		 -I${STAGING_INCDIR}/qca-nss-ppe \
+		"
+EXTRA_CFLAGS_ipq53xx_64 += "-I${STAGING_INCDIR}/qca-ssdk \
+		-I${STAGING_INCDIR}/qca-nss-ppe \
+		"
+EXTRA_CFLAGS_ipq53xx += "-I${STAGING_INCDIR}/qca-ssdk \
+		-I${STAGING_INCDIR}/qca-nss-ppe \
 		"
 
 SSDK_STG_INCDIR_ipq95xx_64 = "${STAGING_INCDIR}/qca-ssdk"
@@ -35,6 +43,11 @@ PPE_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-nss-ppe"
 
 NSS_PPE_MODULES_ipq95xx_64 += "dp-ppe-ds=y"
 NSS_PPE_MODULES_ipq95xx += "dp-ppe-ds=y"
+
+SSDK_STG_INCDIR_ipq53xx_64 = "${STAGING_INCDIR}/qca-ssdk"
+SSDK_STG_INCDIR_ipq53xx = "${STAGING_INCDIR}/qca-ssdk"
+PPE_STG_INCDIR_ipq53xx_64 = "${STAGING_INCDIR}/qca-nss-ppe"
+PPE_STG_INCDIR_ipq53xx = "${STAGING_INCDIR}/qca-nss-ppe"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -82,6 +95,29 @@ FILES_${PN}_ipq95xx_64 =" \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
 FILES_${PN}_ipq95xx =" \
+	${bindir}/qca-nss-dp \
+	${systemd_unitdir}/system/qca-nss-dp.service \
+	"
+
+do_install_ipq53xx_64() {
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+}
+
+do_install_ipq53xx() {
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+}
+
+FILES_${PN}_ipq53xx_64 =" \
+	${bindir}/qca-nss-dp \
+	${systemd_unitdir}/system/qca-nss-dp.service \
+	"
+FILES_${PN}_ipq53xx =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
