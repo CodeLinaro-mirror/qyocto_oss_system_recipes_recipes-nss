@@ -78,4 +78,4 @@ FILES_${PN} = " \
 FILES_${PN}-dev = "${includedir}/qca-nss-eip "
 
 INSANE_SKIP_${PN} = "dev"
-KERNEL_MODULE_AUTOLOAD += "qca-nss-eip qca-nss-eip-crypto qca-nss-eip-ipsec"
+KERNEL_MODULE_AUTOLOAD += "qca-nss-eip "
