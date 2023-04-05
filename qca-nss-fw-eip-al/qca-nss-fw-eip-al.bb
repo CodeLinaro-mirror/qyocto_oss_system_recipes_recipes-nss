@@ -12,7 +12,7 @@ PKG_MD5SUM = "skip"
 EIP197_VER = "3.3"
 
 PKG_SOURCE ="BIN-EIP197.AL.${EIP197_VER}"
-PKG_SOURCE_URL = "http://qcawebsrvr.qualcomm.com/NSS/NSS.FW/EIP197.AL/${EIP197_VER}"
+PKG_SOURCE_URL = "http://vm-cnsswebserv/NSS/NSS.FW/EIP197.AL/${EIP197_VER}"
 
 SRC_URI += "${PKG_SOURCE_URL}/${PKG_SOURCE}.tar.bz2 \
 	   "
