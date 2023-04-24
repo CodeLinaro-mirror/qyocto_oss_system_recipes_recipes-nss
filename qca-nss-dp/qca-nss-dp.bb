@@ -16,38 +16,22 @@ SRC_URI = "file://qca-nss-dp \
 	   file://files \
 	   "
 
-DEPENDS_append += "virtual/kernel"
-DEPENDS_ipq95xx_64 += " qca-ssdk-nohnat qca-nss-ppe"
-DEPENDS_ipq95xx += " qca-ssdk-nohnat qca-nss-ppe"
-DEPENDS_ipq53xx_64 += " qca-ssdk-nohnat qca-nss-ppe"
-DEPENDS_ipq53xx += " qca-ssdk-nohnat qca-nss-ppe"
+DEPENDS_${SOC}_append += "virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
+
+DEPENDS_ipq807x_remove = "qca-nss-ppe"
+DEPENDS_ipq807x_64_remove = "qca-nss-ppe"
 
 S = "${WORKDIR}/qca-nss-dp"
-EXTRA_CFLAGS_ipq95xx_64 += "-I${STAGING_INCDIR}/qca-ssdk \
-		 -I${STAGING_INCDIR}/qca-nss-ppe \
-		"
-EXTRA_CFLAGS_ipq95xx += "-I${STAGING_INCDIR}/qca-ssdk \
-		 -I${STAGING_INCDIR}/qca-nss-ppe \
-		"
-EXTRA_CFLAGS_ipq53xx_64 += "-I${STAGING_INCDIR}/qca-ssdk \
-		-I${STAGING_INCDIR}/qca-nss-ppe \
-		"
-EXTRA_CFLAGS_ipq53xx += "-I${STAGING_INCDIR}/qca-ssdk \
+EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		"
 
-SSDK_STG_INCDIR_ipq95xx_64 = "${STAGING_INCDIR}/qca-ssdk"
-SSDK_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-ssdk"
-PPE_STG_INCDIR_ipq95xx_64 = "${STAGING_INCDIR}/qca-nss-ppe"
-PPE_STG_INCDIR_ipq95xx = "${STAGING_INCDIR}/qca-nss-ppe"
+MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-ssdk/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
-NSS_PPE_MODULES_ipq95xx_64 += "dp-ppe-ds=y"
-NSS_PPE_MODULES_ipq95xx += "dp-ppe-ds=y"
+NSS_PPE_MODULES_${SOC} = " dp-ppe-ds=y"
 
-SSDK_STG_INCDIR_ipq53xx_64 = "${STAGING_INCDIR}/qca-ssdk"
-SSDK_STG_INCDIR_ipq53xx = "${STAGING_INCDIR}/qca-ssdk"
-PPE_STG_INCDIR_ipq53xx_64 = "${STAGING_INCDIR}/qca-nss-ppe"
-PPE_STG_INCDIR_ipq53xx = "${STAGING_INCDIR}/qca-nss-ppe"
+NSS_PPE_MODULES_ipq807x_remove += "dp-ppe-ds=y"
+NSS_PPE_MODULES_ipq807x_64_remove += "dp-ppe-ds=y"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -55,20 +39,24 @@ do_configure() {
 	true
 }
 
+do_compile_prepend() {
+	rm -f ${S}/exports/nss_dp_arch.h
+	lnr ${S}/hal/soc_ops/${SOC_TYPE}/nss_${SOC_TYPE}.h ${S}/exports/nss_dp_arch.h
+}
+
 do_compile() {
 	unset LDFLAGS
-	install -m 0644 ${S}/hal/soc_ops/${SOC_TYPE}/nss_${SOC_TYPE}.h ${S}/exports/nss_dp_arch.h
 	make -C "${STAGING_KERNEL_BUILDDIR}" ${NSS_PPE_MODULES} \
-		CROSS_COMPILE='${TARGET_PREFIX}' \
-		ARCH='${KARCH}' \
+		CROSS_COMPILE="${TARGET_PREFIX}" \
+		ARCH="${KARCH}" \
 		M="${S}" \
-		EXTRA_CFLAGS='${EXTRA_CFLAGS}' \
-		KBUILD_EXTRA_SYMBOLS="${SSDK_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers" \
-		SoC='${SOC_TYPE}' \
+		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
+		SoC="${SOC_TYPE}" \
 		modules
 }
 
-do_install_append() {
+do_install_${SOC}() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 qca-nss-dp${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-dp
@@ -76,14 +64,28 @@ do_install_append() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-dp/Module.symvers
 }
 
-do_install_ipq95xx_64() {
+do_install_ipq95xx_64_append() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
 }
 
-do_install_ipq95xx() {
+do_install_ipq95xx_append() {
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+}
+
+do_install_ipq53xx_64_append() {
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+}
+
+do_install_ipq53xx_append() {
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
 	install -d ${D}${systemd_unitdir}/system
@@ -98,21 +100,6 @@ FILES_${PN}_ipq95xx =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
-
-do_install_ipq53xx_64() {
-	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
-}
-
-do_install_ipq53xx() {
-	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
-}
-
 FILES_${PN}_ipq53xx_64 =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
@@ -122,7 +109,10 @@ FILES_${PN}_ipq53xx =" \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
 
-SYSTEMD_SERVICE_${PN} += "qca-nss-dp.service"
+SYSTEMD_SERVICE_${PN}_${SOC}_append += "qca-nss-dp.service"
 FILES_${PN}-dev = "${includedir}/qca-nss-dp"
+SYSTEMD_SERVICE_${PN}_ipq807x_remove += "qca-nss-dp.service"
+SYSTEMD_SERVICE_${PN}_ipq807x_64_remove += "qca-nss-dp.service"
+
 INSANE_SKIP_${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-dp"
