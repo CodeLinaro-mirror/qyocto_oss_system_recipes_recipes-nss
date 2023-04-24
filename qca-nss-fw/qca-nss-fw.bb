@@ -5,15 +5,15 @@ inherit module
 
 PKG_NAME = "qca-nss-fw-hk"
 PKG_BRANCH = "nss"
-PKG_VERSION = "233"
+PKG_VERSION = "128"
 PKG_RELEASE = "1"
 
-NSS_VER = "2.0"
+NSS_VER = "12.2"
 NSS_SOC = "HK"
 NSS_PROFILE = "R"
 
-PKG_SOURCE = "BIN-NSS.${NSS_SOC}.${NSS_VER}-${PKG_VERSION}-${NSS_PROFILE}"
-PKG_SOURCE_URL = "http://qcaswexport-scl.qualcomm.com/NSS.FW/${NSS_VER}/${NSS_SOC}/${PKG_VERSION}/"
+PKG_SOURCE = "BIN-NSS.FW.${NSS_VER}-${PKG_VERSION}-${NSS_SOC}.${NSS_PROFILE}"
+PKG_SOURCE_URL = "http://qcawebsrvr.qualcomm.com/NSS/NSS.FW/${NSS_VER}/${NSS_SOC}/${PKG_VERSION}/"
 
 SRC_URI += "${PKG_SOURCE_URL}${PKG_SOURCE}.tar.bz2;name=${PKG_NAME} \
 	   "
