@@ -36,9 +36,10 @@ do_compile() {
 	make -C "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
 		ARCH="${KARCH}" \
-		SUBDIRS="${S}" \
+		M="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
 		NSS_CRYPTO_DIR=${NSS_CRYPTO_DIR} \
+		KBUILD_EXTRA_SYMBOLS="${STAGING_INCDIR}/qca-nss-drv/Module.symvers" \
 		SoC="${SOC_TYPE}" \
 		modules
 }
@@ -50,6 +51,7 @@ do_install() {
 
 	install -d ${D}${includedir}/qca-nss-crypto
 	install -m 0644 ${S}/${NSS_CRYPTO_DIR}/include/* ${D}/${includedir}/qca-nss-crypto/.
+	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-crypto/Module.symvers
 }
 
 FILES_${PN}-dev = "${includedir}/qca-nss-crypto"
