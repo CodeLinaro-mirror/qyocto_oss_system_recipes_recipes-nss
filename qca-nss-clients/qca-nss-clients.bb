@@ -5,15 +5,17 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5
 inherit module
 include ${THISDIR}/files/qca-nss-clients.inc
 
-SOC_TYPE="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
+SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
+SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 
 SRC_URI = "file://qca-nss-clients \
 	  "
 
-DEPENDS = "virtual/kernel qca-nss-drv qca-ssdk-nohnat qca-nss-crypto"
+DEPENDS = "virtual/kernel qca-nss-drv qca-ssdk-nohnat"
 DEPENDS_append_qca-nss-drv-ipsecmgr += "qca-nss-cfi"
+DEPENDS_append_qca-nss-drv-ipsecmgr-xfrm += "qca-nss-ecm"
 DEPENDS_append_qca-nss-drv-dtlsmgr += "qca-nss-cfi"
 DEPENDS_append_qca-nss-drv-map-t += "nat46"
 
@@ -27,6 +29,7 @@ RDEPENDS-qca-nss-drv-map-t += "nat46"
 RDEPENDS-qca-nss-drv-tunipip6 += "iptunnel6 ip6-tunnel"
 RDEPENDS-qca-nss-drv-gre += "gre6"
 RDEPENDS-qca-nss-drv-ipsecmgr += "qca-nss-cfi-cryptoapi"
+RDEPENDS-qca-nss-drv-ipsecmgr-xfrm += "qca-nss-drv-ipsecmgr qca-nss-ecm ipsec"
 RDEPENDS-qca-nss-drv-capwapmgr += "qca-nss-drv-dtlsmgr"
 RDEPENDS-qca-nss-drv-bridge-mgr += "bonding qca-nss-drv-vlan-mgr"
 RDEPENDS-qca-nss-drv-lag-mgr += "bonding qca-nss-drv-vlan-mgr"
@@ -42,9 +45,10 @@ CLIENT_MODULES_append_qca-nss-drv-l2tpv2 += "l2tpv2=y"
 CLIENT_MODULES_append_qca-nss-drv-pptp += "pptp=y"
 CLIENT_MODULES_append_qca-nss-drv-pppoe += "pppoe=y"
 CLIENT_MODULES_append_qca-nss-drv-map-t += "map-t=y"
-CLIENT_MODULES_append_qca-nss-drv-tunipip6 += "tunipip6=m"
+CLIENT_MODULES_append_qca-nss-drv-tunipip6 += "tunipip6=y"
 CLIENT_MODULES_append_qca-nss-drv-qdisc += "qdisc=y"
 CLIENT_MODULES_append_qca-nss-drv-ipsecmgr += "ipsecmgr=y"
+CLIENT_MODULES_append_qca-nss-drv-ipsecmgr-xfrm += "ipsecmgr-xfrm=m"
 CLIENT_MODULES_append_qca-nss-drv-bridge-mgr += "bridge-mgr=y"
 CLIENT_MODULES_append_qca-nss-drv-vlan-mgr += "vlan-mgr=y"
 CLIENT_MODULES_append_qca-nss-drv-lag-mgr += "lag-mgr=y"
@@ -58,7 +62,14 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
 		-I${STAGING_INCDIR}/nat46 \
+		-I${STAGING_INCDIR}/qca-nss-ecm \
+		-I${S}/exports \
 		"
+
+MODULE_EXTRA_SYMBOLS +="${STAGING_INCDIR}/qca-nss-drv/Module.symvers ${STAGING_INCDIR}/qca-ssdk-nohnat/Module.symvers "
+MODULE_EXTRA_SYMBOLS_append_qca-nss-drv-map-t +="${STAGING_INCDIR}/nat46/Module.symvers"
+MODULE_EXTRA_SYMBOLS_append_qca-nss-drv-ipsecmgr +="${STAGING_INCDIR}/qca-nss-cfi/Module.symvers"
+MODULE_EXTRA_SYMBOLS_append_qca-nss-drv-ipsecmgr-xfrm +="${STAGING_INCDIR}/qca-nss-ecm/Module.symvers"
 
 do_configure() {
 	true
@@ -69,8 +80,9 @@ do_compile() {
 	make -C "${STAGING_KERNEL_BUILDDIR}" ${CLIENT_MODULES} \
 		CROSS_COMPILE='${TARGET_PREFIX}' \
 		ARCH='${KARCH}' \
-		SUBDIRS="${S}" \
+		M="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
 		SoC='${SOC_TYPE}' \
 		DTLSMGR_DIR="v2.0" \
 		IPSECMGR_DIR="v2.0" \
@@ -81,7 +93,7 @@ do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	rm -rf ${STAGING_INCDIR}/qca-nss-clients
 	install -d ${D}${includedir}/qca-nss-clients
-	install -m 0644 ${S}/exports/* ${D}${includedir}/qca-nss-clients/.
+	install -m 0644 ${S}/exports/* ${D}${includedir}/qca-nss-clients/
 }
 
 do_install_append_qca-nss-drv-profile() {
@@ -117,7 +129,7 @@ do_install_append_qca-nss-drv-map-t() {
 }
 
 do_install_append_qca-nss-drv-tunipip6() {
-	install -m 0644 ${S}/qca-nss-tunipip6${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
+	install -m 0644 ${S}/tunipip6/qca-nss-tunipip6${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
 do_install_append_qca-nss-drv-qdisc() {
@@ -126,6 +138,10 @@ do_install_append_qca-nss-drv-qdisc() {
 
 do_install_append_qca-nss-drv-ipsecmgr() {
 	install -m 0644 ${S}/ipsecmgr/v2.0/qca-nss-ipsecmgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
+}
+
+do_install_append_qca-nss-drv-ipsecmgr-xfrm() {
+	install -m 0644 ${S}/ipsecmgr/v2.0/plugins/xfrm/qca-nss-ipsec-xfrm${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
 do_install_append_qca-nss-drv-bridge-mgr() {
@@ -159,6 +175,7 @@ KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-map-t += "qca-nss-map-t"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-tunipip6 += "qca-nss-tunipip6"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-qdisc += "qca-nss-qdisc"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-ipsecmgr += "qca-nss-ipsecmgr"
+KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-ipsecmgr-xfrm += "qca-nss-ipsecmgr-xfrm"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-bridge-mgr += "qca-nss-bridge-mgr"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-vlan-mgr += "qca-nss-vlan"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-lag-mgr += "qca-nss-lag-mgr"
