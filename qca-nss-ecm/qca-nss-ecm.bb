@@ -15,41 +15,33 @@ SRC_URI = "file://qca-nss-ecm \
 	   file://files \
 	   "
 
-DEPENDS_append += "virtual/kernel "
+DEPENDS_append += "virtual/kernel"
+DEPENDS_${SOC}_append += "nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe"
+
 DEPENDS_append_ipq40xx = "simulated-driver"
-DEPENDS_append_ipq807x-64 = "qca-nss-drv"
-DEPENDS_append_ipq807x = "qca-nss-drv"
-DEPENDS_ipq95xx_64 += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
-DEPENDS_ipq95xx += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
-DEPENDS_ipq53xx_64 += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
-DEPENDS_ipq53xx += "qca-nss-sfe nat46 qca-mcs-lkm qca-nss-ppe "
+
+DEPENDS_ipq807x_append += "qca-nss-drv"
+DEPENDS_ipq807x_64_append += "qca-nss-drv"
+DEPENDS_ipq807x_remove = "qca-nss-sfe qca-nss-ppe"
+DEPENDS_ipq807x_64_remove = "qca-nss-sfe qca-nss-ppe"
 
 RDEPENDS-${PN}_append += "iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
 		pppoe nat46 "
+
 RDEPENDS-${PN}_append_ipq40xx = "simulated-driver"
-RDEPENDS-${PN}_append_ipq807x-64 = "qca-nss-drv"
+
+RDEPENDS-${PN}_append_ipq807x_64 = "qca-nss-drv"
 RDEPENDS-${PN}_append_ipq807x = "qca-nss-drv"
 
 S = "${WORKDIR}/qca-nss-ecm"
-SFE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-sfe"
-NAT46_STG_INCDIR = "${STAGING_INCDIR}/nat46"
-MCS_STG_INCDIR = "${STAGING_INCDIR}/qca-mcs"
-PPE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe"
 
 PACKAGES += "kernel-module-ecm"
 INSANE_SKIP_${PN} = "dev"
 
-FRONT_END_NSS_ENABLE = "n"
-FRONT_END_NSS_ENABLE_append_ipq40xx = "n"
-FRONT_END_NSS_ENABLE_append_ipq807x-64 = "y"
-FRONT_END_NSS_ENABLE_append_ipq807x = "y"
-
-export ECM_FRONT_END_NSS_ENABLE="${FRONT_END_NSS_ENABLE}"
-
-ECM_MAKE_OPTS_append += "ECM_IPV6_ENABLE=y \
-			ECM_FRONT_END_SFE_ENABLE=y \
+ECM_MAKE_OPTS_${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_PPE_ENABLE=y \
+			ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_NON_PORTED_SUPPORT_ENABLE=y \
 			ECM_INTERFACE_TUNIPIP6_ENABLE=y \
 			ECM_INTERFACE_GRE_TUN_ENABLE=y \
@@ -62,47 +54,26 @@ ECM_MAKE_OPTS_append += "ECM_IPV6_ENABLE=y \
 			ECM_XFRM_ENABLE=y \
 			ECM_INTERFACE_RAWIP_ENABLE=y \
 			"
+#ipq807x supports only NSS Front End, remove PPE and SFE Front End
+ECM_MAKE_OPTS_ipq807x_64_append += "ECM_FRONT_END_NSS_ENABLE=y"
+ECM_MAKE_OPTS_ipq807x_64_remove = "ECM_FRONT_END_PPE_ENABLE=y \
+				ECM_FRONT_END_SFE_ENABLE=y"
+ECM_MAKE_OPTS_ipq807x_append += "ECM_FRONT_END_NSS_ENABLE=y"
+ECM_MAKE_OPTS_ipq807x_remove = "ECM_FRONT_END_PPE_ENABLE=y \
+				ECM_FRONT_END_SFE_ENABLE=y"
 
-EXTRA_CFLAGS_ipq95xx_64 += "\
-                -I${STAGING_INCDIR}/qca-nss-sfe \
-                -I${STAGING_INCDIR}/nat46 \
-                -I${STAGING_INCDIR}/qca-mcs \
-                -I${STAGING_INCDIR}/qca-nss-ppe \
-                "
+ECM_MAKE_OPTS_ipq40xx_remove = "ECM_FRONT_END_PPE_ENABLE=y"
 
-EXTRA_CFLAGS_ipq95xx += "\
-                -I${STAGING_INCDIR}/qca-nss-sfe \
-                -I${STAGING_INCDIR}/nat46 \
-                -I${STAGING_INCDIR}/qca-mcs \
-                -I${STAGING_INCDIR}/qca-nss-ppe \
-                "
-
-EXTRA_CFLAGS_ipq53xx_64 += "\
-		-I${STAGING_INCDIR}/qca-nss-sfe \
-		-I${STAGING_INCDIR}/nat46 \
+EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-mcs \
+		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
+		-I${STAGING_INCDIR}/qca-nss-drv \
 		"
 
-EXTRA_CFLAGS_ipq53xx += "\
-		-I${STAGING_INCDIR}/qca-nss-sfe \
-		-I${STAGING_INCDIR}/nat46 \
-		-I${STAGING_INCDIR}/qca-mcs \
-		-I${STAGING_INCDIR}/qca-nss-ppe \
-		"
-
-#Using single qoutes to enacapsulate the path of Module.symvers
-MODULE_EXTRA_SYMBOLS_ipq95xx_64 ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
-MODULE_EXTRA_SYMBOLS_ipq95xx_64 += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
-
-MODULE_EXTRA_SYMBOLS_ipq95xx ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
-MODULE_EXTRA_SYMBOLS_ipq95xx += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
-
-MODULE_EXTRA_SYMBOLS_ipq53xx_64 ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
-MODULE_EXTRA_SYMBOLS_ipq53xx_64 += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
-
-MODULE_EXTRA_SYMBOLS_ipq53xx ="'${SFE_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
-MODULE_EXTRA_SYMBOLS_ipq53xx += " ${MCS_STG_INCDIR}/Module.symvers ${PPE_STG_INCDIR}/Module.symvers' "
+MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
+		${STAGING_INCDIR}/qca-nss-drv/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
+		${STAGING_INCDIR}/qca-mcs/Module.symvers"
 
 do_configure() {
 	true
@@ -112,11 +83,11 @@ do_compile() {
 	unset LDFLAGS
 	make -C "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
-		ARCH='${KARCH}' \
+		ARCH="${KARCH}" \
 		M="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-		KBUILD_EXTRA_SYMBOLS=${MODULE_EXTRA_SYMBOLS} \
-		SoC='${SOC_TYPE}' \
+		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
+		SoC="${SOC_TYPE}" \
 		${ECM_MAKE_OPTS} \
 		modules
 }
@@ -135,11 +106,10 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ecm/Module.symvers
 }
 
-SYSTEMD_SERVICE_${PN} += "qca-nss-ecm.service"
-
-FILES_${PN} = " \
-	${systemd_unitdir}/system/qca-nss-ecm.service \
+FILES_${PN} = "${systemd_unitdir}/system/qca-nss-ecm.service \
 	${bindir}/qca-nss-ecm \
 	${bindir}/ecm_dump.sh \
 	${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf \
 	"
+
+SYSTEMD_SERVICE_${PN} += "qca-nss-ecm.service"
