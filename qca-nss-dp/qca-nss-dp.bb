@@ -56,40 +56,18 @@ do_compile() {
 		modules
 }
 
-do_install_${SOC}() {
+do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 qca-nss-dp${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-dp
 	install -m 0644 exports/* ${D}${includedir}/qca-nss-dp/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-dp/Module.symvers
-}
-
-do_install_ipq95xx_64_append() {
-	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
-}
-
-do_install_ipq95xx_append() {
-	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
-}
-
-do_install_ipq53xx_64_append() {
-	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
-}
-
-do_install_ipq53xx_append() {
-	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-	install -d ${D}${systemd_unitdir}/system
-	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+	if [ "${SOC_TYPE}" != "ipq807x" ]; then
+		install -d ${D}${bindir}
+		install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+		install -d ${D}${systemd_unitdir}/system
+		install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+	fi
 }
 
 FILES_${PN}_ipq95xx_64 =" \
