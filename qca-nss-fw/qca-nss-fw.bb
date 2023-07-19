@@ -5,7 +5,7 @@ inherit module
 
 PKG_NAME = "qca-nss-fw-hk"
 PKG_BRANCH = "nss"
-PKG_VERSION = "128"
+PKG_VERSION = "149"
 PKG_RELEASE = "1"
 
 NSS_VER = "12.2"
