@@ -164,7 +164,6 @@ do_install_append_qca-nss-drv-gre() {
 FILES_${PN}-dev = "${includedir}/qca-nss-clients"
 INSANE_SKIP_${PN} = "dev"
 
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-profile += "qca-nss-profile-drv"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-capwapmgr += "qca-nss-capwapmgr"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-tun6rd += "qca-nss-tun6rd"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-dtlsmgr += "qca-nss-dtlsmgr"
