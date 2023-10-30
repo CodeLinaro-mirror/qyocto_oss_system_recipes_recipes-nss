@@ -12,17 +12,23 @@ FILES_${PN} += "/usr/bin"
 SRC_URI = "file://qca-nss-sfe/ \
 	   file://sfe_dump \
 	   "
-DEPENDS = "virtual/kernel"
+DEPENDS = "virtual/kernel qca-nss-ppe-rule"
 
 S = "${WORKDIR}/qca-nss-sfe"
 
 PACKAGES += "kernel-module-qca-nss-sfe"
 
 EXTRA_CFLAGS += "-I${S}/exports \
-	 -DSFE_TSO_MAX_SEG_LIMIT_ENABLE"
+		 -I${STAGING_INCDIR}/qca-nss-ppe \
+		 -DSFE_TSO_MAX_SEG_LIMIT_ENABLE"
+
+MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers"
+
 SFE_MAKE_OPTS = "SFE_SUPPORT_IPV6=y \
 		 SFE_PROCESS_LOCAL_OUT=y \
-		 SFE_PPE_QOS_SUPPORTED=y"
+		 SFE_PPE_QOS_SUPPORTED=y \
+		 SFE_PROCESS_LOCAL_OUT=y \
+		 SFE_RFS_SUPPORTED=y"
 
 do_configure() {
 	true
@@ -35,6 +41,7 @@ do_compile() {
 		ARCH="${KARCH}" \
 		M="${S}" \
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
 		${SFE_MAKE_OPTS} \
 		modules
 }

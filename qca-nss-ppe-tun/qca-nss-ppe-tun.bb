@@ -14,12 +14,16 @@ SRC_URI = "file://qca-nss-ppe"
 
 PACKAGES += "kernel-module-qca-nss-ppe-tun"
 
-DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-ppe-vp"
+DEPENDS = "virtual/kernel qca-nss-ppe-vp qca-nss-ppe-rule"
 
 S = "${WORKDIR}/qca-nss-ppe/drv/ppe_tun/"
 PPE_VP_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-vp"
 
-MODULE_EXTRA_SYMBOLS = "${PPE_VP_STG_INCDIR}/Module.symvers"
+EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-nss-ppe \
+		 -DPPE_TUN_RULE_MODULE_ENABLED"
+
+MODULE_EXTRA_SYMBOLS = "${PPE_VP_STG_INCDIR}/Module.symvers \
+			${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers"
 
 do_configure() {
 	true
