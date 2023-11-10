@@ -16,14 +16,14 @@ SRC_URI = "file://qca-nss-ecm \
 	   "
 
 DEPENDS_append += "virtual/kernel"
-DEPENDS_${SOC}_append += "nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp"
+DEPENDS_${SOC}_append += "nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
 DEPENDS_append_ipq40xx = "simulated-driver"
 
 DEPENDS_ipq807x_append += "qca-nss-drv"
 DEPENDS_ipq807x_64_append += "qca-nss-drv"
-DEPENDS_ipq807x_remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp"
-DEPENDS_ipq807x_64_remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp"
+DEPENDS_ipq807x_remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS_ipq807x_64_remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 DEPENDS_ipq53xx_remove = "qca-emesh-sp"
 DEPENDS_ipq53xx_64_remove = "qca-emesh-sp"
 
@@ -80,6 +80,26 @@ ECM_MAKE_OPTS_ipq807x_remove = "ECM_FRONT_END_PPE_ENABLE=y \
 				ECM_FRONT_END_PPE_QOS_ENABLE=y \
 				"
 ECM_MAKE_OPTS_ipq40xx_remove = "ECM_FRONT_END_PPE_ENABLE=y"
+ECM_MAKE_OPTS_ipq95xx_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
+				 CONFIG_QCA_NSS_ECM_OVS=y \
+				 EXAMPLES_BUILD_OVS=y \
+				 "
+ECM_MAKE_OPTS_ipq95xx_64_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
+				    CONFIG_QCA_NSS_ECM_OVS=y \
+				    EXAMPLES_BUILD_OVS=y \
+				    "
+ECM_MAKE_OPTS_ipq53xx_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
+				 CONFIG_QCA_NSS_ECM_OVS=y \
+				 EXAMPLES_BUILD_OVS=y \
+				 "
+ECM_MAKE_OPTS_ipq53xx_64_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
+				    CONFIG_QCA_NSS_ECM_OVS=y \
+				    EXAMPLES_BUILD_OVS=y \
+				    "
 ECM_MAKE_OPTS_ipq53xx_64_remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
@@ -95,11 +115,13 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		-I${STAGING_INCDIR}/qca-nss-drv \
 		-I${STAGING_INCDIR}/emesh-sp \
+		-I${STAGING_INCDIR}/qca-ovsmgr \
 		"
 
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-drv/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
-		${STAGING_INCDIR}/qca-mcs/Module.symvers ${STAGING_INCDIR}/emesh-sp/Module.symvers"
+		${STAGING_INCDIR}/qca-mcs/Module.symvers ${STAGING_INCDIR}/emesh-sp/Module.symvers \
+		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers"
 
 do_configure() {
 	true
@@ -120,6 +142,8 @@ do_compile() {
 do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ecm${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	[ -f examples/ecm_ovs${KERNEL_OBJECT_SUFFIX} ] && \
+		install -m 0644 examples/ecm_ovs${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}/usr/bin
 	install -m 0755 ${WORKDIR}/files/ecm_dump.sh ${D}${bindir}/ecm_dump.sh
 	install -m 0755 ${WORKDIR}/files/qca-nss-ecm ${D}${bindir}/qca-nss-ecm
