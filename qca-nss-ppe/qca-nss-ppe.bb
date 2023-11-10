@@ -16,19 +16,21 @@ SRC_URI = "file://qca-nss-ppe/ \
 
 PACKAGES += "kernel-module-qca-nss-ppe "
 
-DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46"
+DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46 qca-ovsmgr"
 RDEPEND-{PN} = "qca-ssdk-nohnat"
 RDEPENDS-qca-nss-ppe-vlan-mgr = "qca-nss-ppe bonding"
-RDEPENDS-qca-nss-ppe-bridge-mgr = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding"
+RDEPENDS-qca-nss-ppe-bridge-mgr = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding qca-ovsmgr"
 RDEPENDS-qca-nss-ppe-pppoe-mgr  = "qca-nss-ppe pppoe bonding"
 RDEPENDS-qca-nss-ppe-lag-mgr   = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding"
 
-S = "${WORKDIR}/qca-nss-ppe/"
+S = "${WORKDIR}/qca-nss-ppe"
 SSDK_STG_INCDIR = "${STAGING_INCDIR}/qca-ssdk"
 NAT46_STG_INCDIR = "${STAGING_INCDIR}/nat46"
 
 NSS_PPE_MODULES += ""
-NSS_PPE_MODULES_append_qca-nss-ppe-bridge-mgr += "bridge-mgr=y "
+NSS_PPE_MODULES_append_qca-nss-ppe-bridge-mgr += "bridge-mgr=y \
+						  NSS_PPE_BRIDGE_MGR_OVS_ENABLE=y \
+						  "
 NSS_PPE_MODULES_append_qca-nss-ppe-vlan-mgr  += "vlan-mgr=y "
 NSS_PPE_MODULES_append_qca-nss-ppe-pppoe-mgr += "pppoe-mgr=y"
 NSS_PPE_MODULES_append_qca-nss-ppe-lag-mgr += "lag-mgr=y"
@@ -37,10 +39,12 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-ssdk/init \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
+		-I${STAGING_INCDIR}/qca-ovsmgr \
 		-I${STAGING_INCDIR}/ \
 		"
 
-MODULE_EXTRA_SYMBOLS ="${SSDK_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers "
+MODULE_EXTRA_SYMBOLS ="${SSDK_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers \
+		       ${STAGING_INCDIR}/qca-ovsmgr/Module.symvers"
 
 do_configure() {
 	true
