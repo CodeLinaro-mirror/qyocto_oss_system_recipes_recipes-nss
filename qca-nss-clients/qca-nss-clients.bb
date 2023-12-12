@@ -14,10 +14,10 @@ SRC_URI = "file://qca-nss-clients \
 	  "
 
 DEPENDS = "virtual/kernel qca-nss-drv qca-ssdk-nohnat"
-DEPENDS_append_qca-nss-drv-ipsecmgr += "qca-nss-cfi"
-DEPENDS_append_qca-nss-drv-ipsecmgr-xfrm += "qca-nss-ecm"
-DEPENDS_append_qca-nss-drv-dtlsmgr += "qca-nss-cfi"
-DEPENDS_append_qca-nss-drv-map-t += "nat46"
+DEPENDS:append_qca-nss-drv-ipsecmgr += "qca-nss-cfi"
+DEPENDS:append_qca-nss-drv-ipsecmgr-xfrm += "qca-nss-ecm"
+DEPENDS:append_qca-nss-drv-dtlsmgr += "qca-nss-cfi"
+DEPENDS:append_qca-nss-drv-map-t += "nat46"
 
 RDEPENDS-${PN} += "qca-nss-drv"
 RDEPENDS-qca-nss-drv-tun6rd += "sit"
@@ -37,22 +37,22 @@ RDEPENDS-qca-nss-drv-lag-mgr += "bonding qca-nss-drv-vlan-mgr"
 S = "${WORKDIR}/qca-nss-clients"
 
 CLIENT_MODULES = ""
-CLIENT_MODULES_append_qca-nss-drv-profile += "profile=y"
-CLIENT_MODULES_append_qca-nss-drv-capwapmgr += "capwapmgr=y"
-CLIENT_MODULES_append_qca-nss-drv-tun6rd += "tun6rd=m"
-CLIENT_MODULES_append_qca-nss-drv-dtlsmgr += "dtlsmgr=y"
-CLIENT_MODULES_append_qca-nss-drv-l2tpv2 += "l2tpv2=y"
-CLIENT_MODULES_append_qca-nss-drv-pptp += "pptp=y"
-CLIENT_MODULES_append_qca-nss-drv-pppoe += "pppoe=y"
-CLIENT_MODULES_append_qca-nss-drv-map-t += "map-t=y"
-CLIENT_MODULES_append_qca-nss-drv-tunipip6 += "tunipip6=y"
-CLIENT_MODULES_append_qca-nss-drv-qdisc += "qdisc=y"
-CLIENT_MODULES_append_qca-nss-drv-ipsecmgr += "ipsecmgr=y"
-CLIENT_MODULES_append_qca-nss-drv-ipsecmgr-xfrm += "ipsecmgr-xfrm=m"
-CLIENT_MODULES_append_qca-nss-drv-bridge-mgr += "bridge-mgr=y"
-CLIENT_MODULES_append_qca-nss-drv-vlan-mgr += "vlan-mgr=y"
-CLIENT_MODULES_append_qca-nss-drv-lag-mgr += "lag-mgr=y"
-CLIENT_MODULES_append_qca-nss-drv-gre += "gre=y"
+CLIENT_MODULES:append_qca-nss-drv-profile += "profile=y"
+CLIENT_MODULES:append_qca-nss-drv-capwapmgr += "capwapmgr=y"
+CLIENT_MODULES:append_qca-nss-drv-tun6rd += "tun6rd=m"
+CLIENT_MODULES:append_qca-nss-drv-dtlsmgr += "dtlsmgr=y"
+CLIENT_MODULES:append_qca-nss-drv-l2tpv2 += "l2tpv2=y"
+CLIENT_MODULES:append_qca-nss-drv-pptp += "pptp=y"
+CLIENT_MODULES:append_qca-nss-drv-pppoe += "pppoe=y"
+CLIENT_MODULES:append_qca-nss-drv-map-t += "map-t=y"
+CLIENT_MODULES:append_qca-nss-drv-tunipip6 += "tunipip6=y"
+CLIENT_MODULES:append_qca-nss-drv-qdisc += "qdisc=y"
+CLIENT_MODULES:append_qca-nss-drv-ipsecmgr += "ipsecmgr=y"
+CLIENT_MODULES:append_qca-nss-drv-ipsecmgr-xfrm += "ipsecmgr-xfrm=m"
+CLIENT_MODULES:append_qca-nss-drv-bridge-mgr += "bridge-mgr=y"
+CLIENT_MODULES:append_qca-nss-drv-vlan-mgr += "vlan-mgr=y"
+CLIENT_MODULES:append_qca-nss-drv-lag-mgr += "lag-mgr=y"
+CLIENT_MODULES:append_qca-nss-drv-gre += "gre=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-nss-drv \
@@ -67,9 +67,9 @@ EXTRA_CFLAGS += " \
 		"
 
 MODULE_EXTRA_SYMBOLS +="${STAGING_INCDIR}/qca-nss-drv/Module.symvers ${STAGING_INCDIR}/qca-ssdk-nohnat/Module.symvers "
-MODULE_EXTRA_SYMBOLS_append_qca-nss-drv-map-t +="${STAGING_INCDIR}/nat46/Module.symvers"
-MODULE_EXTRA_SYMBOLS_append_qca-nss-drv-ipsecmgr +="${STAGING_INCDIR}/qca-nss-cfi/Module.symvers"
-MODULE_EXTRA_SYMBOLS_append_qca-nss-drv-ipsecmgr-xfrm +="${STAGING_INCDIR}/qca-nss-ecm/Module.symvers"
+MODULE_EXTRA_SYMBOLS:append_qca-nss-drv-map-t +="${STAGING_INCDIR}/nat46/Module.symvers"
+MODULE_EXTRA_SYMBOLS:append_qca-nss-drv-ipsecmgr +="${STAGING_INCDIR}/qca-nss-cfi/Module.symvers"
+MODULE_EXTRA_SYMBOLS:append_qca-nss-drv-ipsecmgr-xfrm +="${STAGING_INCDIR}/qca-nss-ecm/Module.symvers"
 
 do_configure() {
 	true
@@ -96,88 +96,88 @@ do_install() {
 	install -m 0644 ${S}/exports/* ${D}${includedir}/qca-nss-clients/
 }
 
-do_install_append_qca-nss-drv-profile() {
+do_install:append_qca-nss-drv-profile() {
 	install -m 0644 ${S}/profiler/qca-nss-profile-drv${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-capwapmgr() {
+do_install:append_qca-nss-drv-capwapmgr() {
 	install -m 0644 ${S}/capwapmgr/qca-nss-capwapmgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-tun6rd() {
+do_install:append_qca-nss-drv-tun6rd() {
 	install -m 0644 ${S}/qca-nss-tun6rd${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-dtlsmgr() {
+do_install:append_qca-nss-drv-dtlsmgr() {
 	install -m 0644 ${S}/dtls/v2.0/qca-nss-dtlsmgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-l2tpv2() {
+do_install:append_qca-nss-drv-l2tpv2() {
 	install -m 0644 ${S}/l2tp/l2tpv2/qca-nss-l2tpv2${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-pptp() {
+do_install:append_qca-nss-drv-pptp() {
 	install -m 0644 ${S}/pptp/qca-nss-pptp${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-pppoe() {
+do_install:append_qca-nss-drv-pppoe() {
 	install -m 0644 ${S}/pppoe/qca-nss-pppoe${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-map-t() {
+do_install:append_qca-nss-drv-map-t() {
 	install -m 0644 ${S}/map/map-t/qca-nss-map-t${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-tunipip6() {
+do_install:append_qca-nss-drv-tunipip6() {
 	install -m 0644 ${S}/tunipip6/qca-nss-tunipip6${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-qdisc() {
+do_install:append_qca-nss-drv-qdisc() {
 	install -m 0644 ${S}/nss_qdisc/qca-nss-qdisc${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-ipsecmgr() {
+do_install:append_qca-nss-drv-ipsecmgr() {
 	install -m 0644 ${S}/ipsecmgr/v2.0/qca-nss-ipsecmgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-ipsecmgr-xfrm() {
+do_install:append_qca-nss-drv-ipsecmgr-xfrm() {
 	install -m 0644 ${S}/ipsecmgr/v2.0/plugins/xfrm/qca-nss-ipsec-xfrm${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-bridge-mgr() {
+do_install:append_qca-nss-drv-bridge-mgr() {
 	install -m 0644 ${S}/bridge/qca-nss-bridge-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-vlan-mgr() {
+do_install:append_qca-nss-drv-vlan-mgr() {
 	install -m 0644 ${S}/vlan/qca-nss-vlan${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-lag-mgr() {
+do_install:append_qca-nss-drv-lag-mgr() {
 	install -m 0644 ${S}/lag/qca-nss-lag-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-do_install_append_qca-nss-drv-gre() {
+do_install:append_qca-nss-drv-gre() {
 	install -m 0644 ${S}/gre/qca-nss-gre${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 	install -m 0644 ${S}/gre/test/qca-nss-gre-test${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}/.
 }
 
-FILES_${PN}-dev = "${includedir}/qca-nss-clients"
-INSANE_SKIP_${PN} = "dev"
+FILES:{PN}-dev = "${includedir}/qca-nss-clients"
+INSANE_SKIP:${PN} = "dev"
 
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-capwapmgr += "qca-nss-capwapmgr"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-tun6rd += "qca-nss-tun6rd"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-dtlsmgr += "qca-nss-dtlsmgr"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-l2tpv2 += "qca-nss-l2tpv2"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-pptp += "qca-nss-pptp"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-pppoe += "qca-nss-pppoe"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-map-t += "qca-nss-map-t"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-tunipip6 += "qca-nss-tunipip6"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-qdisc += "qca-nss-qdisc"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-ipsecmgr += "qca-nss-ipsecmgr"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-ipsecmgr-xfrm += "qca-nss-ipsecmgr-xfrm"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-bridge-mgr += "qca-nss-bridge-mgr"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-vlan-mgr += "qca-nss-vlan"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-lag-mgr += "qca-nss-lag-mgr"
-KERNEL_MODULE_AUTOLOAD_append_qca-nss-drv-gre += "qca-nss-gre \
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-capwapmgr += "qca-nss-capwapmgr"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-tun6rd += "qca-nss-tun6rd"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-dtlsmgr += "qca-nss-dtlsmgr"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-l2tpv2 += "qca-nss-l2tpv2"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-pptp += "qca-nss-pptp"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-pppoe += "qca-nss-pppoe"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-map-t += "qca-nss-map-t"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-tunipip6 += "qca-nss-tunipip6"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-qdisc += "qca-nss-qdisc"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-ipsecmgr += "qca-nss-ipsecmgr"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-ipsecmgr-xfrm += "qca-nss-ipsecmgr-xfrm"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-bridge-mgr += "qca-nss-bridge-mgr"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-vlan-mgr += "qca-nss-vlan"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-lag-mgr += "qca-nss-lag-mgr"
+KERNEL_MODULE_AUTOLOAD:append_qca-nss-drv-gre += "qca-nss-gre \
 						qca-nss-gre-test \
 						"

@@ -6,9 +6,9 @@ LIC_FILES_CHKSUM = "file://Makefile;md5=9b105acd8d4380fb8f780118eb7c1e4e"
 inherit module
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-FILES_${PN}="/etc/init.d"
+FILES:${PN}="/etc/init.d"
 
 SRC_URI = "file://qca-rfs \
 	   file://qrfs.init \

@@ -3,13 +3,13 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
 
 inherit module
-OVERRIDES_append = ":qca-nss-eip-crypto:qca-nss-eip-ipsec:"
+OVERRIDES:append = ":qca-nss-eip-crypto:qca-nss-eip-ipsec:"
 
 SOC = "${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-eip \
 	file://files \
@@ -17,9 +17,9 @@ SRC_URI = "file://qca-nss-eip \
 
 PACKAGES += "kernel-module-qca-nss-eip kernel-module-qca-nss-eip-crypto kernel-module-qca-nss-eip-ipsec"
 
-DEPENDS_append += " virtual/kernel qca-nss-ppe"
-DEPENDS_qca-nss-eip-ipsec += " qca-nss-ecm qca-nss-ppe-vp"
-RDEPENDS-${PN} = " qca-nss-fw-eip-al"
+DEPENDS:append += " virtual/kernel qca-nss-ppe"
+DEPENDS:qca-nss-eip-ipsec += " qca-nss-ecm qca-nss-ppe-vp"
+RDEPENDS:${PN} = " qca-nss-fw-eip-al"
 RDEPENDS-qca-nss-eip-crypto  = " qca-nss-eip authenc"
 RDEPENDS-qca-nss-eip-ipsec   = " qca-nss-eip"
 
@@ -71,11 +71,11 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-eip/Module.symvers
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
 		${bindir}/eip_dump.sh \
 		${bindir}/qca-nss-ipsec \
 		"
-FILES_${PN}-dev = "${includedir}/qca-nss-eip "
+FILES:${PN}-dev = "${includedir}/qca-nss-eip "
 
-INSANE_SKIP_${PN} = "dev"
+INSANE_SKIP:${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-eip "

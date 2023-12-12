@@ -1,2 +1,2 @@
 #OVERRIDES = "qca-nss-drv-profile:qca-nss-drv-capwapmgr:qca-nss-drv-tun6rd:qca-nss-drv-dtlsmgr:qca-nss-drv-l2tpv2:qca-nss-drv-pptp:qca-nss-drv-pppoe:qca-nss-drv-map-t:qca-nss-drv-tunipip6:qca-nss-drv-qdisc:qca-nss-drv-ipsecmgr:qca-nss-drv-bridge-mgr:qca-nss-drv-vlan-mgr:qca-nss-drv-lag-mgr:qca-nss-drv-gre"
-OVERRIDES_append = ":qca-nss-drv-profile:qca-nss-drv-pppoe:qca-nss-drv-map-t:qca-nss-drv-tunipip6:qca-nss-drv-bridge-mgr:qca-nss-drv-vlan-mgr:qca-nss-drv-gre:qca-nss-drv-ipsecmgr:qca-nss-drv-ipsecmgr-xfrm"
+OVERRIDES:append = ":qca-nss-drv-profile:qca-nss-drv-pppoe:qca-nss-drv-map-t:qca-nss-drv-tunipip6:qca-nss-drv-bridge-mgr:qca-nss-drv-vlan-mgr:qca-nss-drv-gre:qca-nss-drv-ipsecmgr:qca-nss-drv-ipsecmgr-xfrm"

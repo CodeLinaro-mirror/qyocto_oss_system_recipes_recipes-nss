@@ -8,7 +8,7 @@ inherit module
 inherit systemd
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-edma \
 	   file://files \
@@ -17,7 +17,7 @@ DEPENDS = "virtual/kernel"
 S = "${WORKDIR}/qca-edma"
 
 PACKAGES += "kernel-module-essedma"
-INSANE_SKIP_${PN} = "dev"
+INSANE_SKIP:${PN} = "dev"
 
 EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		SYS_PATH='${STAGING_KERNEL_BUILDDIR}' \
@@ -48,9 +48,9 @@ do_install() {
 	install -m 0644 ${WORKDIR}/files/qca-edma.service ${D}${systemd_unitdir}/system/qca-edma.service
 }
 
-SYSTEMD_SERVICE_${PN} += "qca-edma.service"
+SYSTEMD_SERVICE:${PN} += "qca-edma.service"
 
-FILES_${PN} = " \
+FILES:${PN} = " \
 	${systemd_unitdir}/system/qca-edma.service \
 	${bindir}/qca-edma \
 "

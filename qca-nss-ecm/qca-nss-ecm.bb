@@ -9,39 +9,39 @@ SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-ecm \
 	   file://files \
 	   "
 
-DEPENDS_append += "virtual/kernel"
-DEPENDS_${SOC}_append += "nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS:append += "virtual/kernel"
+DEPENDS:${SOC}:append += "nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
-DEPENDS_append_ipq40xx = "simulated-driver"
+DEPENDS:append_ipq40xx = "simulated-driver"
 
-DEPENDS_ipq807x_append += "qca-nss-drv"
-DEPENDS_ipq807x_64_append += "qca-nss-drv"
-DEPENDS_ipq807x_remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
-DEPENDS_ipq807x_64_remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
-DEPENDS_ipq53xx_remove = "qca-emesh-sp"
-DEPENDS_ipq53xx_64_remove = "qca-emesh-sp"
+DEPENDS:ipq807x:append += "qca-nss-drv"
+DEPENDS:ipq807x_64:append += "qca-nss-drv"
+DEPENDS:ipq807x:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS:ipq807x_64:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS_ipq53xx:remove = "qca-emesh-sp"
+DEPENDS:ipq53xx_64:remove = "qca-emesh-sp"
 
-RDEPENDS-${PN}_append += "iptables-mod-extra ipt-conntrack \
+RDEPENDS-${PN}:append += "iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
 		pppoe nat46 "
 
-RDEPENDS-${PN}_append_ipq40xx = "simulated-driver"
+RDEPENDS-${PN}:append_ipq40xx = "simulated-driver"
 
-RDEPENDS-${PN}_append_ipq807x_64 = "qca-nss-drv"
-RDEPENDS-${PN}_append_ipq807x = "qca-nss-drv"
-RDEPENDS-${PN}_append_ipq95xx_64 = "qca-emesh-sp"
-RDEPENDS-${PN}_append_ipq95xx = "qca-emesh-sp"
+RDEPENDS-${PN}:append_ipq807x_64 = "qca-nss-drv"
+RDEPENDS-${PN}:append_ipq807x = "qca-nss-drv"
+RDEPENDS-${PN}:append_ipq95xx_64 = "qca-emesh-sp"
+RDEPENDS-${PN}:append_ipq95xx = "qca-emesh-sp"
 
 S = "${WORKDIR}/qca-nss-ecm"
 
 PACKAGES += "kernel-module-ecm"
-INSANE_SKIP_${PN} = "dev"
+INSANE_SKIP:${PN} = "dev"
 
 ECM_MAKE_OPTS_${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_PPE_ENABLE=y \
@@ -63,48 +63,48 @@ ECM_MAKE_OPTS_${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_PPE_QOS_ENABLE=y \
 			"
 #ipq807x supports only NSS Front End, remove PPE and SFE Front End
-ECM_MAKE_OPTS_ipq807x_64_append += "ECM_FRONT_END_NSS_ENABLE=y"
-ECM_MAKE_OPTS_ipq807x_64_remove = "ECM_FRONT_END_PPE_ENABLE=y \
+ECM_MAKE_OPTS_ipq807x_64:append += "ECM_FRONT_END_NSS_ENABLE=y"
+ECM_MAKE_OPTS_ipq807x_64:remove = "ECM_FRONT_END_PPE_ENABLE=y \
 				ECM_FRONT_END_SFE_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				ECM_FRONT_END_PPE_QOS_ENABLE=y \
 				"
-ECM_MAKE_OPTS_ipq807x_append += "ECM_FRONT_END_NSS_ENABLE=y"
-ECM_MAKE_OPTS_ipq807x_remove = "ECM_FRONT_END_PPE_ENABLE=y \
+ECM_MAKE_OPTS_ipq807x:append += "ECM_FRONT_END_NSS_ENABLE=y"
+ECM_MAKE_OPTS_ipq807x:remove = "ECM_FRONT_END_PPE_ENABLE=y \
 				ECM_FRONT_END_SFE_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				ECM_FRONT_END_PPE_QOS_ENABLE=y \
 				"
-ECM_MAKE_OPTS_ipq40xx_remove = "ECM_FRONT_END_PPE_ENABLE=y"
-ECM_MAKE_OPTS_ipq95xx_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS_ipq40xx:remove = "ECM_FRONT_END_PPE_ENABLE=y"
+ECM_MAKE_OPTS_ipq95xx:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
 				 EXAMPLES_BUILD_OVS=y \
 				 "
-ECM_MAKE_OPTS_ipq95xx_64_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS_ipq95xx_64:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
 				    "
-ECM_MAKE_OPTS_ipq53xx_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS_ipq53xx:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
 				 EXAMPLES_BUILD_OVS=y \
 				 "
-ECM_MAKE_OPTS_ipq53xx_64_append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS_ipq53xx_64:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
 				    "
-ECM_MAKE_OPTS_ipq53xx_64_remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
+ECM_MAKE_OPTS_ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				"
-ECM_MAKE_OPTS_ipq53xx_remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
+ECM_MAKE_OPTS_ipq53xx:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				"
@@ -156,10 +156,10 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ecm/Module.symvers
 }
 
-FILES_${PN} = "${systemd_unitdir}/system/qca-nss-ecm.service \
+FILES:${PN} = "${systemd_unitdir}/system/qca-nss-ecm.service \
 	${bindir}/qca-nss-ecm \
 	${bindir}/ecm_dump.sh \
 	${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf \
 	"
 
-SYSTEMD_SERVICE_${PN} += "qca-nss-ecm.service"
+SYSTEMD_SERVICE:${PN} += "qca-nss-ecm.service"

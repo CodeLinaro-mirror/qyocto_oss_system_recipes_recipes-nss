@@ -9,19 +9,19 @@ SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-drv \
 	   file://files \
 	   "
 
 DEPENDS = "virtual/kernel qca-nss-dp"
-RDEPENDS_${PN} += "qca-nss-dp"
+RDEPENDS:${PN} += "qca-nss-dp"
 
 S = "${WORKDIR}/qca-nss-drv"
 
 PACKAGES += "kernel-module-qca-nss-drv"
-INSANE_SKIP_${PN} = "dev"
+INSANE_SKIP:${PN} = "dev"
 
 NSS_CLIENTS_DIR = "${TOPDIR}/../opensource/qca-nss-clients/exports"
 
@@ -29,7 +29,7 @@ do_configure() {
 	true
 }
 
-do_compile_prepend() {
+do_compile:prepend() {
 	rm -f ${S}/exports/nss_arch.h
 	lnr ${S}/exports/arch/nss_${SOC_TYPE}.h ${S}/exports/nss_arch.h
 }
@@ -69,9 +69,9 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-drv/Module.symvers
 }
 
-SYSTEMD_SERVICE_${PN} += "qca-nss-drv.service qca-nss-drv-hotplug.path qca-nss-drv-hotplug.service"
+SYSTEMD_SERVICE:${PN} += "qca-nss-drv.service qca-nss-drv-hotplug.path qca-nss-drv-hotplug.service"
 
-FILES_${PN} = " ${bindir}/qca-nss-drv \
+FILES:${PN} = " ${bindir}/qca-nss-drv \
 	${includedir}/qca-nss-clients/* \
 	${includedir}/qca-nss-drv/* \
 	${bindir}/qca-nss-drv-hotplug \
@@ -81,7 +81,7 @@ FILES_${PN} = " ${bindir}/qca-nss-drv \
 	${sysconfdir}/sysctl.d/99-qca-nss-drv.conf \
 	"
 
-FILES_${PN}-dev = "{includedir}/*"
-INSANE_SKIP_${PN} = "dev"
+FILES:${PN}-dev = "{includedir}/*"
+INSANE_SKIP:${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-drv"
-module_autoload_${PN} = "qca-nss-dp qca-nss-drv"
+module_autoload:${PN} = "qca-nss-dp qca-nss-drv"

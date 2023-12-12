@@ -9,7 +9,7 @@ SOC= "${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH = "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI = "file://qca-nss-ppe/ \
 	   file://${THISDIR}/files \
@@ -61,8 +61,8 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-ds/Module.symvers
 }
 
-FILES_${PN} = " ${bindir}/qca-nss-ppe-ds \
+FILES:${PN} = " ${bindir}/qca-nss-ppe-ds \
 		${systemd_unitdir}/system/qca-nss-ppe-ds.service"
 
-SYSTEMD_SERVICE_${PN} += "qca-nss-ppe-ds.service"
+SYSTEMD_SERVICE:${PN} += "qca-nss-ppe-ds.service"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-ds"

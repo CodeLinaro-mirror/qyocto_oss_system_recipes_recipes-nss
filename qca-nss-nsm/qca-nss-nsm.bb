@@ -6,12 +6,12 @@ inherit module
 inherit systemd
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-nsm \
 	  "
 
-DEPENDS_append += "virtual/kernel qca-nss-sfe qca-nss-ppe qca-nss-dp"
+DEPENDS:append += "virtual/kernel qca-nss-sfe qca-nss-ppe qca-nss-dp"
 
 S = "${WORKDIR}/qca-nss-nsm"
 SFE_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-sfe"

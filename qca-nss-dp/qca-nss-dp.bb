@@ -10,16 +10,16 @@ SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-dp \
 	   file://files \
 	   "
 
-DEPENDS_${SOC}_append += "virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
+DEPENDS:${SOC}:append += "virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
 
-DEPENDS_ipq807x_remove = "qca-nss-ppe"
-DEPENDS_ipq807x_64_remove = "qca-nss-ppe"
+DEPENDS:ipq807x:remove = "qca-nss-ppe"
+DEPENDS:ipq807x_64:remove = "qca-nss-ppe"
 
 S = "${WORKDIR}/qca-nss-dp"
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
@@ -30,8 +30,8 @@ MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-ssdk/Module.symvers ${STAGING_INCD
 
 NSS_PPE_MODULES_${SOC} = " dp-ppe-ds=y"
 
-NSS_PPE_MODULES_ipq807x_remove += "dp-ppe-ds=y"
-NSS_PPE_MODULES_ipq807x_64_remove += "dp-ppe-ds=y"
+NSS_PPE_MODULES_ipq807x:remove += "dp-ppe-ds=y"
+NSS_PPE_MODULES_ipq807x_64:remove += "dp-ppe-ds=y"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -39,7 +39,7 @@ do_configure() {
 	true
 }
 
-do_compile_prepend() {
+do_compile:prepend() {
 	rm -f ${S}/exports/nss_dp_arch.h
 	lnr ${S}/hal/soc_ops/${SOC_TYPE}/nss_${SOC_TYPE}.h ${S}/exports/nss_dp_arch.h
 }
@@ -70,27 +70,27 @@ do_install() {
 	fi
 }
 
-FILES_${PN}_ipq95xx_64 =" \
+FILES:${PN}_ipq95xx_64 =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
-FILES_${PN}_ipq95xx =" \
+FILES:${PN}_ipq95xx =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
-FILES_${PN}_ipq53xx_64 =" \
+FILES:${PN}_ipq53xx_64 =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
-FILES_${PN}_ipq53xx =" \
+FILES:${PN}_ipq53xx =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
 
-SYSTEMD_SERVICE_${PN}_${SOC}_append += "qca-nss-dp.service"
+SYSTEMD_SERVICE:${PN}_${SOC}:append += "qca-nss-dp.service"
 FILES_${PN}-dev = "${includedir}/qca-nss-dp"
-SYSTEMD_SERVICE_${PN}_ipq807x_remove += "qca-nss-dp.service"
-SYSTEMD_SERVICE_${PN}_ipq807x_64_remove += "qca-nss-dp.service"
+SYSTEMD_SERVICE:${PN}_ipq807x:remove += "qca-nss-dp.service"
+SYSTEMD_SERVICE:${PN}_ipq807x_64:remove += "qca-nss-dp.service"
 
-INSANE_SKIP_${PN} = "dev"
+INSANE_SKIP:${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-dp"

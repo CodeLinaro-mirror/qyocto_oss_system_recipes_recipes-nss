@@ -5,9 +5,9 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5
 inherit module
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-FILES_${PN} += "/usr/bin"
+FILES:${PN} += "/usr/bin"
 
 SRC_URI = "file://qca-nss-sfe/ \
 	   file://sfe_dump \

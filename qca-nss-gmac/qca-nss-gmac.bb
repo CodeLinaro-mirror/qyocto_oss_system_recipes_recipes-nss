@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://ipq806x/LICENSE.txt;md5=b9923979c444c7e3a5a254e01ed5c
 inherit module
 
 FILESPATH =+ "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 SRC_URI = "file://qca-nss-gmac \
 	   file://01-add-clean.patch \
@@ -16,8 +16,8 @@ DEPENDS = "virtual/kernel"
 S = "${WORKDIR}/qca-nss-gmac"
 
 PACKAGES += "kernel-module-nss-gmac"
-FILES_${PN}-dev = "/usr/include/*"
-INSANE_SKIP_${PN} = "dev"
+FILES:${PN}-dev = "/usr/include/*"
+INSANE_SKIP:${PN} = "dev"
 
 EXTRA_OEMAKE += "TOOL_PATH='${STAGING_BINDIR_TOOLCHAIN}' \
 		 SUBDIRS='${S}' \

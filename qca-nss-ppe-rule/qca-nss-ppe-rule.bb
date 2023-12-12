@@ -8,7 +8,7 @@ SOC = "${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
 FILESPATH = "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS_prepend := "${THISDIR}/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-ppe \
 	   "
@@ -25,8 +25,8 @@ PPE_RULE_MAKE_OPTS_${SOC} += "ppe-rule=y \
 		PPE_PRIORITY_ENABLED=y \
 		PPE_MIRROR_ENABLED=y \
 		"
-PPE_RULE_MAKE_OPTS_ipq53xx_append += "PPE_RULE_IPQ53XX=y"
-PPE_RULE_MAKE_OPTS_ipq53xx_64_append += "PPE_RULE_IPQ53XX=y"
+PPE_RULE_MAKE_OPTS_ipq53xx:append += "PPE_RULE_IPQ53XX=y"
+PPE_RULE_MAKE_OPTS_ipq53xx_64:append += "PPE_RULE_IPQ53XX=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
