@@ -46,6 +46,8 @@ EXTRA_CFLAGS += " \
 MODULE_EXTRA_SYMBOLS ="${SSDK_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers \
 		       ${STAGING_INCDIR}/qca-ovsmgr/Module.symvers"
 
+module_conf_qca-nss-ppe-bridge-mgr += "options qca-nss-ppe-bridge-mgr ovs_enabled=0"
+
 do_configure() {
 	true
 }
@@ -91,5 +93,6 @@ do_install_append_qca-nss-ppe-lag-mgr() {
 KERNEL_MODULE_AUTOLOAD_${PN} += "qca-nss-ppe"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-vlan-mgr += "qca-nss-ppe-vlan"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-bridge-mgr += "qca-nss-ppe-bridge-mgr"
+KERNEL_MODULE_PROBECONF += "qca-nss-ppe-bridge-mgr"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-pppoe-mgr += "qca-nss-ppe-pppoe-mgr"
 KERNEL_MODULE_AUTOLOAD_append_qca-nss-ppe-lag-mgr += "qca-nss-ppe-lag"
