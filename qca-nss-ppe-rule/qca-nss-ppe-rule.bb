@@ -18,15 +18,15 @@ DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-ppe-vp"
 
 S = "${WORKDIR}/qca-nss-ppe/drv/ppe_rule"
 
-PPE_RULE_MAKE_OPTS_${SOC} += "ppe-rule=y \
+PPE_RULE_MAKE_OPTS:${SOC} = "ppe-rule=y \
 		PPE_RFS_ENABLED=y \
 		PPE_ACL_ENABLED=y \
 		PPE_POLICER_ENABLED=y \
 		PPE_PRIORITY_ENABLED=y \
 		PPE_MIRROR_ENABLED=y \
 		"
-PPE_RULE_MAKE_OPTS_ipq53xx:append += "PPE_RULE_IPQ53XX=y"
-PPE_RULE_MAKE_OPTS_ipq53xx_64:append += "PPE_RULE_IPQ53XX=y"
+PPE_RULE_MAKE_OPTS:ipq53xx:append = "PPE_RULE_IPQ53XX=y"
+PPE_RULE_MAKE_OPTS:ipq53xx_64:append = "PPE_RULE_IPQ53XX=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
