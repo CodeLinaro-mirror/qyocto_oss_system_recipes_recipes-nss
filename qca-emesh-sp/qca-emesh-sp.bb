@@ -14,9 +14,9 @@ DEPENDS = "glib-2.0 virtual/kernel"
 SRC_URI = "file://qca-emesh-sp"
 S = "${WORKDIR}/qca-emesh-sp"
 
-FILES_SOLIBSDEV = ""
+FILES:SOLIBSDEV = ""
 
-FILES_${PN} += "/etc*"
+FILES:${PN} += "/etc*"
 
 setup_build_variables() {
 	export TARGET_CROSS="${TARGET_PREFIX}"; \
