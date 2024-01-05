@@ -15,35 +15,31 @@ SRC_URI = "file://qca-nss-ecm \
 	   file://files \
 	   "
 
-DEPENDS:append += "virtual/kernel"
-DEPENDS:${SOC}:append += "nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS:append = " virtual/kernel"
+DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
-DEPENDS:append_ipq40xx = "simulated-driver"
-
-DEPENDS:ipq807x:append += "qca-nss-drv"
-DEPENDS:ipq807x_64:append += "qca-nss-drv"
+DEPENDS:ipq807x:append = " qca-nss-drv"
+DEPENDS:ipq807x_64:append = " qca-nss-drv"
 DEPENDS:ipq807x:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 DEPENDS:ipq807x_64:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
-DEPENDS_ipq53xx:remove = "qca-emesh-sp"
+DEPENDS:ipq53xx:remove = "qca-emesh-sp"
 DEPENDS:ipq53xx_64:remove = "qca-emesh-sp"
 
-RDEPENDS-${PN}:append += "iptables-mod-extra ipt-conntrack \
+RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
-		pppoe nat46 "
+		pppoe nat46"
 
-RDEPENDS-${PN}:append_ipq40xx = "simulated-driver"
-
-RDEPENDS-${PN}:append_ipq807x_64 = "qca-nss-drv"
-RDEPENDS-${PN}:append_ipq807x = "qca-nss-drv"
-RDEPENDS-${PN}:append_ipq95xx_64 = "qca-emesh-sp"
-RDEPENDS-${PN}:append_ipq95xx = "qca-emesh-sp"
+RDEPENDS-${PN}:append:ipq807x_64 = " qca-nss-drv"
+RDEPENDS-${PN}:append:ipq807x = " qca-nss-drv"
+RDEPENDS-${PN}:append:ipq95xx_64 = " qca-emesh-sp"
+RDEPENDS-${PN}:append:ipq95xx = " qca-emesh-sp"
 
 S = "${WORKDIR}/qca-nss-ecm"
 
 PACKAGES += "kernel-module-ecm"
 INSANE_SKIP:${PN} = "dev"
 
-ECM_MAKE_OPTS_${SOC} += "ECM_IPV6_ENABLE=y \
+ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_PPE_ENABLE=y \
 			ECM_FRONT_END_SFE_ENABLE=y \
 			ECM_NON_PORTED_SUPPORT_ENABLE=y \
@@ -63,48 +59,47 @@ ECM_MAKE_OPTS_${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_PPE_QOS_ENABLE=y \
 			"
 #ipq807x supports only NSS Front End, remove PPE and SFE Front End
-ECM_MAKE_OPTS_ipq807x_64:append += "ECM_FRONT_END_NSS_ENABLE=y"
-ECM_MAKE_OPTS_ipq807x_64:remove = "ECM_FRONT_END_PPE_ENABLE=y \
+ECM_MAKE_OPTS:ipq807x_64:append = " ECM_FRONT_END_NSS_ENABLE=y"
+ECM_MAKE_OPTS:ipq807x_64:remove = "ECM_FRONT_END_PPE_ENABLE=y \
 				ECM_FRONT_END_SFE_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				ECM_FRONT_END_PPE_QOS_ENABLE=y \
 				"
-ECM_MAKE_OPTS_ipq807x:append += "ECM_FRONT_END_NSS_ENABLE=y"
-ECM_MAKE_OPTS_ipq807x:remove = "ECM_FRONT_END_PPE_ENABLE=y \
+ECM_MAKE_OPTS:ipq807x:append = " ECM_FRONT_END_NSS_ENABLE=y"
+ECM_MAKE_OPTS:ipq807x:remove = "ECM_FRONT_END_PPE_ENABLE=y \
 				ECM_FRONT_END_SFE_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				ECM_FRONT_END_PPE_QOS_ENABLE=y \
 				"
-ECM_MAKE_OPTS_ipq40xx:remove = "ECM_FRONT_END_PPE_ENABLE=y"
-ECM_MAKE_OPTS_ipq95xx:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS:ipq95xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
 				 EXAMPLES_BUILD_OVS=y \
 				 "
-ECM_MAKE_OPTS_ipq95xx_64:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS:ipq95xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
 				    "
-ECM_MAKE_OPTS_ipq53xx:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS:ipq53xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
 				 EXAMPLES_BUILD_OVS=y \
 				 "
-ECM_MAKE_OPTS_ipq53xx_64:append += "ECM_CLASSIFIER_OVS_ENABLE=y \
+ECM_MAKE_OPTS:ipq53xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
 				    "
-ECM_MAKE_OPTS_ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
+ECM_MAKE_OPTS:ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				"
-ECM_MAKE_OPTS_ipq53xx:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
+ECM_MAKE_OPTS:ipq53xx:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				"
