@@ -36,7 +36,7 @@ do_install() {
 	install -m 0644 ${S}/opue.bin ${D}${base_libdir}/firmware/opue.bin
 }
 
-FILES_${PN} = " \
+FILES:${PN} = " \
 	${base_libdir}/firmware \
 	${base_libdir}/firmware/ifpp.bin \
 	${base_libdir}/firmware/ipue.bin \
