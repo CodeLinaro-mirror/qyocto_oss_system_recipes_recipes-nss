@@ -1,6 +1,6 @@
 [Unit]
 Description=ECM init systemd service
-After=gwprovethwan.service
+After=gwprovethwan.service RdkWanManager.service
 
 [Service]
 Type=simple
