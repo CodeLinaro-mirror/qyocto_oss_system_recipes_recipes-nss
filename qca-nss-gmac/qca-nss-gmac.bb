@@ -4,6 +4,8 @@ LIC_FILES_CHKSUM = "file://ipq806x/LICENSE.txt;md5=b9923979c444c7e3a5a254e01ed5c
 
 inherit module
 
+CLEANBROKEN = "1"
+
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 

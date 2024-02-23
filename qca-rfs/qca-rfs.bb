@@ -5,6 +5,8 @@ LIC_FILES_CHKSUM = "file://Makefile;md5=9b105acd8d4380fb8f780118eb7c1e4e"
 
 inherit module
 
+CLEANBROKEN = "1"
+
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
