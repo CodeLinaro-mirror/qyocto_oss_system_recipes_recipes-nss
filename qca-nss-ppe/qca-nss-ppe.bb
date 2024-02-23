@@ -3,6 +3,9 @@ LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
 
 inherit module
+
+CLEANBROKEN = "1"
+
 OVERRIDES:append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-ppe-pppoe-mgr:qca-nss-ppe-lag-mgr:"
 
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"

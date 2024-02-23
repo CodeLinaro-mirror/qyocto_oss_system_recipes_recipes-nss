@@ -5,6 +5,8 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5
 inherit module
 inherit systemd
 
+CLEANBROKEN = "1"
+
 SOC= "${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 

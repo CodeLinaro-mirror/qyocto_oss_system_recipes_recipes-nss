@@ -3,6 +3,8 @@ LICENSE = "CLOSED"
 
 inherit module
 
+CLEANBROKEN = "1"
+
 PKG_NAME = "qca-nss-fw-hk"
 PKG_BRANCH = "nss"
 PKG_VERSION = "156"

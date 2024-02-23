@@ -3,6 +3,8 @@ inherit autotools-brokensep module
 # if is TARGET_KERNEL_ARCH is set inherit qtikernel-arch to compile for that arch.
 inherit ${@bb.utils.contains('TARGET_KERNEL_ARCH', 'aarch64', 'qtikernel-arch', '', d)}
 
+CLEANBROKEN = "1"
+
 DESCRIPTION = "Recipe file for the kernel module for Service Prioritization in EasyMesh"
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
