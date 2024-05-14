@@ -59,8 +59,9 @@ support_bridge() {
 load_sfe() {
 	local kernel_version=$(uname -r)
 
-	[ -d /sys/module/qca_nss_sfe ] && modprobe qca_nss_sfe
-
+	[ -e "/lib/modules/$kernel_version/kernel/drivers/qca-nss-sfe/qca-nss-sfe.ko" ] && {
+		[ -d /sys/module/qca_nss_sfe ] || modprobe qca_nss_sfe
+	}
 }
 
 unload_sfe() {
@@ -70,7 +71,7 @@ unload_sfe() {
 
 load_ecm() {
 
-	[ -d /sys/module/ecm ] && {
+	[ -d /sys/module/ecm ] || {
 		modprobe ecm front_end_selection=$(get_front_end_mode)
 
 		if [ $(get_front_end_mode) == 4 ]; then
