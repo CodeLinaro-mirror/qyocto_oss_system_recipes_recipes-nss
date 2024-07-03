@@ -56,6 +56,7 @@ do_install() {
 	install -m 0644 ${S}/drv/ppe_drv/qca-nss-ppe${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-ppe
 	install -m 0644 ${S}/exports/* ${D}${includedir}/qca-nss-ppe/
+	install -m 0644 ${S}/netlink/include/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/drv/exports/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe/Module.symvers
 }
