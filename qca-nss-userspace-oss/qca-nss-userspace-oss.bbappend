@@ -1,1 +1,1 @@
-IMAGE_INSTALL_append += " qca-nss-userspace-oss"
+IMAGE_INSTALL:append += " qca-nss-userspace-oss"
