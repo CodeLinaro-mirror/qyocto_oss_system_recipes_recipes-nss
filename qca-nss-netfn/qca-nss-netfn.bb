@@ -15,7 +15,7 @@ TARGET_LDFLAGS +="-lnl-3 -lnl-genl-3"
 TARGET_CFLAGS += "-I${STAGING_INCDIR}/libnl3 \
 	-I${STAGING_INCDIR}/jansson \
 	-I${STAGING_INCDIR}/qca-nss-ppe \
-	-Wno-int-conversion"
+	-Wno-int-conversion -Wno-error=format"
 
 S = "${WORKDIR}/qca-nss-userspace-oss/netfn/"
 
