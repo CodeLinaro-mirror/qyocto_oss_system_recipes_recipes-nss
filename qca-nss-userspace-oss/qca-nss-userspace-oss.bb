@@ -12,7 +12,7 @@ TARGET_CFLAGS = "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${
 
 DEPENDS = "libnl qca-nss-ppe qca-nss-libppenl"
 
-RDEPENDS_${PN} += "qca-nss-libppenl"
+RDEPENDS:${PN} += "qca-nss-libppenl"
 
 S = "${WORKDIR}/qca-nss-userspace-oss/ppe/ppecfg"
 
@@ -29,6 +29,6 @@ do_install() {
         install -m 0744 ${S}/obj/ppecfg ${D}/${bindir}/
 }
 
-FILES_${PN} += "${bindir}/ppecfg \
+FILES:${PN} += "${bindir}/ppecfg \
                "
 
