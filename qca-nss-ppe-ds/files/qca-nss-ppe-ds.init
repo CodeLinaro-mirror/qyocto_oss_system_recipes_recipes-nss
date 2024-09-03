@@ -36,6 +36,20 @@ configure_irq_affinity() {
 	ppe2tcl_interrupts=$(grep ppe2tcl /proc/interrupts | cut -d ':' -f 1 | tr -d ' ')
 
 	counter=0
+	for i in $rxdesc_interrupts; do
+		counter=$((counter+1))
+		if [ $counter == 1 ]; then
+			echo $1 > /proc/irq/$i/smp_affinity
+		elif [ $counter == 2 ]; then
+			echo $2 > /proc/irq/$i/smp_affinity
+		elif [ $counter == 3 ]; then
+			echo $3 > /proc/irq/$i/smp_affinity
+		elif [ $counter == 4 ]; then
+			echo $4 > /proc/irq/$i/smp_affinity
+		fi
+	done
+
+	counter=0
 	for i in $rxfill_interrupts; do
 		counter=$((counter+1))
 		if [ $counter == 1 ]; then
@@ -109,5 +123,21 @@ configure_irq_affinity() {
 }
 
 start() {
-	configure_irq_affinity 4 2 4 2
+	board=$(cat /tmp/sysinfo/board_name)
+	case $board in
+		*'mi'*)
+		configure_irq_affinity 2 4 2 4
+		;;
+		*)
+		configure_irq_affinity 4 2 4 2
+		;;
+	esac
 }
+
+case "$1" in
+    start)
+	start
+	;;
+    *)
+	echo "Unsupported operation: available operations (start )"
+esac
