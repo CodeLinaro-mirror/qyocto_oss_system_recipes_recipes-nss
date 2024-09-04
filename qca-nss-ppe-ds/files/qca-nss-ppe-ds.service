@@ -15,7 +15,8 @@
 
 [Unit]
 Description=Configured the IRQ affinity for DS mode
-After=qca-nss-dp.service
+PartOf=qca-wifi.service
+After=qca-wifi.service
 
 [Service]
 Type=simple
