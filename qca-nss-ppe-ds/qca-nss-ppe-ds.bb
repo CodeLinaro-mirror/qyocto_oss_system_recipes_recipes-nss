@@ -32,7 +32,7 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-nss-dp \
 		"
 
-MODULE_EXTRA_SYMBOLS = "${PPE_VP_STG_INCDIR}/Module.symvers ${DP_STG_INCDIR}/Module.symvers"
+MODULE_EXTRA_SYMBOLS = "${PPE_VP_STG_INCDIR}/Module.symvers ${DP_STG_INCDIR}/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
 do_configure() {
 	sed -i '3i ${string}' Makefile

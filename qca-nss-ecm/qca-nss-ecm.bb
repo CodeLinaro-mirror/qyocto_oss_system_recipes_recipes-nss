@@ -35,6 +35,8 @@ RDEPENDS-${PN}:append:ipq807x_64 = " qca-nss-drv"
 RDEPENDS-${PN}:append:ipq807x = " qca-nss-drv"
 RDEPENDS-${PN}:append:ipq95xx_64 = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq95xx = " qca-emesh-sp"
+RDEPENDS-${PN}:append:ipq54xx_64 = " qca-emesh-sp"
+RDEPENDS-${PN}:append:ipq54xx = " qca-emesh-sp"
 
 S = "${WORKDIR}/qca-nss-ecm"
 
@@ -87,6 +89,16 @@ ECM_MAKE_OPTS:ipq95xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
 				    "
+ECM_MAKE_OPTS:ipq54xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
+                                 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
+                                 CONFIG_QCA_NSS_ECM_OVS=y \
+                                 EXAMPLES_BUILD_OVS=y \
+                                 "
+ECM_MAKE_OPTS:ipq54xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
+                                    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
+                                    CONFIG_QCA_NSS_ECM_OVS=y \
+                                    EXAMPLES_BUILD_OVS=y \
+                                    "
 ECM_MAKE_OPTS:ipq53xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
@@ -110,13 +122,12 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-mcs \
 		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
-		-I${STAGING_INCDIR}/qca-nss-drv \
 		-I${STAGING_INCDIR}/emesh-sp \
 		-I${STAGING_INCDIR}/qca-ovsmgr \
 		"
 
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
-		${STAGING_INCDIR}/qca-nss-drv/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
+		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
 		${STAGING_INCDIR}/qca-mcs/Module.symvers ${STAGING_INCDIR}/emesh-sp/Module.symvers \
 		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers"
 
