@@ -28,7 +28,15 @@ RDEPENDS-qca-nss-eip-ipsec   = " qca-nss-eip"
 
 S = "${WORKDIR}/qca-nss-eip"
 
-NSS_EIP_DIR = "eip197"
+NSS_EIP_DIR:ipq95xx = "eip197"
+NSS_EIP_DIR:ipq95xx_64 = "eip197"
+
+NSS_EIP_DIR:ipq53xx = "eip196"
+NSS_EIP_DIR:ipq53xx_64 = "eip196"
+
+NSS_EIP_DIR:ipq54xx = "eip196"
+NSS_EIP_DIR:ipq54xx_64 = "eip196"
+
 NSS-EIP-MODULES = "eip_ipsec=m"
 
 eip_crypto = "m"
