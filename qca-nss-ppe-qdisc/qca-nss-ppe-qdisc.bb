@@ -58,3 +58,5 @@ do_install() {
 	install -m 0644 ${S}/drv/exports/* ${D}${includedir}/qca-nss-ppe-qdisc/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-qdisc/Module.symvers
 }
+
+KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-qdisc"
