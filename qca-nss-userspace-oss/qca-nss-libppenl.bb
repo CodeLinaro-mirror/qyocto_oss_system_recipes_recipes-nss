@@ -31,9 +31,19 @@ do_install() {
 	install -m 0644 ${S}/include/nss_ppenl_acl_api.h ${D}${includedir}
 	install -m 0644 ${S}/include/nss_ppenl_base.h ${D}${includedir}
 	install -m 0644 ${S}/include/nss_ppenl_policer_api.h ${D}${includedir}
+	install -m 0644 ${S}/include/nss_ppenl_qos_api.h ${D}${includedir}
         install -m 0744 ${S}/obj/libnl-ppe.so ${D}/${libdir}
 }
 
+INSANE_SKIP:${PN} += "ldflags"
+INSANE_SKIP:${PN} += "debug-files"
+
 PACKAGES = "${PN}"
-FILES:${PN} += "${libdir}/libnl-ppe.so \
+
+FILES:${PN} += "${includedir}/nss_ppenl_acl_api.h \
+                ${includedir}/nss_ppenl_base.h \
+                ${includedir}/nss_ppenl_policer_api.h \
+                ${includedir}/nss_ppenl_qos_api.h \
+                ${libdir}/libnl-ppe.so \
+		${libdir}/.debug/libnl-ppe.so \
                "
