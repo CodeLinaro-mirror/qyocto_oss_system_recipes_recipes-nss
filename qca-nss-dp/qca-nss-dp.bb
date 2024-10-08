@@ -80,6 +80,14 @@ FILES:${PN}:ipq95xx =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	"
+FILES:${PN}:ipq54xx_64 =" \
+        ${bindir}/qca-nss-dp \
+        ${systemd_unitdir}/system/qca-nss-dp.service \
+        "
+FILES:${PN}:ipq54xx =" \
+        ${bindir}/qca-nss-dp \
+        ${systemd_unitdir}/system/qca-nss-dp.service \
+        "
 FILES:${PN}:ipq53xx_64 =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \

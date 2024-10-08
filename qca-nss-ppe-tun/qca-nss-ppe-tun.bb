@@ -25,6 +25,7 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-nss-ppe \
 		 -DPPE_TUN_RULE_MODULE_ENABLED"
 
 MODULE_EXTRA_SYMBOLS = "${PPE_VP_STG_INCDIR}/Module.symvers \
+			${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 			${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers"
 
 do_configure() {
