@@ -24,8 +24,6 @@ DEPENDS:ipq807x:append = " qca-nss-drv"
 DEPENDS:ipq807x_64:append = " qca-nss-drv"
 DEPENDS:ipq807x:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 DEPENDS:ipq807x_64:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
-DEPENDS:ipq53xx:remove = "qca-emesh-sp"
-DEPENDS:ipq53xx_64:remove = "qca-emesh-sp"
 
 RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
@@ -37,6 +35,8 @@ RDEPENDS-${PN}:append:ipq95xx_64 = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq95xx = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq54xx_64 = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq54xx = " qca-emesh-sp"
+RDEPENDS-${PN}:append:ipq53xx_64 = " qca-emesh-sp"
+RDEPENDS-${PN}:append:ipq53xx = " qca-emesh-sp"
 
 S = "${WORKDIR}/qca-nss-ecm"
 
@@ -111,11 +111,9 @@ ECM_MAKE_OPTS:ipq53xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    "
 ECM_MAKE_OPTS:ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
-				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				"
 ECM_MAKE_OPTS:ipq53xx:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
-				ECM_CLASSIFIER_EMESH_ENABLE=y \
 				"
 
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
