@@ -17,7 +17,7 @@ SRC_URI = "file://qca-nss-ecm \
 	   file://files \
 	   "
 
-DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr"
+DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
 DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
 DEPENDS:ipq807x:append = " qca-nss-drv"
@@ -127,7 +127,8 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
 		${STAGING_INCDIR}/qca-mcs/Module.symvers ${STAGING_INCDIR}/emesh-sp/Module.symvers \
-		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers"
+		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers \
+		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers"
 
 do_configure() {
 	true
