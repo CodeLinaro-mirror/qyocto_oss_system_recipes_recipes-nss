@@ -17,14 +17,15 @@ SRC_URI = "file://qca-nss-ppe/ \
 
 PACKAGES += "kernel-module-qca-nss-ppe-ipip6"
 
-DEPENDS = "virtual/kernel qca-nss-ppe-tun"
+DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-ppe-tun"
 
 S = "${WORKDIR}/qca-nss-ppe/clients/tunipip6/"
 PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
 
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-nss-ppe"
 
-MODULE_EXTRA_SYMBOLS = "${PPE_TUN_STG_INCDIR}/Module.symvers"
+MODULE_EXTRA_SYMBOLS = "${PPE_TUN_STG_INCDIR}/Module.symvers \
+			${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
 do_configure() {
 	true
