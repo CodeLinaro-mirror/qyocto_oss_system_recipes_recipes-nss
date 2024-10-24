@@ -30,6 +30,8 @@ PPE_RULE_MAKE_OPTS:${SOC} = "ppe-rule=y \
 		"
 PPE_RULE_MAKE_OPTS:ipq53xx:append = "PPE_RULE_IPQ53XX=y"
 PPE_RULE_MAKE_OPTS:ipq53xx_64:append = "PPE_RULE_IPQ53XX=y"
+PPE_RULE_MAKE_OPTS:ipq54xx:append = "PPE_RULE_IPQ54XX=y"
+PPE_RULE_MAKE_OPTS:ipq54xx_64:append = "PPE_RULE_IPQ54XX=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
