@@ -20,9 +20,6 @@ SRC_URI = "file://qca-nss-dp \
 
 DEPENDS:${SOC}:append = " virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
 
-DEPENDS:ipq807x:remove = "qca-nss-ppe"
-DEPENDS:ipq807x_64:remove = "qca-nss-ppe"
-
 S = "${WORKDIR}/qca-nss-dp"
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
@@ -31,9 +28,6 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
 MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-ssdk/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
 NSS_PPE_MODULES:${SOC} = " dp-ppe-ds=y"
-
-NSS_PPE_MODULES:ipq807x:remove = "dp-ppe-ds=y"
-NSS_PPE_MODULES:ipq807x_64:remove = "dp-ppe-ds=y"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -64,12 +58,10 @@ do_install() {
 	install -d ${D}${includedir}/qca-nss-dp
 	install -m 0644 exports/* ${D}${includedir}/qca-nss-dp/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-dp/Module.symvers
-	if [ "${SOC_TYPE}" != "ipq807x" ]; then
-		install -d ${D}${bindir}
-		install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
-		install -d ${D}${systemd_unitdir}/system
-		install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
-	fi
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
 }
 
 FILES:${PN}:ipq95xx_64 =" \
@@ -99,8 +91,6 @@ FILES:${PN}:ipq53xx =" \
 
 SYSTEMD_SERVICE:${PN}:${SOC}:append = " qca-nss-dp.service"
 FILES:${PN}-dev = "${includedir}/qca-nss-dp"
-SYSTEMD_SERVICE:${PN}:ipq807x:remove = "qca-nss-dp.service"
-SYSTEMD_SERVICE:${PN}:ipq807x_64:remove = "qca-nss-dp.service"
 
 INSANE_SKIP:${PN} = "dev"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-dp"

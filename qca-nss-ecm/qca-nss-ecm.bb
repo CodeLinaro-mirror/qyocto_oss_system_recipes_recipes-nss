@@ -20,17 +20,10 @@ SRC_URI = "file://qca-nss-ecm \
 DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
 DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
-DEPENDS:ipq807x:append = " qca-nss-drv"
-DEPENDS:ipq807x_64:append = " qca-nss-drv"
-DEPENDS:ipq807x:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
-DEPENDS:ipq807x_64:remove = "qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
-
 RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
 		pppoe nat46"
 
-RDEPENDS-${PN}:append:ipq807x_64 = " qca-nss-drv"
-RDEPENDS-${PN}:append:ipq807x = " qca-nss-drv"
 RDEPENDS-${PN}:append:ipq95xx_64 = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq95xx = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq54xx_64 = " qca-emesh-sp"
@@ -62,23 +55,6 @@ ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_CLASSIFIER_EMESH_ENABLE=y \
 			ECM_FRONT_END_PPE_QOS_ENABLE=y \
 			"
-#ipq807x supports only NSS Front End, remove PPE and SFE Front End
-ECM_MAKE_OPTS:ipq807x_64:append = " ECM_FRONT_END_NSS_ENABLE=y"
-ECM_MAKE_OPTS:ipq807x_64:remove = "ECM_FRONT_END_PPE_ENABLE=y \
-				ECM_FRONT_END_SFE_ENABLE=y \
-				ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
-				ECM_CLASSIFIER_MSCS_ENABLE=y \
-				ECM_CLASSIFIER_EMESH_ENABLE=y \
-				ECM_FRONT_END_PPE_QOS_ENABLE=y \
-				"
-ECM_MAKE_OPTS:ipq807x:append = " ECM_FRONT_END_NSS_ENABLE=y"
-ECM_MAKE_OPTS:ipq807x:remove = "ECM_FRONT_END_PPE_ENABLE=y \
-				ECM_FRONT_END_SFE_ENABLE=y \
-				ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
-				ECM_CLASSIFIER_MSCS_ENABLE=y \
-				ECM_CLASSIFIER_EMESH_ENABLE=y \
-				ECM_FRONT_END_PPE_QOS_ENABLE=y \
-				"
 ECM_MAKE_OPTS:ipq95xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
