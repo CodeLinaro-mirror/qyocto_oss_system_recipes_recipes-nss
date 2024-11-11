@@ -9,10 +9,11 @@ CLEANBROKEN = "1"
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
-FILESPATH = "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+FILESPATH =+ "${TOPDIR}/../opensource/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-ppe/ \
+	   file://files/ppe_if_map \
 	   "
 
 PACKAGES += "kernel-module-qca-nss-ppe "
@@ -59,6 +60,11 @@ do_install() {
 	install -m 0644 ${S}/netlink/include/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/drv/exports/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe/Module.symvers
+        install -d ${D}${bindir}
+        install -m 0755 ${WORKDIR}/files/ppe_if_map ${D}${bindir}
+
 }
+
+FILES:${PN} = "${bindir}/ppe_if_map"
 
 KERNEL_MODULE_AUTOLOAD:${PN} = " qca-nss-ppe"

@@ -5,10 +5,10 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/qca-nss-userspace-oss/ppe/ppecfg/ppecfg_ac
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 
 SRC_URI = "file://qca-nss-userspace-oss/ppe/ppecfg \
-		"
+                "
 
 TARGET_LDFLAGS ="-lnl-3 -lnl-ppe -lnl-genl-3 -pie"
-TARGET_CFLAGS = "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${S}/include -Wno-int-conversion"
+TARGET_CFLAGS = "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${STAGING_INCDIR}/libnl-ppe -I${S}/include -Wno-int-conversion"
 
 DEPENDS = "libnl qca-nss-ppe qca-nss-libppenl"
 
@@ -19,9 +19,9 @@ S = "${WORKDIR}/qca-nss-userspace-oss/ppe/ppecfg"
 do_compile() {
         unset LDFLAGS
         CC="${CC}" \
-        LIBS="-L${STAGING_LIBDIR} ${TARGET_LDFLAGS}" \
-	CFLAGS="${CFLAGS} ${TARGET_CFLAGS}" \
-	make -C ${S}
+        LIBS="-L${STAGING_LIBDIR}/ppenl_lib ${TARGET_LDFLAGS}" \
+        CFLAGS="${CFLAGS} ${TARGET_CFLAGS}" \
+        make -C ${S}
 }
 
 do_install() {
@@ -31,4 +31,3 @@ do_install() {
 
 FILES_${PN} += "${bindir}/ppecfg \
                "
-

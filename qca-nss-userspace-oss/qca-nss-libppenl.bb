@@ -6,12 +6,13 @@ FILESPATH = "${TOPDIR}/../opensource/:"
 
 DEPENDS = "libnl qca-nss-ppe"
 
-SRC_URI = "file://qca-nss-userspace-oss/ppe/ppenl_lib"
+RDEPENDS_${PN} += "qca-nss-ppe-netlink"
 
+SRC_URI = "file://qca-nss-userspace-oss/ppe/ppenl_lib"
 
 FILESPATH = "${TOPDIR}/../opensource/:"
 
-TARGET_LDFLAGS +="-lnl-3 -lnl-genl-3 -pie"
+TARGET_LDFLAGS +="-lpthread -lnl-3 -lnl-genl-3 -pie"
 TARGET_CFLAGS += "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${S}/include -Wno-int-conversion"
 
 
@@ -21,19 +22,21 @@ do_compile() {
         unset LDFLAGS
         CC="${CC}" \
         CFLAGS="${CFLAGS} -I${TARGET_CFLAGS}" \
-	LIBS="-L${STAGING_LIBDIR} ${TARGET_LDFLAGS}" \
+        LIBS="-L${STAGING_LIBDIR}/ppenl_lib ${TARGET_LDFLAGS}" \
         make -C ${S}
 }
 
 do_install() {
-        install -d ${D}/${libdir}
-	install -d ${D}${includedir}
-	install -m 0644 ${S}/include/nss_ppenl_acl_api.h ${D}${includedir}
-	install -m 0644 ${S}/include/nss_ppenl_base.h ${D}${includedir}
-	install -m 0644 ${S}/include/nss_ppenl_policer_api.h ${D}${includedir}
+        install -d ${D}${libdir}
+        install -d ${D}${includedir}
         install -m 0744 ${S}/obj/libnl-ppe.so ${D}/${libdir}
 }
 
-PACKAGES = "${PN}"
-FILES:${PN} += "${libdir}/libnl-ppe.so \
-               "
+do_install_append() {
+    install -d ${D}${includedir}/libnl-ppe
+    install -m 0644 ${S}/include/* ${D}${includedir}/libnl-ppe
+}
+
+FILES:${PN} += "${libdir}/libnl-ppe.so"
+FILES_${PN}-dev = "${includedir}/libnl-ppe"
+
