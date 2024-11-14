@@ -30,10 +30,10 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
 
 MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-ssdk/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
-NSS_PPE_MODULES:${SOC} = " dp-ppe-ds=y"
+NSS_PPE_MODULES:${SOC} = " dp-ppe-ds=y dp-loopback=y"
 
-NSS_PPE_MODULES:ipq807x:remove = "dp-ppe-ds=y"
-NSS_PPE_MODULES:ipq807x_64:remove = "dp-ppe-ds=y"
+NSS_PPE_MODULES:ipq807x:remove = "dp-ppe-ds=y dp-loopback=y"
+NSS_PPE_MODULES:ipq807x_64:remove = "dp-ppe-ds=y dp-loopback=y"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
