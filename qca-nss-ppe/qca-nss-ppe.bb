@@ -18,6 +18,8 @@ SRC_URI = "file://qca-nss-ppe/ \
 PACKAGES += "kernel-module-qca-nss-ppe "
 
 DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46 qca-ovsmgr"
+DEPENDS:ipq53xx_32_QRDK_256:remove = "nat46"
+
 RDEPEND-{PN} = "qca-ssdk-nohnat"
 
 S = "${WORKDIR}/qca-nss-ppe"

@@ -32,6 +32,10 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-nss-dp \
 		"
 
+EXTRA_CFLAGS:append = "${@' -DPPE_DS_MEM_PROFILE_LOW' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '256' else ''}"
+EXTRA_CFLAGS:append = "${@' -DPPE_DS_MEM_PROFILE_LOW' if d.getVar('CONFIG_LOWMEM_FLASH', True) == 'y' else ''}"
+EXTRA_CFLAGS:append = "${@' -DPPE_DS_MEM_PROFILE_MEDIUM' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '512' else ''}"
+
 MODULE_EXTRA_SYMBOLS = "${PPE_VP_STG_INCDIR}/Module.symvers ${DP_STG_INCDIR}/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
 do_configure() {

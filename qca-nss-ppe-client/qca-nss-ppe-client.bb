@@ -46,6 +46,10 @@ EXTRA_CFLAGS += " \
 
 EXTRA_CFLAGS:append = "${@' -DNSS_VLAN_MGR_WLANIF_DST_XLATE_SUPPORT' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) != '256' else ''}"
 
+CONFIG_FLAGS ?= "${CONFIG_TARGET_ipq95xx_generic_QRDK_Open}${CONFIG_TARGET_ipq95xx_ipq95xx_32_QRDK_Open}${CONFIG_TARGET_ipq53xx_generic_QRDK_Open}${CONFIG_TARGET_ipq53xx_ipq53xx_32_QRDK_Open}${CONFIG_TARGET_ipq54xx_generic_QRDK_Open}${CONFIG_TARGET_ipq54xx_ipq54xx_32_QRDK_Open}"
+
+EXTRA_CFLAGS:append = "${@' -DNSS_PPE_BRIDGE_MGR_FDB_DISABLE' if 'y' in d.getVar('CONFIG_FLAGS', True) else ''}"
+
 MODULE_EXTRA_SYMBOLS ="${SSDK_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers \
 		       ${STAGING_INCDIR}/qca-ovsmgr/Module.symvers \
 		       ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers"

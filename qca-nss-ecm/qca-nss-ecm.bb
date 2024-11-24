@@ -20,6 +20,9 @@ SRC_URI = "file://qca-nss-ecm \
 DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
 DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
+# Enable the following once qca-hyfi-bridge module is up.
+# DEPENDS:append = " qca-hyfi-bridge"
+
 RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
 		pppoe nat46"
@@ -30,6 +33,10 @@ RDEPENDS-${PN}:append:ipq54xx_64 = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq54xx = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq53xx_64 = " qca-emesh-sp"
 RDEPENDS-${PN}:append:ipq53xx = " qca-emesh-sp"
+RDEPENDS-${PN}:remove:ipq53xx_32_QRDK_256 = " bonding"
+RDEPENDS-${PN}:remove:ipq53xx_32_QRDK_256 = " iptables-mod-extra"
+RDEPENDS-${PN}:remove:ipq53xx_32_QRDK_256 = " ipt-conntrack"
+
 
 S = "${WORKDIR}/qca-nss-ecm"
 
@@ -91,6 +98,12 @@ ECM_MAKE_OPTS:ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 ECM_MAKE_OPTS:ipq53xx:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
 				"
+ECM_MAKE_OPTS:ipq53xx_32_QRDK_256:remove = "ECM_INTERFACE_BOND_ENABLE=y \
+				"
+
+ECM_MAKE_OPTS:append = "${@' ECM_FRONT_END_CONN_LIMIT_ENABLE=y' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '256' else ''}"
+ECM_MAKE_OPTS:append = "${@' ECM_256M_PROFILE=y' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '256' else ''}"
+ECM_MAKE_OPTS:append = "${@' ECM_FRONT_END_CONN_LIMIT_ENABLE=y' if d.getVar('CONFIG_LOWMEM_FLASH', True) == 'y' else ''}"
 
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-mcs \
