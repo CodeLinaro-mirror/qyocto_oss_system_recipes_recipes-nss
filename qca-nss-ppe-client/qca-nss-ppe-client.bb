@@ -44,6 +44,8 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/ \
 		"
 
+EXTRA_CFLAGS:append = "${@' -DNSS_VLAN_MGR_WLANIF_DST_XLATE_SUPPORT' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) != '256' else ''}"
+
 MODULE_EXTRA_SYMBOLS ="${SSDK_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Module.symvers \
 		       ${STAGING_INCDIR}/qca-ovsmgr/Module.symvers \
 		       ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers"
