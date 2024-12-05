@@ -24,6 +24,8 @@ EXTRA_CFLAGS += "-I${S}/exports \
 		 -I${STAGING_INCDIR}/qca-nss-ppe \
 		 -DSFE_TSO_MAX_SEG_LIMIT_ENABLE"
 
+EXTRA_CFLAGS += "${@' -DSFE_TSO_MAX_SEG_LIMIT_ENABLE' if (d.getVar('CONFIG_TARGET_ipq95xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq53xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq54xx', True) == 'y') else ''}"
+
 MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers"
 
 SFE_MAKE_OPTS = "SFE_SUPPORT_IPV6=y \
@@ -31,6 +33,8 @@ SFE_MAKE_OPTS = "SFE_SUPPORT_IPV6=y \
 		 SFE_PPE_QOS_SUPPORTED=y \
 		 SFE_PROCESS_LOCAL_OUT=y \
 		 SFE_RFS_SUPPORTED=y"
+
+SFE_MAKE_OPTS += "${@'SFE_L2TPV3_SUPPORTED=y' if (d.getVar('CONFIG_TARGET_ipq95xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq53xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq54xx', True) == 'y') and d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) != '256' else ''}"
 
 do_configure() {
 	true
