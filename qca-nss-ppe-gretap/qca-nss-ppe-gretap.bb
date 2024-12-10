@@ -15,11 +15,11 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI = "file://qca-nss-ppe/ \
 	   "
 
-PACKAGES += "kernel-module-qca-nss-ppe-gretap"
+PACKAGES += "kernel-module-qca-nss-ppe-gre"
 
 DEPENDS = "virtual/kernel qca-nss-ppe-tun"
 
-S = "${WORKDIR}/qca-nss-ppe/clients/gretap/"
+S = "${WORKDIR}/qca-nss-ppe/clients/gre/"
 PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
 
 
@@ -51,9 +51,9 @@ do_compile() {
 
 do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
-	install -m 0644 ${S}/qca-nss-ppe-gretap${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
-	install -d ${D}${includedir}/qca-nss-ppe-gretap
-	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-gretap/Module.symvers
+	install -m 0644 ${S}/qca-nss-ppe-gre${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	install -d ${D}${includedir}/qca-nss-ppe-gre
+	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-gre/Module.symvers
 }
 
-KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-gretap"
+KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-gre"
