@@ -124,7 +124,7 @@ start() {
 	}
 
 	if [ -d /sys/module/qca_ovsmgr ]; then
-		insmod ecm_ovs
+		modprobe ecm_ovs
 	fi
 
 }
