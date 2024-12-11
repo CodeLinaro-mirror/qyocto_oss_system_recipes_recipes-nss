@@ -66,31 +66,43 @@ ECM_MAKE_OPTS:ipq95xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
 				 EXAMPLES_BUILD_OVS=y \
+				 EXAMPLES_BUILD_PCC=y \
+				 ECM_CLASSIFIER_PCC_ENABLE=y \
 				 "
 ECM_MAKE_OPTS:ipq95xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
+				    EXAMPLES_BUILD_PCC=y \
+				    ECM_CLASSIFIER_PCC_ENABLE=y \
 				    "
 ECM_MAKE_OPTS:ipq54xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
                                  ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
                                  CONFIG_QCA_NSS_ECM_OVS=y \
                                  EXAMPLES_BUILD_OVS=y \
+                                 EXAMPLES_BUILD_PCC=y \
+                                 ECM_CLASSIFIER_PCC_ENABLE=y \
                                  "
 ECM_MAKE_OPTS:ipq54xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
                                     ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
                                     CONFIG_QCA_NSS_ECM_OVS=y \
                                     EXAMPLES_BUILD_OVS=y \
+                                    EXAMPLES_BUILD_PCC=y \
+                                    ECM_CLASSIFIER_PCC_ENABLE=y \
                                     "
 ECM_MAKE_OPTS:ipq53xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				 CONFIG_QCA_NSS_ECM_OVS=y \
 				 EXAMPLES_BUILD_OVS=y \
+				 EXAMPLES_BUILD_PCC=y \
+				 ECM_CLASSIFIER_PCC_ENABLE=y \
 				 "
 ECM_MAKE_OPTS:ipq53xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
 				    CONFIG_QCA_NSS_ECM_OVS=y \
 				    EXAMPLES_BUILD_OVS=y \
+				    EXAMPLES_BUILD_PCC=y \
+				    ECM_CLASSIFIER_PCC_ENABLE=y \
 				    "
 ECM_MAKE_OPTS:ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
 				ECM_CLASSIFIER_MSCS_ENABLE=y \
@@ -140,6 +152,8 @@ do_install() {
 	install -m 0644 ecm${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	[ -f examples/ecm_ovs${KERNEL_OBJECT_SUFFIX} ] && \
 		install -m 0644 examples/ecm_ovs${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	[ -f examples/ecm_pcc_test${KERNEL_OBJECT_SUFFIX} ] && \
+		install -m 0644 examples/ecm_pcc_test${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}/usr/bin
 	install -m 0755 ${WORKDIR}/files/ecm_dump.sh ${D}${bindir}/ecm_dump.sh
 	install -m 0755 ${WORKDIR}/files/qca-nss-ecm ${D}${bindir}/qca-nss-ecm
