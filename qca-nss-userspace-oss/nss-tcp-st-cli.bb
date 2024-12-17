@@ -31,5 +31,5 @@ do_compile() {
 
 do_install() {
 	install -d ${D}/usr/sbin
-	install -m 0755 ${S}/obj/nss-tcp-st-cli ${D}/usr/sbin
+	install -m 0755 ${S}/obj/nss-tcp-st ${D}/usr/sbin
 }
