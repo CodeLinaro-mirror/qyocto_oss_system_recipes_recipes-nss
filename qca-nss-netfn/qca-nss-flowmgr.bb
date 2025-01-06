@@ -16,26 +16,31 @@ SRC_URI = "file://qca-nss-netfn/"
 
 PACKAGES += "kernel-module-qca-nss-flowmgr "
 
-DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-sfe"
+DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-sfe qca-nss-ppe-rule"
 
 S = "${WORKDIR}/qca-nss-netfn/mgr/flowmgr"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
+		-I${STAGING_INCDIR}/qca-nss-ppe-rule \
 		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/qca-nss-netfn/ "
 
 MODULE_EXTRA_SYMBOLS += " \
 			${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
+			${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers \
 			${STAGING_INCDIR}/qca-nss-sfe/Module.symvers "
 
+MAKE_OPTS += "  NETFN_FLOWMGR_AE_PPE_ENABLE=y \
+		NETFN_FLOWMGR_AE_SFE_ENABLE=y \
+		flowmgr=y"
 do_configure() {
 	true
 }
 
 do_compile() {
 	unset LDFLAGS
-	make -C  "${STAGING_KERNEL_BUILDDIR}" \
+	make -C  "${STAGING_KERNEL_BUILDDIR}" ${MAKE_OPTS}\
 		CROSS_COMPILE="${TARGET_PREFIX}" \
 		ARCH="${KARCH}" \
 		M="${S}" \
