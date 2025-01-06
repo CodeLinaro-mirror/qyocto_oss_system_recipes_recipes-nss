@@ -18,7 +18,7 @@ SRC_URI = "file://qca-nss-ecm \
 	   "
 
 DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
-DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr qca-wifi"
 
 # Enable the following once qca-hyfi-bridge module is up.
 # DEPENDS:append = " qca-hyfi-bridge"
@@ -61,6 +61,9 @@ ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_CLASSIFIER_MSCS_ENABLE=y \
 			ECM_CLASSIFIER_EMESH_ENABLE=y \
 			ECM_FRONT_END_PPE_QOS_ENABLE=y \
+			ECM_CLASSIFIER_WIFI_ENABLE=y \
+			BUILD_ECM_WIFI_PLUGIN=y \
+			ECM_FRONT_END_FSE_ENABLE=y \
 			"
 ECM_MAKE_OPTS:ipq95xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
@@ -104,12 +107,6 @@ ECM_MAKE_OPTS:ipq53xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    EXAMPLES_BUILD_PCC=y \
 				    ECM_CLASSIFIER_PCC_ENABLE=y \
 				    "
-ECM_MAKE_OPTS:ipq53xx_64:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
-				ECM_CLASSIFIER_MSCS_ENABLE=y \
-				"
-ECM_MAKE_OPTS:ipq53xx:remove = "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
-				ECM_CLASSIFIER_MSCS_ENABLE=y \
-				"
 ECM_MAKE_OPTS:ipq53xx_32_QRDK_256:remove = "ECM_INTERFACE_BOND_ENABLE=y \
 				"
 
@@ -123,13 +120,14 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		-I${STAGING_INCDIR}/emesh-sp \
 		-I${STAGING_INCDIR}/qca-ovsmgr \
+		-I${STAGING_INCDIR}/qca-wifi \
 		"
 
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
 		${STAGING_INCDIR}/qca-mcs/Module.symvers ${STAGING_INCDIR}/emesh-sp/Module.symvers \
 		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers \
-		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers"
+		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers ${STAGING_INCDIR}/qca-wifi/Module.symvers "
 
 do_configure() {
 	true
@@ -154,6 +152,8 @@ do_install() {
 		install -m 0644 examples/ecm_ovs${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	[ -f examples/ecm_pcc_test${KERNEL_OBJECT_SUFFIX} ] && \
 		install -m 0644 examples/ecm_pcc_test${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	[ -f ecm_wifi_plugins/ecm-wifi-plugin${KERNEL_OBJECT_SUFFIX} ] && \
+		install -m 0644 ecm_wifi_plugins/ecm-wifi-plugin${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}/usr/bin
 	install -m 0755 ${WORKDIR}/files/ecm_dump.sh ${D}${bindir}/ecm_dump.sh
 	install -m 0755 ${WORKDIR}/files/qca-nss-ecm ${D}${bindir}/qca-nss-ecm
