@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 #
-# Copyright (c) 2022, Qualcomm Innovation Center, Inc. All rights reserved.
+# Copyright (c) 2022-2025, Qualcomm Innovation Center, Inc. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -27,6 +27,8 @@
 
 EIP_BASE=$((0x39880000))
 MAX_DESC_MASK=255
+EIP_NUMBER=0
+RING_COUNT=0
 
 get_first_set_bit_lsb() {
 	bitmask=$1
@@ -54,8 +56,17 @@ print_reg () {
 	print_mem $1 $reg_addr $3
 }
 
+load_version() {
+	EIP_NUMBER=$((($(devmem 0x398FFFFC) & 0xFF) >> 0))
+	if [ $EIP_NUMBER -eq 197 ]; then
+		RING_COUNT=8
+	else
+		RING_COUNT=4
+	fi
+}
+
 print_version() {
-	echo "EIP Number : $((($(devmem 0x398FFFFC) & 0xFF) >> 0))"
+	echo "EIP Number : $EIP_NUMBER"
 	echo "Major version : 3.$((($(devmem 0x398FFFFC) & 0xF000000) >> 24))"
 }
 
@@ -194,7 +205,7 @@ dump_stats() {
 
 	echo "cat /proc/interrupts |grep eip"
 	cat /proc/interrupts |grep eip
-	find /sys/kernel/debug/qca-nss-eip/eip197/ -type f -print -exec cat {} \;
+	find /sys/kernel/debug/qca-nss-eip/eip$EIP_NUMBER/ -type f -print -exec cat {} \;
 }
 
 #Invoke default dump function
@@ -202,14 +213,11 @@ dump_reg() {
 	print_version
 	dump_hia_reg
 	dump_pe_reg
-	dump_dma_reg 0
-	dump_dma_reg 1
-	dump_dma_reg 2
-	dump_dma_reg 3
-	dump_dma_reg 4
-	dump_dma_reg 5
-	dump_dma_reg 6
-	dump_dma_reg 7
+	r=0
+	while [ $r -lt $RING_COUNT ]; do
+		dump_dma_reg $r
+		r=$(($r + 1))
+	done
 }
 
 dump_ipsec() {
@@ -220,30 +228,30 @@ dump_ipsec() {
 			ifconfig ${iface##*/}
 		fi
 	done
-	echo "Total Tunnel: `ls -d /sys/kernel/debug/qca-nss-eip/eip197/ipsectun* | wc -l`"
-	find /sys/kernel/debug/qca-nss-eip/eip197/$id -type f -print -exec cat {} \;
-	find /sys/kernel/debug/qca-nss-eip/eip197/eip_hy_ipsec_ctx* -type f -print -exec cat {} \;
+	echo "Total Tunnel: `ls -d /sys/kernel/debug/qca-nss-eip/eip$EIP_NUMBER/ipsectun* | wc -l`"
+	find /sys/kernel/debug/qca-nss-eip/eip$EIP_NUMBER/$id -type f -print -exec cat {} \;
+
+	if [ $EIP_NUMBER -eq 197 ]; then
+		find /sys/kernel/debug/qca-nss-eip/eip$EIP_NUMBER/eip_hy_ipsec_ctx* -type f -print -exec cat {} \;
+	else
+		find /sys/kernel/debug/qca-nss-eip/eip$EIP_NUMBER/eip_ipsec_ctx* -type f -print -exec cat {} \;
+	fi
 }
 
 #Invoke default dump function
 dump_all() {
 	dump_reg
 
-	dump_cmd_desc 0 1
-	dump_res_desc 0 1
-	dump_cmd_desc 1 1
-	dump_res_desc 1 1
-	dump_cmd_desc 2 1
-	dump_res_desc 2 1
-	dump_cmd_desc 3 1
-	dump_res_desc 3 1
-	dump_cmd_desc 4 1
-	dump_cmd_desc 5 1
-	dump_cmd_desc 6 1
-	dump_cmd_desc 7 1
+	r=0
+	while [ $r -lt $RING_COUNT ]; do
+		dump_cmd_desc $r 1
+		if [ $r -lt 4 ]; then
+			dump_res_desc $r 1
+		fi
+		r=$(($r + 1))
+	done
 
 	dump_stats
-
 	dump_ipsec "ipsectun*"
 }
 
@@ -262,26 +270,34 @@ usage_msg () {
 }
 
 case "${1:-all}" in
+
 	"all")
+		load_version
 		dump_all
 		;;
 	"reg")
+		load_version
 		dump_reg
 		;;
 	"stats")
+		load_version
 		dump_stats
 		;;
 	"desc")
+		load_version
 		dump_cmd_desc ${2:-0} ${3:-1}
 		dump_res_desc ${2:-0} ${3:-1}
 		;;
 	"cmd")
+		load_version
 		dump_cmd_desc ${2:-0} ${3:-1}
 		;;
 	"ipsec")
+		load_version
 		dump_ipsec "ipsectun*"
 		;;
 	ipsec*)
+		load_version
 		dump_ipsec $1
 		;;
 	*)
