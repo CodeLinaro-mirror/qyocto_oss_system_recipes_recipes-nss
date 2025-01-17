@@ -9,22 +9,35 @@ CLEANBROKEN = "1"
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
-FILESPATH = "${TOPDIR}/../opensource/:"
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+FILESPATH =+ "${TOPDIR}/../opensource/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
-SRC_URI = "file://qca-nss-ppe/ \
+SRC_URI = "file://qca-nss-ppe \
+	   file://files \
 	   "
 
 PACKAGES += "kernel-module-qca-nss-ppe "
 
 DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46 qca-ovsmgr"
 DEPENDS:ipq53xx_32_QRDK_256:remove = "nat46"
+DEPENDS:ipq54xx_32_QRDK_256:remove = "nat46"
 
 RDEPEND-{PN} = "qca-ssdk-nohnat"
 
 S = "${WORKDIR}/qca-nss-ppe"
 SSDK_STG_INCDIR = "${STAGING_INCDIR}/qca-ssdk"
 NAT46_STG_INCDIR = "${STAGING_INCDIR}/nat46"
+
+PPE_MAKE_OPTS:${SOC} += "ppe-drv=y \
+			 PPE_IPSEC_ENABLE=y \
+			 PPE_TUN_ENABLE=y \
+			 "
+PPE_MAKE_OPTS:ipq53xx_32_QRDK_256:remove = " PPE_IPSEC_ENABLE=y \
+					     PPE_TUN_ENABLE=y \
+					     "
+PPE_MAKE_OPTS:ipq54x_32_QRDK_256:remove = " PPE_IPSEC_ENABLE=y \
+					    PPE_TUN_ENABLE=y \
+					    "
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
@@ -43,7 +56,7 @@ do_configure() {
 
 do_compile() {
 	unset LDFLAGS
-	make -C  "${STAGING_KERNEL_BUILDDIR}"  ppe-drv=y PPE_IPSEC_ENABLE=y PPE_TUN_ENABLE=y \
+	make -C  "${STAGING_KERNEL_BUILDDIR}"  ${PPE_MAKE_OPTS} \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
 		ARCH="${KARCH}" \
 		M="${S}" \
@@ -61,6 +74,15 @@ do_install() {
 	install -m 0644 ${S}/netlink/include/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/drv/exports/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe/Module.symvers
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/ppe_flow_dump ${D}${bindir}/ppe_flow_dump
+	install -m 0755 ${WORKDIR}/files/ppe_if_map ${D}${bindir}/ppe_if_map
+	install -m 0755 ${WORKDIR}/files/nss_perf_config.sh ${D}${bindir}/nss_perf_config
 }
+
+FILES:${PN} = "${bindir}/ppe_flow_dump \
+	${bindir}/ppe_if_map \
+	${bindir}/nss_perf_config \
+	"
 
 KERNEL_MODULE_AUTOLOAD:${PN} = " qca-nss-ppe"
