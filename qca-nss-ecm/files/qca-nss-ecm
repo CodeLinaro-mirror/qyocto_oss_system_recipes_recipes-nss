@@ -92,9 +92,9 @@ load_ecm() {
 
 	local kernel_version=$(uname -r)
 
-	# Need to check ath.ko location
+	# Load wifi-plugin based on umac
 	[ -e "/lib/modules/$kernel_version/kernel/drivers/qca-nss-ecm/ecm-wifi-plugin.ko" ] && {
-		[ -d /sys/module/ecm_wifi_plugin ] || [ -f /tmp/.wifi-config-done ] ||
+		[ -d /sys/module/ecm_wifi_plugin ] || [ -d /sys/module/umac  ] ||
 		[ -f /lib/modules/$kernel_version/ath.ko ] && modprobe ecm-wifi-plugin
 	}
 
