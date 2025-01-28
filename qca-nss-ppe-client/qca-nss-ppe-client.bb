@@ -57,7 +57,7 @@ MODULE_EXTRA_SYMBOLS ="${SSDK_STG_INCDIR}/Module.symvers ${NAT46_STG_INCDIR}/Mod
 		       ${STAGING_INCDIR}/qca-ovsmgr/Module.symvers \
 		       ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers"
 
-module_conf_qca-nss-ppe-bridge-mgr += "options qca-nss-ppe-bridge-mgr ovs_enabled=1"
+module_conf_qca-nss-ppe-bridge-mgr += "options qca-nss-ppe-bridge-mgr ovs_enabled=0"
 
 do_configure() {
 	true
