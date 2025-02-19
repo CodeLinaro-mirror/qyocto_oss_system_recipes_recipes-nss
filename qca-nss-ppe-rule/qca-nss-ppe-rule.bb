@@ -9,10 +9,11 @@ CLEANBROKEN = "1"
 SOC = "${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
-FILESPATH = "${TOPDIR}/../opensource/:"
+FILESPATH =+ "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
 SRC_URI = "file://qca-nss-ppe \
+	   file://files \
 	   "
 PACKAGES += "kernel-module-qca-nss-ppe-rule"
 
@@ -65,6 +66,15 @@ do_install() {
 	install -d ${D}${includedir}/qca-nss-ppe-rule
 	install -m 0644 ${WORKDIR}/qca-nss-ppe/drv/exports/* ${D}${includedir}/qca-nss-ppe-rule/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-rule/Module.symvers
+	install -d ${D}${bindir}
+	install -m 0755 ${WORKDIR}/files/acl_dump.sh ${D}${bindir}/acl_dump.sh
+	install -m 0755 ${WORKDIR}/files/json_mcast_hammer.sh ${D}${bindir}/json_mcast_hammer.sh
+	install -m 0755 ${WORKDIR}/files/mcast_hammer.sh ${D}${bindir}/mcast_hammer.sh
 }
+
+FILES:${PN} = "${bindir}/acl_dump.sh \
+	${bindir}/json_mcast_hammer.sh \
+	${bindir}/mcast_hammer.sh \
+	"
 
 KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-rule"

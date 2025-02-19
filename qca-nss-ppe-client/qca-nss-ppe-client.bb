@@ -11,9 +11,11 @@ OVERRIDES:append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-ppe-ppp
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 
-FILESPATH = "${TOPDIR}/../opensource/:"
+FILESPATH =+ "${TOPDIR}/../opensource/:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/:"
 
-SRC_URI = "file://qca-nss-ppe/ \
+SRC_URI = "file://qca-nss-ppe \
+	   file://files \
 	   "
 
 PACKAGES += "kernel-module-qca-nss-ppe-client "
@@ -85,7 +87,11 @@ do_install:append:qca-nss-ppe-vlan-mgr() {
 }
 
 do_install:append:qca-nss-ppe-bridge-mgr() {
+	install -d ${D}${bindir}
+	install -d ${D}${systemd_unitdir}/system
+	install -m 0644 ${WORKDIR}/files/qca-nss-ppe-bridge-mgr.service ${D}${systemd_unitdir}/system/
 	install -m 0644 ${S}/clients/bridge/qca-nss-ppe-bridge-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	install -m 0755 ${WORKDIR}/files/qca-nss-ppe-bridge-mgr.init ${D}${bindir}/qca-nss-ppe-bridge-mgr
 }
 
 do_install:append:qca-nss-ppe-pppoe-mgr() {
@@ -96,6 +102,10 @@ do_install:append:qca-nss-ppe-lag-mgr() {
 	install -m 0644 ${S}/clients/lag/qca-nss-ppe-lag${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 }
 
+FILES:${PN} = " ${bindir}/qca-nss-ppe-bridge-mgr \
+		${systemd_unitdir}/system/qca-nss-ppe-bridge-mgr.service"
+
+SYSTEMD_SERVICE:${PN} += "qca-nss-ppe-bridge-mgr.service"
 
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-vlan-mgr = " qca-nss-ppe-vlan"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-bridge-mgr = " qca-nss-ppe-bridge-mgr"
