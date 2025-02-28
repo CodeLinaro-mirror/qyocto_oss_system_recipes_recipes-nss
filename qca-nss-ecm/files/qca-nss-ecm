@@ -95,7 +95,7 @@ load_ecm() {
 	# Load wifi-plugin based on umac
 	[ -e "/lib/modules/$kernel_version/kernel/drivers/qca-nss-ecm/ecm-wifi-plugin.ko" ] && {
 		[ -d /sys/module/ecm_wifi_plugin ] || [ -d /sys/module/umac  ] ||
-		[ -f /lib/modules/$kernel_version/ath.ko ] && modprobe ecm-wifi-plugin
+		[ -f /lib/modules/$kernel_version/ath.ko ] && insmod /lib/modules/$(uname -r)/kernel/drivers/qca-nss-ecm/ecm-wifi-plugin.ko
 	}
 
 	support_bridge && {
