@@ -23,7 +23,7 @@ DEPENDS:${SOC}:append = " virtual/kernel qca-ssdk-nohnat qca-nss-ppe"
 S = "${WORKDIR}/qca-nss-dp"
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
-		-Wno-error=int-conversion -Wno-error=implicit-function-declaration -Wno-error=implicit-function-declaration \
+		-Wno-error=int-conversion -Wno-error=int-to-pointer-cast -Wno-error=implicit-function-declaration -Wno-error=implicit-function-declaration \
 		"
 
 MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-ssdk/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
