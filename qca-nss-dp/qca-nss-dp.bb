@@ -29,7 +29,7 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/qca-ssdk \
 MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-ssdk/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers"
 
 NSS_PPE_MODULES:${SOC} = " dp-ppe-ds=y \
-			dp-net-standby=n \
+			dp-net-standby=y \
 			dp-loopback=y \
 			CONFIG_QCA_NSS_DP_EAWTP=y \
 			"
