@@ -70,6 +70,9 @@ do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ${S}/drv/ppe_drv/qca-nss-ppe${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-ppe
+	install -d  ${STAGING_DIR}/usr/
+	install -d  ${STAGING_DIR}/usr/include
+
 	install -m 0644 ${S}/exports/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/netlink/include/* ${D}${includedir}/qca-nss-ppe/
 	install -m 0644 ${S}/drv/exports/* ${D}${includedir}/qca-nss-ppe/
@@ -78,6 +81,8 @@ do_install() {
 	install -m 0755 ${WORKDIR}/files/ppe_flow_dump ${D}${bindir}/ppe_flow_dump
 	install -m 0755 ${WORKDIR}/files/ppe_if_map ${D}${bindir}/ppe_if_map
 	install -m 0755 ${WORKDIR}/files/nss_perf_config.sh ${D}${bindir}/nss_perf_config
+	cp ${TOPDIR}/../opensource/qca-nss-ppe/drv/exports/ppe_acl.h ${STAGING_DIR}/usr/include
+	cp ${TOPDIR}/../opensource/qca-nss-ppe/drv/exports/ppe_drv_port.h ${STAGING_DIR}/usr/include
 }
 
 FILES:${PN} = "${bindir}/ppe_flow_dump \
