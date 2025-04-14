@@ -30,6 +30,7 @@ do_install() {
 	install -d ${D}${includedir}
 	install -m 0644 ${S}/include/nss_ppenl_acl_api.h ${D}${includedir}
 	install -m 0644 ${S}/include/nss_ppenl_base.h ${D}${includedir}
+	install -m 0644 ${S}/include/nss_ppenl_exception_api.h ${D}${includedir}
 	install -m 0644 ${S}/include/nss_ppenl_policer_api.h ${D}${includedir}
 	install -m 0644 ${S}/include/nss_ppenl_qos_api.h ${D}${includedir}
         install -m 0744 ${S}/obj/libnl-ppe.so ${D}/${libdir}
@@ -42,6 +43,7 @@ PACKAGES = "${PN}"
 
 FILES:${PN} += "${includedir}/nss_ppenl_acl_api.h \
                 ${includedir}/nss_ppenl_base.h \
+		${includedir}/nss_ppenl_exception_api.h \
                 ${includedir}/nss_ppenl_policer_api.h \
                 ${includedir}/nss_ppenl_qos_api.h \
                 ${libdir}/libnl-ppe.so \
