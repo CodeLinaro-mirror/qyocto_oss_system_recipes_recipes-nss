@@ -10,6 +10,8 @@ SRC_URI = "file://qca-nss-userspace-oss/ppe/ppecfg \
 TARGET_LDFLAGS ="-lnl-3 -lnl-ppe -lnl-genl-3 -pie -ljson-c"
 TARGET_CFLAGS = "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${S}/include -Wno-int-conversion"
 
+TARGET_CFLAGS += "${@bb.utils.contains('DISTRO_FEATURES','lgi_qca',' -O ','',d)}"
+
 DEPENDS = "libnl qca-nss-ppe qca-nss-libppenl json-c"
 
 RDEPENDS:${PN} += "qca-nss-libppenl"
