@@ -46,8 +46,12 @@ do_install() {
 	install -m 0644 ${S}/linux_std/qca81xx/*${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ${S}/linux_std/qca8084/*${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ${S}/linux_std/ptp/*${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+	install -m 0644 ${S}/linux_std/clock/*${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-phy
 	install -m 0644 ${S}/nss_ext/*.h ${D}${includedir}/qca-nss-phy/
+	install -m 0644 ${S}/linux_std/clock/*.h ${D}${includedir}/qca-nss-phy/
+	install -m 0644 ${S}/linux_std/*.h ${D}${includedir}/qca-nss-phy/
+	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-phy/Module.symvers
 
 	#Managing the Load Order of Kernel Modules
 	install -d ${D}${sysconfdir}/modprobe.d
@@ -64,6 +68,7 @@ do_install() {
 	echo "softdep qca8xxx-phc pre: qca-ssdk" > ${D}${sysconfdir}/modprobe.d/qca8xxx-phc.conf
 }
 
+KERNEL_MODULE_AUTOLOAD += "qca8k-cc"
 KERNEL_MODULE_AUTOLOAD += "qca8084-phy"
 KERNEL_MODULE_AUTOLOAD += "qca81xx-phy"
 KERNEL_MODULE_AUTOLOAD += "qca-nss-phy"
