@@ -7,7 +7,7 @@ inherit systemd
 
 CLEANBROKEN = "1"
 
-OVERRIDES:append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-ppe-pppoe-mgr:qca-nss-ppe-lag-mgr:"
+OVERRIDES:append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-ppe-pppoe-mgr:qca-nss-ppe-lag-mgr:qca-nss-ppe-dsa-mgr"
 
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
@@ -27,6 +27,7 @@ RDEPENDS-qca-nss-ppe-vlan-mgr = "qca-nss-ppe bonding"
 RDEPENDS-qca-nss-ppe-bridge-mgr = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding qca-ovsmgr"
 RDEPENDS-qca-nss-ppe-pppoe-mgr  = "qca-nss-ppe pppoe bonding"
 RDEPENDS-qca-nss-ppe-lag-mgr   = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding"
+RDEPENDS-qca-nss-ppe-dsa-mgr   = "qca-nss-ppe qca-nss-ppe-vlan-mgr"
 
 S = "${WORKDIR}/qca-nss-ppe"
 SSDK_STG_INCDIR = "${STAGING_INCDIR}/qca-ssdk"
@@ -38,6 +39,7 @@ NSS_PPE_MODULES:append:qca-nss-ppe-bridge-mgr = " bridge-mgr=y \
 NSS_PPE_MODULES:append:qca-nss-ppe-vlan-mgr  = " vlan-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-ppe-pppoe-mgr = " pppoe-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-ppe-lag-mgr = " lag-mgr=y"
+NSS_PPE_MODULES:append:qca-nss-ppe-dsa-mgr = " dsa-mgr=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
@@ -103,6 +105,10 @@ do_install:append:qca-nss-ppe-lag-mgr() {
 	install -m 0644 ${S}/clients/lag/qca-nss-ppe-lag${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 }
 
+do_install:append:qca-nss-ppe-dsa-mgr() {
+	install -m 0644 ${S}/clients/dsa/qca-nss-ppe-dsa-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+}
+
 FILES:${PN} = " ${bindir}/qca-nss-ppe-bridge-mgr \
 		${systemd_unitdir}/system/qca-nss-ppe-bridge-mgr.service"
 
@@ -113,3 +119,4 @@ KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-bridge-mgr = " qca-nss-ppe-bridge-mgr"
 KERNEL_MODULE_PROBECONF += "qca-nss-ppe-bridge-mgr"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-pppoe-mgr = " qca-nss-ppe-pppoe-mgr"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-lag-mgr = " qca-nss-ppe-lag"
+KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-dsa-mgr = " qca-nss-ppe-dsa-mgr"
