@@ -32,7 +32,8 @@ SFE_MAKE_OPTS = "SFE_SUPPORT_IPV6=y \
 		 SFE_PROCESS_LOCAL_OUT=y \
 		 SFE_PPE_QOS_SUPPORTED=y \
 		 SFE_PROCESS_LOCAL_OUT=y \
-		 SFE_RFS_SUPPORTED=y"
+		 SFE_RFS_SUPPORTED=y \
+		 SFE_DSA_ACCEL_ENABLE=y"
 
 SFE_MAKE_OPTS += "${@'SFE_L2TPV3_SUPPORTED=y' if (d.getVar('CONFIG_TARGET_ipq95xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq53xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq54xx', True) == 'y') and d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) != '256' else ''}"
 
