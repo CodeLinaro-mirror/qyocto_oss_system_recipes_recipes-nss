@@ -7,7 +7,7 @@ inherit systemd
 
 CLEANBROKEN = "1"
 
-OVERRIDES:append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-ppe-pppoe-mgr:qca-nss-ppe-lag-mgr:qca-nss-ppe-dsa-mgr"
+OVERRIDES:append = ":qca-nss-ppe-vlan-mgr:qca-nss-ppe-bridge-mgr:qca-nss-pppoe-mgr:qca-nss-ppe-lag-mgr:qca-nss-ppe-dsa-mgr"
 
 SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
 SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
@@ -25,7 +25,7 @@ DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46 qca-ovsmgr qca-nss-ppe qca-nss-p
 RDEPEND-{PN} = "qca-ssdk-nohnat"
 RDEPENDS-qca-nss-ppe-vlan-mgr = "qca-nss-ppe bonding"
 RDEPENDS-qca-nss-ppe-bridge-mgr = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding qca-ovsmgr"
-RDEPENDS-qca-nss-ppe-pppoe-mgr  = "qca-nss-ppe pppoe bonding"
+RDEPENDS-qca-nss-pppoe-mgr  = "qca-nss-ppe pppoe bonding"
 RDEPENDS-qca-nss-ppe-lag-mgr   = "qca-nss-ppe qca-nss-ppe-vlan-mgr bonding"
 RDEPENDS-qca-nss-ppe-dsa-mgr   = "qca-nss-ppe qca-nss-ppe-vlan-mgr"
 
@@ -37,9 +37,10 @@ NSS_PPE_MODULES:append:qca-nss-ppe-bridge-mgr = " bridge-mgr=y \
 						  NSS_PPE_BRIDGE_MGR_OVS_ENABLE=y \
 						  "
 NSS_PPE_MODULES:append:qca-nss-ppe-vlan-mgr  = " vlan-mgr=y"
-NSS_PPE_MODULES:append:qca-nss-ppe-pppoe-mgr = " pppoe-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-ppe-lag-mgr = " lag-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-ppe-dsa-mgr = " dsa-mgr=y"
+NSS_PPE_MODULES:append:qca-nss-pppoe-mgr = " pppoe-mgr=y"
+NSS_PPE_MODULES:append:${SOC}:qca-nss-pppoe-mgr = " PPPOE_MGR_FE_PPE_ENABLE=y"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
@@ -97,8 +98,8 @@ do_install:append:qca-nss-ppe-bridge-mgr() {
 	install -m 0755 ${WORKDIR}/files/qca-nss-ppe-bridge-mgr.init ${D}${bindir}/qca-nss-ppe-bridge-mgr
 }
 
-do_install:append:qca-nss-ppe-pppoe-mgr() {
-	install -m 0644 ${S}/clients/pppoe/qca-nss-ppe-pppoe-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
+do_install:append:qca-nss-pppoe-mgr() {
+	install -m 0644 ${S}/clients/pppoe/qca-nss-pppoe-mgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 }
 
 do_install:append:qca-nss-ppe-lag-mgr() {
@@ -117,6 +118,6 @@ SYSTEMD_SERVICE:${PN} += "qca-nss-ppe-bridge-mgr.service"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-vlan-mgr = " qca-nss-ppe-vlan"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-bridge-mgr = " qca-nss-ppe-bridge-mgr"
 KERNEL_MODULE_PROBECONF += "qca-nss-ppe-bridge-mgr"
-KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-pppoe-mgr = " qca-nss-ppe-pppoe-mgr"
+KERNEL_MODULE_AUTOLOAD:append:qca-nss-pppoe-mgr = " qca-nss-pppoe-mgr"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-lag-mgr = " qca-nss-ppe-lag"
 KERNEL_MODULE_AUTOLOAD:append:qca-nss-ppe-dsa-mgr = " qca-nss-ppe-dsa-mgr"
