@@ -16,7 +16,9 @@ PACKAGES += "kernel-module-qca-nss-ecm-wifi-plugin "
 
 DEPENDS = "virtual/kernel qca-nss-ecm qca-wifi"
 
-ECM_MAKE_OPTS:${SOC} += "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y "
+ECM_MAKE_OPTS:${SOC} += "ECM_CLASSIFIER_MSCS_SCS_ENABLE=y \
+			ECM_CLASSIFIER_WIFI_ENABLE=y \
+			"
 
 S = "${WORKDIR}/qca-nss-ecm/ecm_wifi_plugins"
 
@@ -40,7 +42,7 @@ do_compile() {
 		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
 		SoC='${SOC_TYPE}' \
 		${ECM_MAKE_OPTS} \
-		modules 
+		modules
 }
 
 do_install() {
