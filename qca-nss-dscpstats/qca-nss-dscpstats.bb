@@ -57,3 +57,5 @@ FILES:${PN} = " ${bindir}/qca-nss-dscpstats \
 		${systemd_unitdir}/system/qca-nss-dscpstats.service"
 
 SYSTEMD_SERVICE:${PN} += "qca-nss-dscpstats.service"
+
+KERNEL_MODULE_AUTOLOAD += "qca-nss-dscpstats"
