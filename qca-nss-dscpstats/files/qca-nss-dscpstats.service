@@ -21,6 +21,7 @@ Before=CcspLMLite.service
 [Service]
 Type=simple
 ExecStart=/bin/sh -c "/usr/bin/qca-nss-dscpstats start"
+ExecStop=/bin/sh -c "/usr/bin/qca-nss-dscpstats stop"
 RemainAfterExit=true
 
 [Install]
