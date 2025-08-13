@@ -17,7 +17,7 @@ TARGET_CFLAGS += " \
 		-I${STAGING_INCDIR}/libnl3 \
 		-I${STAGING_INCDIR}/libnl-tcpst \
 		"
-TARGET_CFLAGS += "${@bb.utils.contains('DISTRO_FEATURES','lgi_qca',' -Wno-stringop-overflow -Wno-unused-result ','',d)}"
+TARGET_CFLAGS += "${@bb.utils.contains('DISTRO_FEATURES','ofw_qca',' -Wno-stringop-overflow -Wno-unused-result ','',d)}"
 
 TARGET_LDFLAGS = "-L${STAGING_INCDIR}/nss-tcp-st"
 
