@@ -40,7 +40,8 @@ NSS_PPE_MODULES:append:qca-nss-ppe-vlan-mgr  = " vlan-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-ppe-lag-mgr = " lag-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-ppe-dsa-mgr = " dsa-mgr=y"
 NSS_PPE_MODULES:append:qca-nss-pppoe-mgr = " pppoe-mgr=y"
-NSS_PPE_MODULES:append:${SOC}:qca-nss-pppoe-mgr = " PPPOE_MGR_FE_PPE_ENABLE=y"
+
+PPPOE_MAKE_OPTS:${SOC} += "PPPOE_MGR_FE_PPE_ENABLE=y "
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
@@ -75,6 +76,7 @@ do_compile() {
 		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
 		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
 		SoC='${SOC_TYPE}' \
+		${PPPOE_MAKE_OPTS} \
 		modules
 }
 

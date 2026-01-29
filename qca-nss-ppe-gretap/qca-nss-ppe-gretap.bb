@@ -25,6 +25,8 @@ PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
 
 string='BUILD_ID = \\"Build Id: $(shell date +'%m/%d/%y\,\ %H:%M:%S')\\"'
 
+GRE_MGR_MAKE_OPTS:${SOC} += "GRE_MGR_FE_PPE_ENABLE=y "
+
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
@@ -46,6 +48,7 @@ do_compile() {
 	EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
 	KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
 	SoC='${SOC_TYPE}' \
+	${GRE_MGR_MAKE_OPTS} \
 	modules
 }
 
