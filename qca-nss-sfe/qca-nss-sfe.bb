@@ -21,10 +21,7 @@ S = "${WORKDIR}/qca-nss-sfe"
 PACKAGES += "kernel-module-qca-nss-sfe"
 
 EXTRA_CFLAGS += "-I${S}/exports \
-		 -I${STAGING_INCDIR}/qca-nss-ppe \
-		 -DSFE_TSO_MAX_SEG_LIMIT_ENABLE"
-
-EXTRA_CFLAGS += "${@' -DSFE_TSO_MAX_SEG_LIMIT_ENABLE' if (d.getVar('CONFIG_TARGET_ipq95xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq53xx', True) == 'y' or d.getVar('CONFIG_TARGET_ipq54xx', True) == 'y') else ''}"
+		 -I${STAGING_INCDIR}/qca-nss-ppe"
 
 MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers"
 
@@ -40,6 +37,10 @@ SFE_MAKE_OPTS += "${@'SFE_L2TPV3_SUPPORTED=y' if (d.getVar('CONFIG_TARGET_ipq95x
 do_configure() {
 	true
 }
+
+EXTRA_CFLAGS:append:ipq95xx = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=32"
+EXTRA_CFLAGS:append:ipq53xx = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=32"
+EXTRA_CFLAGS:append:ipq54xx = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=48"
 
 do_compile() {
 	unset LDFLAGS
