@@ -34,6 +34,19 @@ PPE_RULE_MAKE_OPTS:ipq53xx_64:append = "PPE_RULE_IPQ53XX=y"
 PPE_RULE_MAKE_OPTS:ipq54xx:append = "PPE_RULE_IPQ54XX=y"
 PPE_RULE_MAKE_OPTS:ipq54xx_64:append = "PPE_RULE_IPQ54XX=y"
 
+PPE_RULE_MAKE_OPTS:ipq96xx:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y PPE_PM_ENABLED=y PPE_PORT_MGMT_ENABLED=y"
+PPE_RULE_MAKE_OPTS:ipq96xx_64:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y PPE_PM_ENABLED=y PPE_PORT_MGMT_ENABLED=y"
+
+PPE_RULE_MAKE_OPTS:ipq52xx:append = " PPE_VLAN_ENABED=y \
+		PPE_DSCP_ENABLED=y \
+		PPE_PM_ENABLED=y \
+		PPE_PORT_MGMT_ENABLED=y"
+
+PPE_RULE_MAKE_OPTS:ipq52xx_64:append = " PPE_VLAN_ENABED=y \
+		PPE_DSCP_ENABLED=y \
+		PPE_PM_ENABLED=y \
+		PPE_PORT_MGMT_ENABLED=y"
+
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
@@ -70,11 +83,18 @@ do_install() {
 	install -m 0755 ${WORKDIR}/files/acl_dump.sh ${D}${bindir}/acl_dump.sh
 	install -m 0755 ${WORKDIR}/files/json_mcast_hammer.sh ${D}${bindir}/json_mcast_hammer.sh
 	install -m 0755 ${WORKDIR}/files/mcast_hammer.sh ${D}${bindir}/mcast_hammer.sh
+	install -m 0755 ${WORKDIR}/files/policer_dump.sh  ${D}${bindir}/policer_dump.sh
+	install -m 0755 ${WORKDIR}/files/pm_dump.sh ${D}${bindir}/pm_dump.sh
+	install -m 0755 ${WORKDIR}/files/vlan_rule_dump.sh ${D}${bindir}/vlan_rule_dump.sh
+	install -m 0755 ${WORKDIR}/files/dscp_pcp_dump.sh ${D}${bindir}/dscp_pcp_dump.sh
 }
 
 FILES:${PN} = "${bindir}/acl_dump.sh \
 	${bindir}/json_mcast_hammer.sh \
 	${bindir}/mcast_hammer.sh \
+	${bindir}/policer_dump.sh \
+	${bindir}/pm_dump.sh \
+	${bindir}/vlan_rule_dump.sh \
+	${bindir}/dscp_pcp_dump.sh \
 	"
-
 KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-rule"
