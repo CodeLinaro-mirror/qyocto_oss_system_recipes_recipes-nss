@@ -146,13 +146,22 @@ do_configure() {
 	true
 }
 
+do_compile:prepend() {
+	cfg="${STAGING_KERNEL_BUILDDIR}/.config"
+
+	if [ -s "$cfg" ]; then
+		if grep -q "^CONFIG_BRIDGE_MCAST_OFFLOAD=y" "$cfg"; then
+			EXTRA_CFLAGS="${EXTRA_CFLAGS} -DECM_ATH_MCAST_ENABLE -I${STAGING_KERNEL_BUILDDIR}/../kernel-source/net/bridge"
+		fi
+	fi
+}
 do_compile() {
 	unset LDFLAGS
 	make -C "${STAGING_KERNEL_BUILDDIR}" \
 		CROSS_COMPILE="${TARGET_PREFIX}" \
 		ARCH="${KARCH}" \
 		M="${S}" \
-		EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
+		EXTRA_CFLAGS="$EXTRA_CFLAGS" \
 		KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
 		SoC="${SOC_TYPE}" \
 		${ECM_MAKE_OPTS} \
