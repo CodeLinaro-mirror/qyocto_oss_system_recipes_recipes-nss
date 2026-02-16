@@ -38,9 +38,18 @@ do_configure() {
 	true
 }
 
-EXTRA_CFLAGS:append:ipq95xx = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=32"
-EXTRA_CFLAGS:append:ipq53xx = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=32"
-EXTRA_CFLAGS:append:ipq54xx = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=48"
+
+TSO_SEG_MAX = "32"
+TSO_SEG_MAX:ipq54xx = "48"
+TSO_SEG_MAX:ipq54xx_64 = "48"
+
+TSO_SEG_MAX:ipq52xx = "48"
+TSO_SEG_MAX:ipq52xx_64 = "48"
+
+TSO_SEG_MAX:ipq96xx = "48"
+TSO_SEG_MAX:ipq96xx_64 = "48"
+
+EXTRA_CFLAGS:append: = " -DSFE_TSO_MAX_SEG_LIMIT_ENABLE=y -DSFE_TSO_SEG_MAX=${TSO_SEG_MAX}"
 
 do_compile() {
 	unset LDFLAGS
