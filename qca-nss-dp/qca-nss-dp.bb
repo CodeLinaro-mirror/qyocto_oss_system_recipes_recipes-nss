@@ -34,6 +34,11 @@ NSS_PPE_MODULES:${SOC} = " dp-ppe-ds=y \
 			CONFIG_QCA_NSS_DP_EAWTP=y \
 			"
 
+NSS_PPE_MODULES:ipq52xx_64:remove = "dp-loopback=y"
+NSS_PPE_MODULES:ipq52xx:remove = "dp-loopback=y"
+NSS_PPE_MODULES:ipq96xx_64:remove = "dp-loopback=y"
+NSS_PPE_MODULES:ipq96xx:remove = "dp-loopback=y"
+
 PACKAGES += "kernel-module-qca-nss-dp"
 
 do_configure() {
@@ -67,31 +72,15 @@ do_install() {
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
+	install -d ${D}${sysconfdir}/config
+	install -m 0755 ${WORKDIR}/files/nss_cfg_${SOC_TYPE}.ini ${D}${sysconfdir}/config/nss_cfg.ini
 }
 
-FILES:${PN}:ipq95xx_64 =" \
+FILES:${PN} =" \
 	${bindir}/qca-nss-dp \
 	${systemd_unitdir}/system/qca-nss-dp.service \
-	"
-FILES:${PN}:ipq95xx =" \
-	${bindir}/qca-nss-dp \
-	${systemd_unitdir}/system/qca-nss-dp.service \
-	"
-FILES:${PN}:ipq54xx_64 =" \
-        ${bindir}/qca-nss-dp \
-        ${systemd_unitdir}/system/qca-nss-dp.service \
-        "
-FILES:${PN}:ipq54xx =" \
-        ${bindir}/qca-nss-dp \
-        ${systemd_unitdir}/system/qca-nss-dp.service \
-        "
-FILES:${PN}:ipq53xx_64 =" \
-	${bindir}/qca-nss-dp \
-	${systemd_unitdir}/system/qca-nss-dp.service \
-	"
-FILES:${PN}:ipq53xx =" \
-	${bindir}/qca-nss-dp \
-	${systemd_unitdir}/system/qca-nss-dp.service \
+	${sysconfdir}/config \
+	${sysconfdir}/config/nss_cfg.ini \
 	"
 
 SYSTEMD_SERVICE:${PN}:${SOC}:append = " qca-nss-dp.service"
