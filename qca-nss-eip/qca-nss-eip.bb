@@ -38,6 +38,12 @@ NSS_EIP_DIR:ipq53xx_64 = "eip196"
 NSS_EIP_DIR:ipq54xx = "eip196"
 NSS_EIP_DIR:ipq54xx_64 = "eip196"
 
+NSS_EIP_DIR:ipq52xx = "eip196"
+NSS_EIP_DIR:ipq52xx_64 = "eip196"
+
+NSS_EIP_DIR:ipq96xx = "eip197_v2"
+NSS_EIP_DIR:ipq96xx_64 = "eip17_v2"
+
 NSS-EIP-MODULES = "eip_ipsec=m"
 
 eip_crypto = "m"
