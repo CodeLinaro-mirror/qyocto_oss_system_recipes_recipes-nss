@@ -18,7 +18,7 @@ SRC_URI = "file://qca-nss-ppe \
 
 PACKAGES += "kernel-module-qca-nss-ppe "
 
-DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46 qca-ovsmgr"
+DEPENDS = "virtual/kernel qca-ssdk-nohnat nat46 qca-ovsmgr qca-nss-debug"
 DEPENDS:ipq53xx_32_QRDK_256:remove = "nat46"
 DEPENDS:ipq54xx_32_QRDK_256:remove = "nat46"
 
@@ -44,6 +44,7 @@ EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk/init \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
 		-I${STAGING_INCDIR}/qca-ovsmgr \
+		-I${STAGING_INCDIR}/qca-nss-debug \
 		-I${STAGING_INCDIR}/ \
 		"
 
