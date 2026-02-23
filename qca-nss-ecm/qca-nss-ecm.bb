@@ -65,6 +65,10 @@ ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_FSE_ENABLE=y \
 			ECM_CLASSIFIER_HYFI_ENABLE=y \
 			ECM_INTERFACE_DSA_ENABLE=y \
+			ECM_INTERFACE_L2TPV3_ENABLE=y \
+			ECM_INTERFACE_PPP_ENABLE=y \
+			ECM_INTERFACE_PPPOE_ENABLE=y \
+			ECM_INTERFACE_BRIDGE_ISOLATION_ENABLE=y \
 			"
 ECM_MAKE_OPTS:ipq95xx:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				 ECM_INTERFACE_OVS_BRIDGE_ENABLE=y \
@@ -109,7 +113,14 @@ ECM_MAKE_OPTS:ipq53xx_64:append = " ECM_CLASSIFIER_OVS_ENABLE=y \
 				    ECM_CLASSIFIER_PCC_ENABLE=y \
 				    "
 ECM_MAKE_OPTS:ipq53xx_32_QRDK_256:remove = "ECM_INTERFACE_BOND_ENABLE=y \
+				 ECM_INTERFACE_L2TPV3_ENABLE=y \
 				"
+
+ECM_MAKE_OPTS:ipq95xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
+ECM_MAKE_OPTS:ipq96xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
+ECM_MAKE_OPTS:ipq52xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
+ECM_MAKE_OPTS:ipq53xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
+ECM_MAKE_OPTS:ipq54xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
 
 ECM_MAKE_OPTS:append = "${@' ECM_FRONT_END_CONN_LIMIT_ENABLE=y' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '256' else ''}"
 ECM_MAKE_OPTS:append = "${@' ECM_256M_PROFILE=y' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '256' else ''}"
@@ -147,6 +158,7 @@ do_compile() {
 		${ECM_MAKE_OPTS} \
 		modules
 }
+
 do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ecm${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
@@ -164,6 +176,22 @@ do_install() {
 	install -d ${D}${includedir}/qca-nss-ecm
 	install -m 0644 exports/* ${D}${includedir}/qca-nss-ecm/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ecm/Module.symvers
+}
+
+do_install:append() {
+	cfg="${STAGING_KERNEL_BUILDDIR}/.config"
+	ECM_CONNTRACK_MAX=16384
+
+	if [ -f "$cfg" ]; then
+		if grep -q '^CONFIG_KERNEL_IPQ_MEM_PROFILE=256' "$cfg"; then
+			ECM_CONNTRACK_MAX=2048
+		elif grep -q '^CONFIG_KERNEL_IPQ_MEM_PROFILE=512' "$cfg"; then
+			ECM_CONNTRACK_MAX=8192
+		fi
+	fi
+
+	echo "net.netfilter.nf_conntrack_max=${ECM_CONNTRACK_MAX}" \
+	>> ${D}${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf
 }
 
 FILES:${PN} = "${systemd_unitdir}/system/qca-nss-ecm.service \
