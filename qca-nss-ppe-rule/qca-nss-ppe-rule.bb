@@ -40,12 +40,18 @@ PPE_RULE_MAKE_OPTS:ipq96xx_64:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y P
 PPE_RULE_MAKE_OPTS:ipq52xx:append = " PPE_VLAN_ENABED=y \
 		PPE_DSCP_ENABLED=y \
 		PPE_PM_ENABLED=y \
-		PPE_PORT_MGMT_ENABLED=y"
+		PPE_PORT_MGMT_ENABLED=y \
+		PPE_DOT1P_ENABLED=y \
+		PPE_GEMPORT_ENABLED=y \
+		"
 
 PPE_RULE_MAKE_OPTS:ipq52xx_64:append = " PPE_VLAN_ENABED=y \
 		PPE_DSCP_ENABLED=y \
 		PPE_PM_ENABLED=y \
-		PPE_PORT_MGMT_ENABLED=y"
+		PPE_PORT_MGMT_ENABLED=y \
+		PPE_DOT1P_ENABLED=y \
+		PPE_GEMPORT_ENABLED=y \
+		"
 
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
@@ -87,6 +93,8 @@ do_install() {
 	install -m 0755 ${WORKDIR}/files/pm_dump.sh ${D}${bindir}/pm_dump.sh
 	install -m 0755 ${WORKDIR}/files/vlan_rule_dump.sh ${D}${bindir}/vlan_rule_dump.sh
 	install -m 0755 ${WORKDIR}/files/dscp_pcp_dump.sh ${D}${bindir}/dscp_pcp_dump.sh
+	install -m 0755 ${WORKDIR}/files/dot1p_dump.sh ${D}${bindir}/dot1p_dump.sh
+	install -m 0755 ${WORKDIR}/files/gemport_dump.sh ${D}${bindir}/gemport_dump.sh
 }
 
 FILES:${PN} = "${bindir}/acl_dump.sh \
@@ -96,5 +104,8 @@ FILES:${PN} = "${bindir}/acl_dump.sh \
 	${bindir}/pm_dump.sh \
 	${bindir}/vlan_rule_dump.sh \
 	${bindir}/dscp_pcp_dump.sh \
+	${bindir}/dot1p_dump.sh \
+	${bindir}/gemport_dump.sh \
 	"
+
 KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-rule"
