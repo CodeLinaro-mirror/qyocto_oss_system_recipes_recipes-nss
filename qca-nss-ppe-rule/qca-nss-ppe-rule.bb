@@ -67,9 +67,17 @@ do_configure() {
 	true
 }
 
+do_compile:prepend() {
+	ppe_rule_opts="PPE_COS_MAP_ENABLED=y"
+	cfg="${STAGING_KERNEL_BUILDDIR}/.config"
+	if [ -f "$cfg" ] && grep -Eq '^CONFIG_KERNEL_IPQ_MEM_PROFILE=(256|512)\b' "$cfg"; then
+		ppe_rule_opts = ""
+	fi
+}
+
 do_compile() {
 	unset LDFLAGS
-	make -C "${STAGING_KERNEL_BUILDDIR}" ${PPE_RULE_MAKE_OPTS} \
+	make -C "${STAGING_KERNEL_BUILDDIR}" ${PPE_RULE_MAKE_OPTS} ${ppe_rule_opts} \
 	CROSS_COMPILE="${TARGET_PREFIX}" \
 	ARCH="${KARCH}" \
 	M="${S}" \
