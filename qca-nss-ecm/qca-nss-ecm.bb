@@ -18,7 +18,7 @@ SRC_URI = "file://qca-nss-ecm \
 	   "
 
 DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
-DEPENDS:${SOC}:append = " nat46 qca-mcs-lkm qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS:${SOC}:append = " nat46 qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
 # Enable the following once qca-hyfi-bridge module is up.
 DEPENDS:append = " qca-hyfi-bridge"
@@ -51,7 +51,7 @@ ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_INTERFACE_GRE_TUN_ENABLE=y \
 			ECM_INTERFACE_GRE_TAP_ENABLE=y \
 			ECM_INTERFACE_MAP_T_ENABLE=y \
-			ECM_MULTICAST_ENABLE=y \
+			ECM_ATH_MCAST_ENABLE=y \
 			ECM_INTERFACE_BOND_ENABLE=y \
 			ECM_INTERFACE_VXLAN_ENABLE=y \
 			ECM_INTERFACE_IPSEC_ENABLE=y \
@@ -127,7 +127,6 @@ ECM_MAKE_OPTS:append = "${@' ECM_256M_PROFILE=y' if d.getVar('CONFIG_KERNEL_IPQ_
 ECM_MAKE_OPTS:append = "${@' ECM_FRONT_END_CONN_LIMIT_ENABLE=y' if d.getVar('CONFIG_LOWMEM_FLASH', True) == 'y' else ''}"
 
 EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
-		-I${STAGING_INCDIR}/qca-mcs \
 		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		-I${STAGING_INCDIR}/emesh-sp \
@@ -137,7 +136,7 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
-		${STAGING_INCDIR}/qca-mcs/Module.symvers ${STAGING_INCDIR}/emesh-sp/Module.symvers \
+		${STAGING_INCDIR}/emesh-sp/Module.symvers \
 		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers ${STAGING_INCDIR}/hyfibr/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tun/Module.symvers"
