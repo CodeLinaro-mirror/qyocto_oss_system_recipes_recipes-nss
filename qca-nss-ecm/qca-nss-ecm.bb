@@ -20,9 +20,6 @@ SRC_URI = "file://qca-nss-ecm \
 DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
 DEPENDS:${SOC}:append = " nat46 qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
-# Enable the following once qca-hyfi-bridge module is up.
-DEPENDS:append = " qca-hyfi-bridge"
-
 RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
 		pppoe nat46"
@@ -63,7 +60,6 @@ ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_FRONT_END_PPE_QOS_ENABLE=y \
 			ECM_CLASSIFIER_WIFI_ENABLE=y \
 			ECM_FRONT_END_FSE_ENABLE=y \
-			ECM_CLASSIFIER_HYFI_ENABLE=y \
 			ECM_INTERFACE_DSA_ENABLE=y \
 			ECM_INTERFACE_L2TPV3_ENABLE=y \
 			ECM_INTERFACE_PPP_ENABLE=y \
@@ -131,14 +127,13 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		-I${STAGING_INCDIR}/emesh-sp \
 		-I${STAGING_INCDIR}/qca-ovsmgr \
-		-I${STAGING_INCDIR}/hyfibr \
 		"
 
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
 		${STAGING_INCDIR}/emesh-sp/Module.symvers \
 		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers \
-		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers ${STAGING_INCDIR}/hyfibr/Module.symvers \
+		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tun/Module.symvers"
 
 do_configure() {
