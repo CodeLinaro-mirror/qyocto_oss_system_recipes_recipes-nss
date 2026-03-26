@@ -82,8 +82,9 @@ do_install() {
 	install -m 0755 ${WORKDIR}/files/ppe_flow_dump ${D}${bindir}/ppe_flow_dump
 	install -m 0755 ${WORKDIR}/files/ppe_if_map ${D}${bindir}/ppe_if_map
 	install -m 0755 ${WORKDIR}/files/nss_perf_config.sh ${D}${bindir}/nss_perf_config
-	cp ${TOPDIR}/../opensource/qca-nss-ppe/drv/exports/ppe_acl.h ${STAGING_DIR}/usr/include
-	cp ${TOPDIR}/../opensource/qca-nss-ppe/drv/exports/ppe_drv_port.h ${STAGING_DIR}/usr/include
+	install -m 0644 ${S}/drv/exports/* ${STAGING_DIR}/usr/include/
+	install -m 0644 ${S}/drv/ppe_ds/exports/* ${STAGING_DIR}/usr/include
+	install -m 0644 ${S}/exports/* ${STAGING_DIR}/usr/include
 }
 
 FILES:${PN} = "${bindir}/ppe_flow_dump \
