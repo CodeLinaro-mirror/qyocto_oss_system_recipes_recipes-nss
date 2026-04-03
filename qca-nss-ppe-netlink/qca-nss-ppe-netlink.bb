@@ -16,21 +16,34 @@ SRC_URI = "file://qca-nss-ppe"
 
 PACKAGES += "kernel-module-qca-nss-ppe-netlink"
 
-DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-ppe-rule"
-
+DEPENDS = " virtual/kernel qca-nss-ppe qca-nss-ppe-rule"
+RDEPENDS-${PN}:ipq52xx:append = " qca-nss-dp"
+RDEPENDS-${PN}:ipq52xx_64:append = " qca-nss-dp"
+RDEPENDS-${PN}:ipq96xx:append = " qca-nss-dp"
+RDEPENDS-${PN}:ipq96xx_64:append = " qca-nss-dp"
 S = "${WORKDIR}/qca-nss-ppe"
 
-NSS_PPE_MODULES += "netlink=y"
+NSS_PPE_MODULES:${SOC} += "netlink=y"
+NSS_PPE_MODULES:ipq52xx:append = " PPE_TUN_RPS_ENABLED=y"
+NSS_PPE_MODULES:ipq52xx_64:append = " PPE_TUN_RPS_ENABLED=y"
+NSS_PPE_MODULES:ipq96xx:append = " PPE_TUN_RPS_ENABLED=y"
+NSS_PPE_MODULES:ipq96xx_64:append = " PPE_TUN_RPS_ENABLED=y"
 
-MODULE_EXTRA_SYMBOLS = "${STAGING_INCDIR}/qca-nss-ppe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers"
 
-EXTRA_CFLAGS += " \
+MODULE_EXTRA_SYMBOLS = " \
+		${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
+		${STAGING_INCDIR}/qca-nss-ppe-rule/Module.symvers \
+		${STAGING_INCDIR}/qca-nss-dp/Module.symvers \
+		"
+
+EXTRA_CFLAGS+= " \
                 -I${STAGING_INCDIR}/qca-nss-ppe \
                 -I${STAGING_INCDIR}/qca-ssdk \
                 -I${STAGING_INCDIR}/qca-ssdk/init \
                 -I${STAGING_INCDIR}/qca-ssdk/fal \
-                -I${STAGING_INCDIR}/qca-nss-ppe/drv/ \
-                "
+		-I${STAGING_INCDIR}/qca-nss-ppe/drv/ \
+		-I${STAGING_INCDIR}/qca-nss-dp \
+		"
 
 do_configure() {
         true
@@ -43,7 +56,7 @@ do_compile() {
         ARCH="${KARCH}" \
         M="${S}" \
         EXTRA_CFLAGS="${EXTRA_CFLAGS}" \
-        KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
+	KBUILD_EXTRA_SYMBOLS="${MODULE_EXTRA_SYMBOLS}" \
         SoC='${SOC_TYPE}' \
         modules
 }

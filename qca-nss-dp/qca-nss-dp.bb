@@ -33,11 +33,14 @@ NSS_PPE_MODULES:${SOC} = " dp-ppe-ds=y \
 			dp-loopback=y \
 			CONFIG_QCA_NSS_DP_EAWTP=y \
 			"
-
-NSS_PPE_MODULES:ipq52xx_64:remove = "dp-loopback=y"
-NSS_PPE_MODULES:ipq52xx:remove = "dp-loopback=y"
-NSS_PPE_MODULES:ipq96xx_64:remove = "dp-loopback=y"
-NSS_PPE_MODULES:ipq96xx:remove = "dp-loopback=y"
+NSS_PPE_MODULES:ipq52xx:append = "dp-ddrq=y"
+NSS_PPE_MODULES:ipq52xx_64:append = "dp-ddrq=y"
+NSS_PPE_MODULES:ipq96xx:append = "dp-ddrq=y"
+NSS_PPE_MODULES:ipq96xx_64:append = "dp-ddrq=y"
+NSS_PPE_MODULES:ipq52xx_64:remove = "dp-loopback=y dp-net-standby=y"
+NSS_PPE_MODULES:ipq52xx:remove = "dp-loopback=y dp-net-standby=y"
+NSS_PPE_MODULES:ipq96xx_64:remove = "dp-loopback=y dp-net-standby=y"
+NSS_PPE_MODULES:ipq96xx:remove = "dp-loopback=y dp-net-standby=y"
 
 PACKAGES += "kernel-module-qca-nss-dp"
 
@@ -70,6 +73,9 @@ do_install() {
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-dp/Module.symvers
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/files/qca-nss-dp.init ${D}${bindir}/qca-nss-dp
+	install -m 0755 ${WORKDIR}/files/edma_dump ${D}${bindir}/edma_dump
+	install -m 0755 ${WORKDIR}/files/edma_recover.sh ${D}${bindir}/edma_recover.sh
+	install -m 0755 ${WORKDIR}/files/edma_hang_inj.sh ${D}${bindir}/edma_hang_inj.sh
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/files/qca-nss-dp.service ${D}${systemd_unitdir}/system/qca-nss-dp.service
 	install -d ${D}${sysconfdir}/config
@@ -78,6 +84,9 @@ do_install() {
 
 FILES:${PN} =" \
 	${bindir}/qca-nss-dp \
+	${bindir}/edma_dump \
+	${bindir}/edma_recover.sh \
+	${bindir}/edma_hang_inj.sh \
 	${systemd_unitdir}/system/qca-nss-dp.service \
 	${sysconfdir}/config \
 	${sysconfdir}/config/nss_cfg.ini \

@@ -34,23 +34,27 @@ PPE_RULE_MAKE_OPTS:ipq53xx_64:append = "PPE_RULE_IPQ53XX=y"
 PPE_RULE_MAKE_OPTS:ipq54xx:append = "PPE_RULE_IPQ54XX=y"
 PPE_RULE_MAKE_OPTS:ipq54xx_64:append = "PPE_RULE_IPQ54XX=y"
 
-PPE_RULE_MAKE_OPTS:ipq96xx:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y PPE_PM_ENABLED=y PPE_PORT_MGMT_ENABLED=y"
-PPE_RULE_MAKE_OPTS:ipq96xx_64:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y PPE_PM_ENABLED=y PPE_PORT_MGMT_ENABLED=y"
+PPE_RULE_MAKE_OPTS:ipq96xx:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y PPE_PM_ENABLED=y PPE_PORT_MGMT_ENABLED=y PPE_TUN_RPS_ENABLED=y"
+PPE_RULE_MAKE_OPTS:ipq96xx_64:append = " PPE_VLAN_ENABLED=y PPE_DSCP_ENABLED=y PPE_PM_ENABLED=y PPE_PORT_MGMT_ENABLED=y PPE_TUN_RPS_ENABLED=y"
 
-PPE_RULE_MAKE_OPTS:ipq52xx:append = " PPE_VLAN_ENABED=y \
+PPE_RULE_MAKE_OPTS:ipq52xx:append = " PPE_VLAN_ENABLED=y \
 		PPE_DSCP_ENABLED=y \
 		PPE_PM_ENABLED=y \
 		PPE_PORT_MGMT_ENABLED=y \
 		PPE_DOT1P_ENABLED=y \
 		PPE_GEMPORT_ENABLED=y \
+		PPE_MCAST_ENABLED=y \
+		PPE_TUN_RPS_ENABLED=y \
 		"
 
-PPE_RULE_MAKE_OPTS:ipq52xx_64:append = " PPE_VLAN_ENABED=y \
+PPE_RULE_MAKE_OPTS:ipq52xx_64:append = " PPE_VLAN_ENABLED=y \
 		PPE_DSCP_ENABLED=y \
 		PPE_PM_ENABLED=y \
 		PPE_PORT_MGMT_ENABLED=y \
 		PPE_DOT1P_ENABLED=y \
 		PPE_GEMPORT_ENABLED=y \
+		PPE_MCAST_ENABLED=y \
+		PPE_TUN_RPS_ENABLED=y \
 		"
 
 EXTRA_CFLAGS += " \
@@ -103,6 +107,9 @@ do_install() {
 	install -m 0755 ${WORKDIR}/files/dscp_pcp_dump.sh ${D}${bindir}/dscp_pcp_dump.sh
 	install -m 0755 ${WORKDIR}/files/dot1p_dump.sh ${D}${bindir}/dot1p_dump.sh
 	install -m 0755 ${WORKDIR}/files/gemport_dump.sh ${D}${bindir}/gemport_dump.sh
+	install -m 0755 ${WORKDIR}/files/mcast_dump.sh ${D}${bindir}/mcast_dump.sh
+	install -m 0755 ${WORKDIR}/files/cos_map_dump.sh ${D}${bindir}/cos_map_dump.sh
+	install -m 0755 ${WORKDIR}/files/qos_dump.sh ${D}${bindir}/qos_dump.sh
 }
 
 FILES:${PN} = "${bindir}/acl_dump.sh \
@@ -114,6 +121,9 @@ FILES:${PN} = "${bindir}/acl_dump.sh \
 	${bindir}/dscp_pcp_dump.sh \
 	${bindir}/dot1p_dump.sh \
 	${bindir}/gemport_dump.sh \
+	${bindir}/mcast_dump.sh \
+	${bindir}/cos_map_dump.sh \
+	${bindir}/qos_dump.sh \
 	"
 
 KERNEL_MODULE_AUTOLOAD += "qca-nss-ppe-rule"
