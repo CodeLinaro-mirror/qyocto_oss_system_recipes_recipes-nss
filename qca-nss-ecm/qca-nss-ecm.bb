@@ -171,6 +171,7 @@ do_install() {
 		install -m 0644 examples/ecm_pcc_test${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}/usr/bin
 	install -m 0755 ${WORKDIR}/files/ecm_dump.sh ${D}${bindir}/ecm_dump.sh
+	install -m 0755 ${WORKDIR}/files/ecm_esp_spi_accel.sh ${D}${bindir}/ecm_esp_spi_accel.sh
 	install -m 0755 ${WORKDIR}/files/qca-nss-ecm ${D}${bindir}/qca-nss-ecm
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/files/qca-nss-ecm.service ${D}${systemd_unitdir}/system/qca-nss-ecm.service
@@ -200,6 +201,7 @@ do_install:append() {
 FILES:${PN} = "${systemd_unitdir}/system/qca-nss-ecm.service \
 	${bindir}/qca-nss-ecm \
 	${bindir}/ecm_dump.sh \
+	${bindir}/ecm_esp_spi_accel.sh \
 	${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf \
 	"
 
