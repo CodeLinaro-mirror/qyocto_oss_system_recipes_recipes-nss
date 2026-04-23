@@ -12,13 +12,13 @@ SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 FILESPATH = "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://qca-nss-ppe"
+SRC_URI = "file://qca-nss-ae-clients"
 
 PACKAGES += "kernel-module-qca-nss-ppe-l2tp"
 
 DEPENDS = "virtual/kernel qca-nss-ppe qca-nss-ppe-tun"
 
-S = "${WORKDIR}/qca-nss-ppe"
+S = "${WORKDIR}/qca-nss-ae-clients"
 
 NSS_PPE_MODULES += "l2tp-mgr=y"
 

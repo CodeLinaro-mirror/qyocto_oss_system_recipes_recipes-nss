@@ -12,19 +12,19 @@ SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 FILESPATH = "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://qca-nss-ppe"
+SRC_URI = "file://qca-nss-ae-clients"
 
 PACKAGES += "kernel-module-qca-nss-ppe-vxlanmgr"
 
-DEPENDS = "virtual/kernel qca-nss-ppe-tun qca-nss-ppe-client qca-nss-ppe"
+DEPENDS = "virtual/kernel qca-nss-ppe-tun qca-nss-ae-clients qca-nss-ppe"
 RDEPENDS-${PN} = "vxlan"
 
-S = "${WORKDIR}/qca-nss-ppe/clients/vxlanmgr/"
+S = "${WORKDIR}/qca-nss-ae-clients/clients/vxlanmgr/"
 PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
 
 MODULE_EXTRA_SYMBOLS = "${PPE_TUN_STG_INCDIR}/Module.symvers \
 		        ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
-		        ${STAGING_INCDIR}/qca-nss-ppe-client/Module.symvers"
+		        ${STAGING_INCDIR}/qca-nss-ae-clients/Module.symvers"
 
 string='BUILD_ID = \\"Build Id: $(shell date +'%m/%d/%y\,\ %H:%M:%S')\\"'
 

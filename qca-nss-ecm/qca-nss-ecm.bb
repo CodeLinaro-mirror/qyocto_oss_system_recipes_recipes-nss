@@ -17,7 +17,7 @@ SRC_URI = "file://qca-nss-ecm \
 	   file://files \
 	   "
 
-DEPENDS:append = " virtual/kernel qca-nss-ppe-tunipip6"
+DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
 DEPENDS:${SOC}:append = " nat46 qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
 
 RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
@@ -50,6 +50,7 @@ ECM_MAKE_OPTS:${SOC} += "ECM_IPV6_ENABLE=y \
 			ECM_INTERFACE_MAP_T_ENABLE=y \
 			ECM_ATH_MCAST_ENABLE=y \
 			ECM_INTERFACE_BOND_ENABLE=y \
+			ECM_INTERFACE_VXLAN_ENABLE=y \
 			ECM_INTERFACE_IPSEC_ENABLE=y \
 			ECM_XFRM_ENABLE=y \
 			ECM_INTERFACE_RAWIP_ENABLE=y \
@@ -131,7 +132,7 @@ EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
 		${STAGING_INCDIR}/emesh-sp/Module.symvers \
-		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers \
+		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tun/Module.symvers"
 
