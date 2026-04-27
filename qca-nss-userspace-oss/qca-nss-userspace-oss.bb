@@ -1,7 +1,6 @@
 DESCRIPTION = "Adding ppecfg support for RDK revision 12.5"
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://${WORKDIR}/qca-nss-userspace-oss/ppe/ppecfg/ppecfg_acl.h;beginline=1;endline=15;md5=eeb26884f344989787b2a4d72cf11140"
-
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
 FILESPATH =+ "${TOPDIR}/../opensource/:"
 
 SRC_URI = "file://qca-nss-userspace-oss/ppe/ppecfg \
