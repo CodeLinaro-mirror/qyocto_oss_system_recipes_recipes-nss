@@ -12,14 +12,14 @@ SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 FILESPATH = "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://qca-nss-ppe/ \
+SRC_URI = "file://qca-nss-ae-clients/ \
 	   "
 
 PACKAGES += "kernel-module-qca-nss-gre-mgr"
 
 DEPENDS = "virtual/kernel qca-nss-ppe-tun"
 
-S = "${WORKDIR}/qca-nss-ppe/clients/gre/"
+S = "${WORKDIR}/qca-nss-ae-clients/clients/gre/"
 PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
 
 string='BUILD_ID = \\"Build Id: $(shell date +'%m/%d/%y\,\ %H:%M:%S')\\"'

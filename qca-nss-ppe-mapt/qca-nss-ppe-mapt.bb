@@ -12,13 +12,13 @@ SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
 FILESPATH = "${TOPDIR}/../opensource/:"
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://qca-nss-ppe/ "
+SRC_URI = "file://qca-nss-ae-clients/ "
 
 PACKAGES += "kernel-module-qca-nss-ppe-mapt "
 
 DEPENDS = "virtual/kernel qca-nss-ppe-tun nat46"
 
-S = "${WORKDIR}/qca-nss-ppe/clients/mapt/"
+S = "${WORKDIR}/qca-nss-ae-clients/clients/mapt/"
 PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
 NAT46_STG_INCDIR = "${STAGING_INCDIR}/nat46"
 
