@@ -1,18 +1,20 @@
 DESCRIPTION = "Adding ppecfg support for RDK revision 12.5"
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/${LICENSE};md5=f3b90e78ea0cffb20bf5cca7947a896d"
+
+SOC="${@d.getVar('SOC_FAMILY', d, 1).split(':')[1]}"
+SOC_TYPE = "${@d.getVar('SOC', d, 0).split('_')[0]}"
+
 FILESPATH = "${TOPDIR}/../opensource/:"
 
-DEPENDS = "libnl qca-nss-ppe"
+DEPENDS = "libnl qca-nss-ppe qca-nss-dp"
 
 SRC_URI = "file://qca-nss-userspace-oss/ppe/ppenl_lib"
-
 
 FILESPATH = "${TOPDIR}/../opensource/:"
 
 TARGET_LDFLAGS +="-lnl-3 -lnl-genl-3 -pie"
-TARGET_CFLAGS += "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${S}/include -Wno-int-conversion"
-
+TARGET_CFLAGS += "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I${STAGING_INCDIR}/qca-nss-dp -I${S}/include -Wno-int-conversion"
 
 S = "${WORKDIR}/qca-nss-userspace-oss/ppe/ppenl_lib"
 
@@ -21,7 +23,8 @@ do_compile() {
         CC="${CC}" \
         CFLAGS="${CFLAGS} -I${TARGET_CFLAGS}" \
 	LIBS="-L${STAGING_LIBDIR} ${TARGET_LDFLAGS}" \
-        make -C ${S}
+        SoC='${SOC_TYPE}' \
+	make -C ${S}
 }
 
 do_install() {
