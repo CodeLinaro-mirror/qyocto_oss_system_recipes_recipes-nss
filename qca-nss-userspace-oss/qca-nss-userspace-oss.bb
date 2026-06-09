@@ -21,20 +21,31 @@ RDEPENDS:${PN} += "qca-nss-libppenl"
 
 S = "${WORKDIR}/qca-nss-userspace-oss/ppe/ppecfg"
 
+PPE_TUN_RPS_MAKE_OPTS = ""
+PPE_TUN_RPS_MAKE_OPTS:ipq96xx:append = " PPE_TUN_RPS_ENABLED=y"
+PPE_TUN_RPS_MAKE_OPTS:ipq96xx_64:append = " PPE_TUN_RPS_ENABLED=y"
+PPE_TUN_RPS_MAKE_OPTS:ipq52xx:append = " PPE_TUN_RPS_ENABLED=y"
+PPE_TUN_RPS_MAKE_OPTS:ipq52xx_64:append = " PPE_TUN_RPS_ENABLED=y"
+
 do_compile() {
         unset LDFLAGS
         CC="${CC}" \
         LIBS="-L${STAGING_LIBDIR} ${TARGET_LDFLAGS}" \
 	CFLAGS="${CFLAGS} ${TARGET_CFLAGS}" \
 	SoC='${SOC_TYPE}' \
-	make -C ${S}
+	make -C ${S} ${PPE_TUN_RPS_MAKE_OPTS}
 }
 
 do_install() {
         install -d ${D}/${bindir}/
         install -m 0744 ${S}/obj/ppecfg ${D}/${bindir}/
+
+        if [ -n "${PPE_TUN_RPS_MAKE_OPTS}" ]; then
+                install -d ${D}${sysconfdir}/ppecfg
+                install -m 0644 ${S}/ppecfg_tun_rps_config.json ${D}${sysconfdir}/ppecfg/ppecfg_tun_rps_config.json
+        fi
 }
 
 FILES:${PN} += "${bindir}/ppecfg \
+                ${sysconfdir}/ppecfg/* \
                "
-

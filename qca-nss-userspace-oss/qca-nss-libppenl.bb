@@ -18,13 +18,19 @@ TARGET_CFLAGS += "-I${STAGING_INCDIR}/libnl3 -I${STAGING_INCDIR}/qca-nss-ppe -I$
 
 S = "${WORKDIR}/qca-nss-userspace-oss/ppe/ppenl_lib"
 
+PPE_TUN_RPS_MAKE_OPTS = ""
+PPE_TUN_RPS_MAKE_OPTS:ipq96xx:append = " PPE_TUN_RPS_ENABLED=y"
+PPE_TUN_RPS_MAKE_OPTS:ipq96xx_64:append = " PPE_TUN_RPS_ENABLED=y"
+PPE_TUN_RPS_MAKE_OPTS:ipq52xx:append = " PPE_TUN_RPS_ENABLED=y"
+PPE_TUN_RPS_MAKE_OPTS:ipq52xx_64:append = " PPE_TUN_RPS_ENABLED=y"
+
 do_compile() {
         unset LDFLAGS
         CC="${CC}" \
         CFLAGS="${CFLAGS} -I${TARGET_CFLAGS}" \
 	LIBS="-L${STAGING_LIBDIR} ${TARGET_LDFLAGS}" \
         SoC='${SOC_TYPE}' \
-	make -C ${S}
+	make -C ${S} ${PPE_TUN_RPS_MAKE_OPTS}
 }
 
 do_install() {
