@@ -21,6 +21,10 @@ RDEPENDS-${PN} = "vxlan"
 
 S = "${WORKDIR}/qca-nss-ae-clients/clients/vxlanmgr/"
 PPE_TUN_STG_INCDIR = "${STAGING_INCDIR}/qca-nss-ppe-tun"
+EXTRA_CFLAGS +=  "-I${STAGING_INCDIR}/qca-nss-ppe \
+		 -I${STAGING_INCDIR}/qca-nss-ae-clients \
+		 -I${STAGING_INCDIR}/qca-nss-ppe-tun \
+		  "
 
 MODULE_EXTRA_SYMBOLS = "${PPE_TUN_STG_INCDIR}/Module.symvers \
 		        ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
