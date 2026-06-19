@@ -30,6 +30,7 @@ GRE_MGR_MAKE_OPTS:${SOC} += "GRE_MGR_FE_PPE_ENABLE=y "
 EXTRA_CFLAGS += " \
 		-I${STAGING_INCDIR}/qca-ssdk \
 		-I${STAGING_INCDIR}/qca-ssdk/fal \
+		-I${STAGING_INCDIR}/qca-nss-ppe \
 		"
 
 MODULE_EXTRA_SYMBOLS = "${PPE_TUN_STG_INCDIR}/Module.symvers "
