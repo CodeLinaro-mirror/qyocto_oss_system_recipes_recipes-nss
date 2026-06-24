@@ -177,7 +177,7 @@ do_install() {
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/files/qca-nss-ecm.service ${D}${systemd_unitdir}/system/qca-nss-ecm.service
 	install -d ${D}${sysconfdir}/sysctl.d
-	install -m 0644 ${WORKDIR}/files/qca-nss-ecm.sysctl ${D}${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf
+	install -m 0644 ${WORKDIR}/files/qca-nss-ecm.sysctl ${D}${sysconfdir}/sysctl.d/qca-nss-ecm.conf
 	install -d ${D}${includedir}/qca-nss-ecm
 	install -m 0644 exports/* ${D}${includedir}/qca-nss-ecm/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ecm/Module.symvers
@@ -196,14 +196,14 @@ do_install:append() {
 	fi
 
 	echo "net.netfilter.nf_conntrack_max=${ECM_CONNTRACK_MAX}" \
-	>> ${D}${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf
+	>> ${D}${sysconfdir}/sysctl.d/qca-nss-ecm.conf
 }
 
 FILES:${PN} = "${systemd_unitdir}/system/qca-nss-ecm.service \
 	${bindir}/qca-nss-ecm \
 	${bindir}/ecm_dump.sh \
 	${bindir}/ecm_esp_spi_accel.sh \
-	${sysconfdir}/sysctl.d/99-qca-nss-ecm.conf \
+	${sysconfdir}/sysctl.d/qca-nss-ecm.conf \
 	"
 
 SYSTEMD_SERVICE:${PN} += "qca-nss-ecm.service"
