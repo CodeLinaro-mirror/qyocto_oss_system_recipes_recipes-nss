@@ -145,9 +145,8 @@ load_ecm() {
 
 	local kernel_version=$(uname -r)
 
-	[ -e "/lib/modules/$kernel_version/kernel/drivers/qca-nss-wifi-plugins/qca-wifi-nss-plugins.ko" ] && {
-		[ -d /sys/module/qca_wifi_nss_plugins ] || [ -d /sys/module/umac ] ||
-		[ -f /lib/modules/$kernel_version/ath.ko ] && modprobe qca_wifi_nss_plugins
+	[ -e "/lib/modules/$kernel_version/kernel/drivers/qca-wifi-nss-plugins/qca-wifi-nss-plugins.ko" ] && {
+		[ -d /sys/module/qca_wifi_nss_plugins ] || [ -f /lib/modules/$kernel_version/ath.ko ] && modprobe qca-wifi-nss-plugins
 	}
 
 	echo 0 > /sys/kernel/debug/ecm/front_end_ipv4_stop

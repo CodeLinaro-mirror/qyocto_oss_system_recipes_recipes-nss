@@ -185,7 +185,7 @@ do_install() {
 
 do_install:append() {
 	cfg="${STAGING_KERNEL_BUILDDIR}/.config"
-	ECM_CONNTRACK_MAX=16384
+	ECM_CONNTRACK_MAX=26624
 
 	if [ -f "$cfg" ]; then
 		if grep -q '^CONFIG_KERNEL_IPQ_MEM_PROFILE=256' "$cfg"; then
