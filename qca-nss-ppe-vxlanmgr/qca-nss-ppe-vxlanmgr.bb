@@ -53,7 +53,6 @@ do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -m 0644 ${S}/qca-nss-ppe-vxlanmgr${KERNEL_OBJECT_SUFFIX} ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-ppe-vxlanmgr
-	install -m 0644 ${S}/* ${D}${includedir}/qca-nss-ppe-vxlanmgr/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ppe-vxlanmgr/Module.symvers
 }
 
