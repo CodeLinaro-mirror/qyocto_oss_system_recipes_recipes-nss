@@ -130,7 +130,7 @@ load_ecm() {
 
 	[ -d /sys/module/ecm ] || {
 		ecm_dependency
-		modprobe ecm front_end_selection=$(get_front_end_mode) register_ip_post_routing=$(get_register_ip_post_routing) register_br_post_routing=$(get_register_br_post_routing) ecm_front_end_ipv4_stopped=1 ecm_front_end_ipv6_stopped=1
+		modprobe ecm front_end_selection=$(get_front_end_mode) register_ip_post_routing=$(get_register_ip_post_routing) register_br_post_routing=$(get_register_br_post_routing) ecm_front_end_ipv4_stopped=1 ecm_front_end_ipv6_stopped=1 ecm_sixth_tuple_mode=$(get_sixth_tuple_mode)
 
 		if [ $(get_front_end_mode) == 4 ]; then
 			modprobe ecm_ae_select
