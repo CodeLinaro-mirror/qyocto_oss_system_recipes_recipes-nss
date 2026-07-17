@@ -82,8 +82,6 @@ do_compile() {
 do_install() {
 	install -d ${D}${base_libdir}/modules/${KERNEL_VERSION}/kernel/drivers/${PN}
 	install -d ${D}${includedir}/qca-nss-ae-clients
-	install -m 0644 ${S}/exports/* ${D}${includedir}/qca-nss-ae-clients/
-	install -m 0644 ${S}/drv/exports/* ${D}${includedir}/qca-nss-ae-clients/
 	install -m 0644 ${S}/Module.symvers ${D}${includedir}/qca-nss-ae-clients/Module.symvers
 }
 
