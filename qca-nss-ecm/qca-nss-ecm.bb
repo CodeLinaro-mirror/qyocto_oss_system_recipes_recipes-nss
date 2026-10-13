@@ -19,6 +19,8 @@ SRC_URI = "file://qca-nss-ecm \
 
 DEPENDS:append = " virtual/kernel qca-nss-ppe-vxlanmgr qca-nss-ppe-tunipip6"
 DEPENDS:${SOC}:append = " nat46 qca-nss-sfe qca-nss-ppe qca-emesh-sp qca-ovsmgr"
+DEPENDS:ipq52xx:append = " qca-nss-pon-plugin"
+DEPENDS:ipq52xx_64:append = " qca-nss-pon-plugin"
 
 RDEPENDS-${PN}:append = " iptables-mod-extra ipt-conntrack \
 		ipv6 l2tp pppol2tp bonding pptp \
@@ -103,9 +105,6 @@ ECM_MAKE_OPTS:ipq52xx_64:append = " ECM_FRONT_END_ESP_SPI_PASSTHROUGH=y"
 ECM_MAKE_OPTS:ipq96xx:append = " ECM_FRONT_END_ESP_SPI_PASSTHROUGH=y"
 ECM_MAKE_OPTS:ipq96xx_64:append = " ECM_FRONT_END_ESP_SPI_PASSTHROUGH=y"
 
-
-
-
 ECM_MAKE_OPTS:ipq95xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
 ECM_MAKE_OPTS:ipq96xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
 ECM_MAKE_OPTS:ipq52xx_32_QRDK_256:remove = "ECM_INTERFACE_L2TPV3_ENABLE=y"
@@ -116,12 +115,14 @@ ECM_MAKE_OPTS:append = "${@' ECM_FRONT_END_CONN_LIMIT_ENABLE=y' if d.getVar('CON
 ECM_MAKE_OPTS:append = "${@' ECM_256M_PROFILE=y' if d.getVar('CONFIG_KERNEL_IPQ_MEM_PROFILE', True) == '256' else ''}"
 ECM_MAKE_OPTS:append = "${@' ECM_FRONT_END_CONN_LIMIT_ENABLE=y' if d.getVar('CONFIG_LOWMEM_FLASH', True) == 'y' else ''}"
 
-EXTRA_CFLAGS += "-I${STAGING_INCDIR}/nat46 \
+EXTRA_CFLAGS = " -I${STAGING_INCDIR}/nat46 \
 		-I${STAGING_INCDIR}/qca-nss-sfe \
 		-I${STAGING_INCDIR}/qca-nss-ppe \
 		-I${STAGING_INCDIR}/emesh-sp \
 		-I${STAGING_INCDIR}/qca-ovsmgr \
 		"
+
+EXTRA_CFLAGS:append = "${@' -I${STAGING_INCDIR}/qca-nss-pon-plugin' if d.getVar('SOC') in ['ipq52xx', 'ipq52xx_64'] else ''}"
 
 MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-vp/Module.symvers ${STAGING_INCDIR}/nat46/Module.symvers \
@@ -129,6 +130,8 @@ MODULE_EXTRA_SYMBOLS ="${STAGING_INCDIR}/qca-nss-sfe/Module.symvers ${STAGING_IN
 		${STAGING_INCDIR}/qca-ovsmgr/Module.symvers ${STAGING_INCDIR}/qca-nss-ppe-vxlanmgr/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tunipip6/Module.symvers \
 		${STAGING_INCDIR}/qca-nss-ppe-tun/Module.symvers"
+
+MODULE_EXTRA_SYMBOLS:append = "${@' ${STAGING_INCDIR}/qca-nss-pon-plugin/Module.symvers' if d.getVar('SOC') in ['ipq52xx', 'ipq52xx_64'] else ''}"
 
 do_configure() {
 	true
